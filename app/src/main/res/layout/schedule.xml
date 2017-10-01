@@ -1,0 +1,838 @@
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/schedule_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/schedule"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="1923px">
+
+                <LinearLayout
+                    android:id="@+id/scd_month"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="5.1%"
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/set_month"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="3月"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c1"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_month">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="1"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c2"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="2"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c3"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="3"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c4"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c3">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="4"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c5"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c4">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="5"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c6"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="6"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c7"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/scd_c6"
+                    android:layout_alignParentStart="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="7"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c8"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c7">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="8"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c9"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c8">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="9"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c10"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c9">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="10"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c11"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c10">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="11"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c12"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c11">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="12"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_c13"
+                    app:layout_widthPercent="9%"
+                    app:layout_heightPercent="7.3%"
+                    android:orientation="vertical"
+                    android:layout_below="@id/scd_c12">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="13"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_sunday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_month">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_sunday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="1"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周日"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_monday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_sunday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_monday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="2"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周一"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/scd_tuesday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_monday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_tuesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="3"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周二"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_wednesday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_tuesday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_wednesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="4"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周三"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_thursday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_wednesday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_thursday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="5"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周四"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_friday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_thursday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_friday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="6"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周五"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scd_saturday"
+                    app:layout_widthPercent="13%"
+                    app:layout_heightPercent="5.1%"
+                    android:layout_toRightOf="@id/scd_friday">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/set_saturday"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:text="7"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="12dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:text="周六"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textColor="?android:attr/colorPrimary"/>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/colorPrimary"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.percent.PercentRelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+
+

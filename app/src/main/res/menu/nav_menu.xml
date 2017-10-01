@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/theme"
+            android:icon="@drawable/theme"
+            android:title="主题选择"/>
+
+        <item android:id="@+id/sign_up"
+            android:icon="@drawable/iqiandao"
+            android:title="敬请期待" />
+        <item android:id="@+id/my_trouble"
+            android:icon="@drawable/ifanxinshi"
+            android:title="敬请期待" />
+        <item android:id="@+id/store"
+            android:icon="@drawable/ijinbi"
+            android:title="敬请期待"/>
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ishezhi"
+            android:title="敬请期待"/>
+        <item android:id="@+id/update"
+            android:icon="@drawable/igengxin"
+            android:title="敬请期待"/>
+        <item android:id="@+id/feedback"
+            android:icon="@drawable/ifankui"
+            android:title="敬请期待"/>
+
+        <!--
+        <item android:id="@+id/sign_up"
+            android:icon="@drawable/iqiandao"
+            android:title="每日签到" />
+        <item android:id="@+id/my_trouble"
+            android:icon="@drawable/ifanxinshi"
+            android:title="我的烦恼" />
+        <item android:id="@+id/store"
+            android:icon="@drawable/ijinbi"
+            android:title="金币商城"/>
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ishezhi"
+            android:title="系统设置"/>
+        <item android:id="@+id/update"
+            android:icon="@drawable/igengxin"
+            android:title="软件更新"/>
+        <item android:id="@+id/feedback"
+            android:icon="@drawable/ifankui"
+            android:title="我要反馈"/>
+-->
+    </group>
+
+</menu>

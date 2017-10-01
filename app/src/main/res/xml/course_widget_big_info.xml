@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/course_widget_big"
+    android:initialLayout="@layout/course_widget_big"
+    android:minHeight="180dp"
+    android:minWidth="350dp"
+    android:previewImage="@drawable/course_widget"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"></appwidget-provider>

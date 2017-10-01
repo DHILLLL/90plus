@@ -1,0 +1,61 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#00CDA5</item>
+        <item name="colorPrimaryDark">#00CDA5</item>
+        <item name="colorAccent">#FF476C</item>
+
+    </style>
+
+    <style name="Coffee" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+        <item name="colorPrimary">#8F6D52</item>
+        <item name="colorPrimaryDark">#8F6D52</item>
+        <item name="colorAccent">#97B0C3</item>
+    </style>
+
+    <style name="Sea" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#229DCD</item>
+        <item name="colorPrimaryDark">#229DCD</item>
+        <item name="colorAccent">#EF9235</item>
+    </style>
+
+    <style name="Pink" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#F09199</item>
+        <item name="colorPrimaryDark">#F09199</item>
+        <item name="colorAccent">#23E1D1</item>
+    </style>
+
+    <style name="Harvest" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FF9235</item>
+        <item name="colorPrimaryDark">#FF9235</item>
+        <item name="colorAccent">#229DCD</item>
+    </style>
+
+    <style name="Butterfly" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#83668A</item>
+        <item name="colorPrimaryDark">#83668A</item>
+        <item name="colorAccent">#AEC0AA</item>
+    </style>
+
+    <style name="Forgive" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#66BB6A</item>
+        <item name="colorPrimaryDark">#66BB6A</item>
+        <item name="colorAccent">#83668A</item>
+    </style>
+
+    <style name="Sexless" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#AACBCC</item>
+        <item name="colorPrimaryDark">#AACBCC</item>
+        <item name="colorAccent">#883333</item>
+    </style>
+
+</resources>

@@ -1,0 +1,97 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    app:cardCornerRadius="3dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/homework_course"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="#FFD700"
+            android:textColor="#FFFFFF"
+            android:text="微机系统与接口技术"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/homework_work"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"/>
+
+            <ImageView
+                android:id="@+id/homework_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                />
+
+        </LinearLayout>
+
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#757575"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/homework_deadLine"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="2017.12.25(周三)"
+                android:lines="1"
+                android:gravity="left"
+                android:textSize="12sp"
+                android:layout_margin="6dp"
+                />
+
+            <CheckBox
+                android:id="@+id/homework_finished"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="完成"
+                android:buttonTint="#757575"
+                android:textColor="#757575"
+                android:textSize="12sp"
+                android:layout_gravity="left"
+                android:paddingRight="8dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+
