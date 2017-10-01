@@ -60,6 +60,8 @@ public class MainActivity extends MyActivity implements
         BottomNavigationBar.OnTabSelectedListener,ViewPager.OnPageChangeListener{
     private static final String TAG = "dongheyou";
 
+    //GIT
+
     private ViewPager viewPager;
     private BottomNavigationBar bottomNavigationBar;
     private List<Fragment> fragments;
