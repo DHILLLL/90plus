@@ -465,7 +465,7 @@ public class MainActivity extends MyActivity implements
     private void initViewPager(){
         viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        fragments = new ArrayList<Fragment>();
+        fragments = new ArrayList<>();
         sf = new scheduleFragment();
         fragments.add(sf);
         fragments.add(new homeworkFragment());
