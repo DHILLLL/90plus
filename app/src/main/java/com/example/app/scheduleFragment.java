@@ -327,14 +327,27 @@ public class scheduleFragment extends Fragment {
         }
 
         //点击事件
-        frameLayout2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),courseActivity.class);
-                intent.putExtra("course",course.getName());
-                startActivity(intent);
-            }
-        });
+        if(max == 0){
+            frameLayout2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),courseActivity.class);
+                    intent.putExtra("course",course.getName());
+                    startActivity(intent);
+                }
+            });
+        }else{
+            frameLayout2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("选择课程");
+                    List<Course> temp = DataSupport.where("hourFrom >= ? and hourTo <= ?",String.valueOf(course.getHourFrom()),String.valueOf(course.getHourTo())).find(Course.class);
+
+                }
+            });
+        }
+
 
         //已添加课程数加一
         items++;
