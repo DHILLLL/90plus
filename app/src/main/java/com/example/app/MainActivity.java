@@ -61,6 +61,7 @@ public class MainActivity extends MyActivity implements
     private static final String TAG = "dongheyou";
 
     //GIT
+    //Git from Zhang Ding
 
     private ViewPager viewPager;
     private BottomNavigationBar bottomNavigationBar;
