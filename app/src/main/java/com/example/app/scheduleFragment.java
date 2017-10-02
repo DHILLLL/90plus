@@ -42,6 +42,7 @@ public class scheduleFragment extends Fragment {
     int size;
     int items = 0;
     int currentWeek;
+    int[][] shownCourses = new int[8][14];
     TextView month,mon,tue,wed,thu,fri,sat,sun;
 
     private static final String TAG = "dongheyou";
@@ -113,6 +114,7 @@ public class scheduleFragment extends Fragment {
 
         setDate();
 
+        /*
         //下拉更新课程配色
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.schedule_refresh);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -137,7 +139,7 @@ public class scheduleFragment extends Fragment {
                 dialog.show();
 
             }
-        });
+        });*/
 
 
         return view;
@@ -225,6 +227,12 @@ public class scheduleFragment extends Fragment {
 
     //将参数中的课程显示在课程表上
     private void AddItem(final Course course, boolean thisWeek){
+        int max = 0,wd = course.getWeekday(),hf = course.getHourFrom(),ht = course.getHourTo();
+        for(int i = hf;i <= ht;i++){
+            if (shownCourses[wd][i] > max) max = shownCourses[wd][i];
+            shownCourses[wd][i]++;
+        }
+
 
         //该课程总layout
         FrameLayout frameLayout2 = new FrameLayout(getContext());
@@ -291,7 +299,7 @@ public class scheduleFragment extends Fragment {
         //圆角图形
         CardView cardview2 = new CardView(getContext());
         FrameLayout.LayoutParams fl12 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        fl12.setMargins(3,3,3,3);
+        fl12.setMargins(3 + max * 10,3,3,3);
         cardview2.setLayoutParams(fl12);
         cardview2.setRadius(12);
         cardview2.setCardBackgroundColor(thisWeek?course.getColor():0XFFEAEAEA);
@@ -356,6 +364,11 @@ public class scheduleFragment extends Fragment {
         for(int j = 0;j<items;j++){
             FrameLayout f = (FrameLayout) sch.findViewWithTag(j);
             sch.removeView(f);
+        }
+        for(int i = 0;i<8;i++){
+            for(int j = 0;j<14;j++){
+                shownCourses[i][j] = 0;
+            }
         }
     }
 

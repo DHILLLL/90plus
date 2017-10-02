@@ -6,14 +6,26 @@
         android:id="@+id/add_course"
         android:icon="@drawable/jiahao"
         android:title="添加课程"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/change_set"
+        android:icon="@drawable/jiahao"
+        android:title="更换配色"
+        app:showAsAction="never"/>
 
 
     <item
         android:id="@+id/add_homework"
-        android:title="添加作业"
+        android:title="添加"
         android:icon="@drawable/jiahao"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/filter"
+        android:title="筛选"
+        android:icon="@drawable/jiahao"
+        app:showAsAction="never"/>
 
 
 

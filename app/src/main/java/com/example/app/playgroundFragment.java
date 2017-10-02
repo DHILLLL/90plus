@@ -26,7 +26,6 @@ public class playgroundFragment extends Fragment {
 
     private Function[] functions = {new Function("敬请期待",R.drawable.main_trouble),new Function("敬请期待",R.drawable.main_grade)
             ,new Function("敬请期待",R.drawable.main_search),new Function("敬请期待",R.drawable.main_map),
-            new Function("敬请期待",R.drawable.main_match),new Function("敬请期待",R.drawable.main_lecture),
             new Function("敬请期待",R.drawable.main_lnf),new Function("敬请期待",R.drawable.main_movie)};
 
     private List<Function> functionList = new ArrayList<>();
@@ -43,7 +42,7 @@ public class playgroundFragment extends Fragment {
 
     private void initFunctions(){
         functionList.clear();
-        for (int i = 0;i<8;i++){
+        for (int i = 0;i<functions.length;i++){
             functionList.add(functions[i]);
         }
     }

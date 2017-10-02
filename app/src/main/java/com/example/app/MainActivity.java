@@ -193,11 +193,17 @@ public class MainActivity extends MyActivity implements
                 });
                 builder.show();
                 break;
+
+            case R.id.change_set:
+                changeSet();
+                break;
+
             case R.id.add_homework:
                 Intent intent1 = new Intent(MainActivity.this,AddHomeworkActivity.class);
                 intent1.putExtra("course","");
                 startActivity(intent1);
                 break;
+
             default:
         }
         return true;
@@ -283,15 +289,6 @@ public class MainActivity extends MyActivity implements
 
                                                 changeSet();
 
-                                                Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
-                                                localBroadcastManager.sendBroadcast(intent);
-                                                Intent intent1 = new Intent("com.example.app.UPDATE_SCHEDULE");
-                                                localBroadcastManager.sendBroadcast(intent1);
-                                                Intent intent2 = new Intent("com.example.app.UPDATE_WIDGET");
-                                                sendBroadcast(intent2);
-
-                                                Toast.makeText(MainActivity.this, "导入成功", Toast.LENGTH_SHORT).show();
-
                                             }catch (Exception e){
                                                 e.printStackTrace();
                                             }
@@ -315,7 +312,6 @@ public class MainActivity extends MyActivity implements
                 }
             }
         }).start();
-
     }
 
     private void changeSet(){
@@ -358,6 +354,10 @@ public class MainActivity extends MyActivity implements
         //发送广播更新作业界面
         Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
         localBroadcastManager.sendBroadcast(intent);
+        Intent intent1 = new Intent("com.example.app.UPDATE_SCHEDULE");
+        localBroadcastManager.sendBroadcast(intent1);
+        Intent intent2 = new Intent("com.example.app.UPDATE_WIDGET");
+        sendBroadcast(intent2);
 
     }
 
@@ -367,7 +367,9 @@ public class MainActivity extends MyActivity implements
         switch (viewPager.getCurrentItem()){
             case 0:
                 menu.findItem(R.id.add_course).setVisible(true);
+                menu.findItem(R.id.change_set).setVisible(true);
                 menu.findItem(R.id.add_homework).setVisible(false);
+                menu.findItem(R.id.filter).setVisible(false);
                 middleTitle.setText("第" +currentWeek+ "周");
                 //标题1点击事件
                 middleTitle.setOnClickListener(new View.OnClickListener() {
@@ -397,12 +399,14 @@ public class MainActivity extends MyActivity implements
                 break;
             case 1:
                 menu.findItem(R.id.add_course).setVisible(false);
+                menu.findItem(R.id.change_set).setVisible(false);
                 menu.findItem(R.id.add_homework).setVisible(true);
+                menu.findItem(R.id.filter).setVisible(false);
                 SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
                 switch (sharedPreferences.getInt("display",0)){
-                    case 0: middleTitle.setText("全部作业");break;
-                    case 1: middleTitle.setText("未完成");break;
-                    case 2: middleTitle.setText("已完成");break;
+                    case 0: middleTitle.setText("筛选:全部");break;
+                    case 1: middleTitle.setText("筛选:未完成");break;
+                    case 2: middleTitle.setText("筛选:已完成");break;
                     default:
                 }
                 //标题2点击事件
@@ -410,7 +414,7 @@ public class MainActivity extends MyActivity implements
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        final String[] displays = {"显示全部","仅未完成","仅已完成"};
+                        final String[] displays = {"全部","未完成","已完成"};
                         builder.setItems(displays, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -419,13 +423,13 @@ public class MainActivity extends MyActivity implements
                                 editor.apply();
                                 switch (which) {
                                     case 0:
-                                        middleTitle.setText("全部作业");
+                                        middleTitle.setText("筛选:全部");
                                         break;
                                     case 1:
-                                        middleTitle.setText("仅未完成");
+                                        middleTitle.setText("筛选:未完成");
                                         break;
                                     case 2:
-                                        middleTitle.setText("仅已完成");
+                                        middleTitle.setText("筛选:已完成");
                                         break;
                                     default:
                                         break;
@@ -440,7 +444,9 @@ public class MainActivity extends MyActivity implements
                 break;
             case 2:
                 menu.findItem(R.id.add_course).setVisible(false);
+                menu.findItem(R.id.change_set).setVisible(false);
                 menu.findItem(R.id.add_homework).setVisible(false);
+                menu.findItem(R.id.filter).setVisible(false);
                 middleTitle.setText("校园生活");
                 break;
         }

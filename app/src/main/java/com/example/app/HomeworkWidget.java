@@ -170,20 +170,29 @@ public class HomeworkWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
 
-        Homework homework = new Homework();
-        homework.setFinished(false);
-        homework.setWord("1.点击上方彩色标题就可以标志为已完成\n2.再次点击可恢复为未完成\n3.点击上一条或下一条能起到刷新的作用\n4.万一（我是说万一）插件出现问题了，打开APP就会自动解决");
-        homework.setDeadLine("");
-        homework.setIsPhoto(false);
-        homework.setCourse("我是作业小插件");
+        SharedPreferences.Editor editor = context.getSharedPreferences("data",Context.MODE_PRIVATE).edit();
+        SharedPreferences sp = context.getSharedPreferences("data",Context.MODE_PRIVATE);
 
-        final Calendar calendar = Calendar.getInstance();
-        final long x = (long)(calendar.get(Calendar.YEAR)) * 10000000000L + (long)((calendar.get(Calendar.MONTH) + 1)) * 100000000L
-                + (long)(calendar.get(Calendar.DAY_OF_MONTH)) * 1000000L + (long)(calendar.get(Calendar.HOUR_OF_DAY)) * 10000L
-                + (long)(calendar.get(Calendar.MINUTE)) * 100L + (long)(calendar.get(Calendar.SECOND));
-        homework.setTime(x);
+        if (sp.getBoolean("firstWidget",true)){
 
-        homework.save();
+            Homework homework = new Homework();
+            homework.setFinished(false);
+            homework.setWord("1.点击上方彩色标题就可以标志为已完成\n2.再次点击可恢复为未完成\n3.点击上一条或下一条能起到刷新的作用\n4.万一（我是说万一）插件出现问题了，打开APP就会自动解决");
+            homework.setDeadLine("");
+            homework.setIsPhoto(false);
+            homework.setCourse("我是作业小插件");
+
+            final Calendar calendar = Calendar.getInstance();
+            final long x = (long)(calendar.get(Calendar.YEAR)) * 10000000000L + (long)((calendar.get(Calendar.MONTH) + 1)) * 100000000L
+                    + (long)(calendar.get(Calendar.DAY_OF_MONTH)) * 1000000L + (long)(calendar.get(Calendar.HOUR_OF_DAY)) * 10000L
+                    + (long)(calendar.get(Calendar.MINUTE)) * 100L + (long)(calendar.get(Calendar.SECOND));
+            homework.setTime(x);
+
+            homework.save();
+
+            editor.putBoolean("firstWidget",false);
+            editor.apply();
+        }
 
         Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
         context.sendBroadcast(intent1);

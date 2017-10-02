@@ -27,19 +27,26 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".courseActivity" />
-        <activity android:name=".AddCourseActivity" />
-        <activity android:name=".SelectThemeActivity" />
-        <activity android:name=".EditCourseActivity" />
-        <activity android:name=".AddHomeworkActivity" />
-        <activity android:name=".EditHomeworkActivity" />
+        <activity android:name=".courseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SelectThemeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddHomeworkActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".EditHomeworkActivity"
+            android:screenOrientation="portrait"/>
         <!--
         <receiver android:name=".CourseWidgetBig">
             <intent-filter>
