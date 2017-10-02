@@ -341,9 +341,22 @@ public class scheduleFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("选择课程");
-                    List<Course> temp = DataSupport.where("hourFrom >= ? and hourTo <= ?",String.valueOf(course.getHourFrom()),String.valueOf(course.getHourTo())).find(Course.class);
-
+                    final List<Course> temp = DataSupport.where("weekday = ? and hourFrom <= ? and hourTo >= ? or weekday = ? and hourFrom >= ? and hourTo <= ? or weekday = ? and hourFrom <= ? and hourTo >= ?"
+                            ,String.valueOf(course.getWeekday()),String.valueOf(course.getHourFrom()),String.valueOf(course.getHourFrom()),
+                            String.valueOf(course.getWeekday()),String.valueOf(course.getHourFrom()),String.valueOf(course.getHourTo()),
+                            String.valueOf(course.getWeekday()),String.valueOf(course.getHourTo()),String.valueOf(course.getHourTo())).find(Course.class);
+                    String[] options = new String[temp.size()];
+                    for(int i = 0;i<temp.size();i++){
+                        options[i] = temp.get(i).getName() + " @ " + temp.get(i).getPlace();
+                    }
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getActivity(),courseActivity.class);
+                            intent.putExtra("course",temp.get(which).getName());
+                            startActivity(intent);
+                        }
+                    }).show();
                 }
             });
         }
