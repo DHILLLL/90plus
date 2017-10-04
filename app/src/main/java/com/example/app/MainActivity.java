@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -223,17 +225,17 @@ public class MainActivity extends MyActivity implements
             @Override
             public void run() {
                 try{
-
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().url("http://210.42.121.134/servlet/GenImg").build();
-                    Response response = client.newCall(request).execute();
-                    InputStream is = response.body().byteStream();
+                    InputStream is = null;
+                    try {
+                        is = getCoursesInfo.getGenImg();
+                    }
+                    catch (GetCoursesInfo.NetworkErrorException ex) {
+                        ex.printStackTrace();
+                        Looper.prepare();
+                        Toast.makeText(MainActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
                     bmp = BitmapFactory.decodeStream(is);
-
-                    Headers headers = response.headers();
-                    List<String> cookies = headers.values("Set-Cookie");
-                    String sesssion = cookies.get(0);
-                    s = sesssion.substring(0,sesssion.indexOf(";"));
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -251,7 +253,25 @@ public class MainActivity extends MyActivity implements
                                         @Override
                                         public void run() {
                                             try {
-                                                List<Map<String,String>> maps = getCoursesInfo.getCourseData(u.getText().toString(),getCoursesInfo.md5(p.getText().toString()),c.getText().toString(),s);
+                                                List<Map<String, String>> maps = null;
+                                                try {
+                                                    maps = getCoursesInfo.getCourseData(u.getText().toString(), getCoursesInfo.md5(p.getText().toString()), c.getText().toString(), getCoursesInfo.getCookie());
+                                                } catch (GetCoursesInfo.VerificationCodeException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(MainActivity.this, "验证码错误，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                } catch (GetCoursesInfo.UsernamePasswordErrorException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(MainActivity.this, "用户名/密码错误，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                } catch (GetCoursesInfo.TimeoutException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(MainActivity.this, "会话超时，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                }
                                                 Map<String,Integer> names = new HashMap<>();
                                                 for (Map map : maps){
                                                     String course = map.get("lessonName").toString();
