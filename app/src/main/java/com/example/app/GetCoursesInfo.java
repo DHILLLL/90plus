@@ -2,7 +2,6 @@ package com.example.app;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
