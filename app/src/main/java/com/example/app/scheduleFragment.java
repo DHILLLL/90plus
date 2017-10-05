@@ -16,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,9 +174,15 @@ public class scheduleFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        //获取当前周
-        SharedPreferences sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
-        currentWeek = sp.getInt("currentWeek",1);
+        try{
+            //获取当前周
+            SharedPreferences sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
+            currentWeek = sp.getInt("currentWeek",1);
+        }catch (Exception e){
+            Log.d(TAG, "It happened again!");
+            e.printStackTrace();
+        }
+
 
         //刷新
         refresh();

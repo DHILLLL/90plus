@@ -21,8 +21,8 @@ import java.util.List;
 public class questionsFragment extends Fragment {
 
     private Question[] questions = {
-            new Question(R.drawable.jay,"Dongheyou","刚刚","挖掘机术哪家强？",0),
-            new Question(R.drawable.jay,"Dongheyou","2016.1.2 21:42","这个老师给分怎么样。。",3)};
+            new Question(R.drawable.jay,"Dongheyou","刚刚","这些问题都是假的。",0),
+            new Question(R.drawable.jay,"Dongheyou","2016.1.2 21:42","仅供参考，点击无效。",3)};
     private List<Question> questionList = new ArrayList<>();
     private RecyclerView recyclerView;
     private QuestionAdapter adapter;

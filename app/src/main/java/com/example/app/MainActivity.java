@@ -72,7 +72,7 @@ public class MainActivity extends MyActivity implements
         super.onCreate(savedInstanceState);
         ActivityCollector.finishOthers();
 
-        //DataSupport.deleteAll(Course.class);
+       // DataSupport.deleteAll(Course.class);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
 
@@ -720,29 +720,18 @@ public class MainActivity extends MyActivity implements
             theme7.setColor11(0XFFB0D3CB);theme7.setColor12(0XFF84B9CB);theme7.setColor13(0XFFE3C4B7);theme7.setColor14(0XFFAFADCF);
             theme7.save();
 
-            Homework homework0 = new Homework();
-            homework0.setFinished(false);
-            homework0.setWord("5.第4条提到的惊喜并不是切换主题，仔细看看课程颜色是不是有了变化呢\n6.添加作业可以选择现有课程也可以自拟标题，如果选择现有课程的话颜色会与其保持一致的\n7.谢谢您的使用");
-            homework0.setDeadLine("");
-            homework0.setIsPhoto(false);
-            homework0.setCourse("软件小贴士（下）");
-
             final Calendar calendar = Calendar.getInstance();
             final long x = (long)(calendar.get(Calendar.YEAR)) * 10000000000L + (long)((calendar.get(Calendar.MONTH) + 1)) * 100000000L
                     + (long)(calendar.get(Calendar.DAY_OF_MONTH)) * 1000000L + (long)(calendar.get(Calendar.HOUR_OF_DAY)) * 10000L
                     + (long)(calendar.get(Calendar.MINUTE)) * 100L + (long)(calendar.get(Calendar.SECOND));
-            homework0.setTime(x);
-
-            homework0.save();
-
-
 
             Homework homework = new Homework();
             homework.setFinished(false);
-            homework.setWord("1.本APP带有课程表和作业的桌面小插件哦\n2.如果某个科目有未完成的作业，它会在课程表界面和插件上显示出一个萌萌的小折角\n3.点击\"第X周\"或者\"全部作业\"会显示切换选项\n4.在课程表界面下拉有惊喜哦");
+            homework.setWord("1.本APP带有课程表和作业的桌面小插件哦\n2.如果某个科目有未完成的作业，它会在课程表界面和插件上显示出一个萌萌的小折角\n" +
+                    "3.添加作业可以选择现有课程也可以自拟标题，如果选择现有课程的话颜色会与其保持一致的\n4.谢谢您的使用");
             homework.setDeadLine("");
             homework.setIsPhoto(false);
-            homework.setCourse("软件小贴士（上）");
+            homework.setCourse("软件小贴士");
             homework.setTime(x+1);
 
             homework.save();

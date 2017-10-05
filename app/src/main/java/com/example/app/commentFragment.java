@@ -23,7 +23,7 @@ public class commentFragment extends Fragment {
 
     private MyComment[] myComment = {
             new MyComment(R.drawable.jay,"Dongheyou","刚刚","雷军老师的课我有幸听过一次，感觉好极了，内容生动有干活，英语讲得也特别好。",8,2),
-            new MyComment(R.drawable.jay,"Dongheyou","2016.1.2 21:42","我是来骗赞的",0,31)};
+            new MyComment(R.drawable.jay,"Dongheyou","2016.1.2 21:42","这些评论都是假的，别点了",0,31)};
 
     private List<MyComment> myCommentList = new ArrayList<>();
     private RecyclerView recyclerView;
