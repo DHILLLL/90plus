@@ -45,6 +45,7 @@ public class scheduleFragment extends Fragment {
     int currentWeek;
     int[][] shownCourses = new int[8][14];
     TextView month,mon,tue,wed,thu,fri,sat,sun;
+    boolean showAll;
 
     private static final String TAG = "dongheyou";
 
@@ -93,7 +94,6 @@ public class scheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.schedule,container,false);
-
 
         //获取屏幕宽度并计算对应课表长度
         WindowManager manager = getActivity().getWindowManager();
@@ -174,15 +174,12 @@ public class scheduleFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        try{
-            //获取当前周
-            SharedPreferences sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
-            currentWeek = sp.getInt("currentWeek",1);
-        }catch (Exception e){
-            Log.d(TAG, "It happened again!");
-            e.printStackTrace();
-        }
 
+        //获取当前周
+        SharedPreferences sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
+        currentWeek = sp.getInt("currentWeek",1);
+        SharedPreferences sp1 = getContext().getSharedPreferences("Setting",Context.MODE_PRIVATE);
+        showAll = sp1.getBoolean("showAll",true);
 
         //刷新
         refresh();
@@ -234,6 +231,9 @@ public class scheduleFragment extends Fragment {
 
     //将参数中的课程显示在课程表上
     private void AddItem(final Course course, boolean thisWeek){
+        if(!showAll && !thisWeek) return;
+
+
         int max = 0,wd = course.getWeekday(),hf = course.getHourFrom(),ht = course.getHourTo();
         for(int i = hf;i <= ht;i++){
             if (shownCourses[wd][i] > max) max = shownCourses[wd][i];

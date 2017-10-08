@@ -70,7 +70,7 @@ public class MainActivity extends MyActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityCollector.finishOthers();
+        //ActivityCollector.finishOthers();
 
        // DataSupport.deleteAll(Course.class);
 
@@ -122,6 +122,27 @@ public class MainActivity extends MyActivity implements
                         item.setChecked(true);
                         Intent intent = new Intent(MainActivity.this,SelectThemeActivity.class);
                         startActivity(intent);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    Thread.sleep(50);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        item.setChecked(false);
+                                    }
+                                });
+                            }
+                        }).start();
+                        break;
+                    case R.id.settings:
+                        item.setChecked(true);
+                        Intent intent1 = new Intent(MainActivity.this,SettingActivity.class);
+                        startActivity(intent1);
                         new Thread(new Runnable() {
                             @Override
                             public void run() {

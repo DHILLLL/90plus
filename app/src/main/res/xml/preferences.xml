@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout="@layout/preference_item">
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="基本设置">
+
+        <CheckBoxPreference
+            android:key="showAll"
+            android:layout="@layout/preference_item"
+            android:summaryOn="显示所有的课程"
+            android:summaryOff="只显示当周需要上的课程"
+            android:title="显示非当周课"
+            android:widgetLayout="@layout/switch_layout"/>
+
+        <Preference
+            android:key="background"
+            android:layout="@layout/preference_item"
+            android:summary="厌倦纯白背景了吗"
+            android:title="自定义课表背景"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="其他信息">
+
+        <Preference
+            android:key="background"
+            android:layout="@layout/preference_item"
+            android:summary="beta.20171008"
+            android:title="当前版本"/>
+
+        <Preference
+            android:layout="@layout/preference_item"
+            android:summary="YDZZS"
+            android:title="关于我们"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

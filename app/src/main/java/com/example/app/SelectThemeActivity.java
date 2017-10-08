@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -158,9 +159,11 @@ public class SelectThemeActivity extends MyActivity {
                 editor.putBoolean("changed",true);
                 editor.apply();
 
-                Intent intent = new Intent(SelectThemeActivity.this,MainActivity.class);
+                finish();
+                final Intent intent = new Intent(SelectThemeActivity.this,MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //ActivityCollector.finishAll();
+                overridePendingTransition(0,0);
             }
         });
         dialog.show();

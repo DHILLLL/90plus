@@ -14,6 +14,7 @@ public class MyActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         //设置当前主题
         SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
         String theme = sp.getString("theme","candy");

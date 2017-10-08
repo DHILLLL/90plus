@@ -47,6 +47,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".EditHomeworkActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".SettingActivity"
+            android:screenOrientation="portrait"/>
         <!--
         <receiver android:name=".CourseWidgetBig">
             <intent-filter>

@@ -4,7 +4,9 @@
         <item android:id="@+id/theme"
             android:icon="@drawable/theme"
             android:title="主题选择"/>
-
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ishezhi"
+            android:title="系统设置"/>
         <item android:id="@+id/sign_up"
             android:icon="@drawable/iqiandao"
             android:title="敬请期待" />
@@ -13,9 +15,6 @@
             android:title="敬请期待" />
         <item android:id="@+id/store"
             android:icon="@drawable/ijinbi"
-            android:title="敬请期待"/>
-        <item android:id="@+id/settings"
-            android:icon="@drawable/ishezhi"
             android:title="敬请期待"/>
         <item android:id="@+id/update"
             android:icon="@drawable/igengxin"

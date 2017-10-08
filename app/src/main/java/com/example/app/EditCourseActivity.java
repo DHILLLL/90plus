@@ -223,7 +223,7 @@ public class EditCourseActivity extends MyActivity {
                 course.setHourTo(Integer.parseInt(hourTo2.getText().toString()));
 
                 course.setEveryWeek(every2.isChecked());
-                course.setHomework(false);
+                course.setHomework(homework);
 
                 course.save();
 
@@ -264,7 +264,7 @@ public class EditCourseActivity extends MyActivity {
                 course1.setHourTo(Integer.parseInt(hourTo1.getText().toString()));
 
                 course1.setEveryWeek(every1.isChecked());
-                course1.setHomework(false);
+                course1.setHomework(homework);
 
                 course1.save();
 
@@ -306,7 +306,7 @@ public class EditCourseActivity extends MyActivity {
                 course2.setHourTo(Integer.parseInt(hourTo0.getText().toString()));
 
                 course2.setEveryWeek(every0.isChecked());
-                course2.setHomework(false);
+                course2.setHomework(homework);
 
                 course2.save();
                 break;
