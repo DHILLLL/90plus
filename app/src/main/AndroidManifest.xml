@@ -9,7 +9,8 @@
 
 
     <application
-        android:name="org.litepal.LitePalApplication"
+
+        android:name="com.example.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="90+"

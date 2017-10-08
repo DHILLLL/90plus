@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 /**
  * Created by 635901193 on 2017/10/8.
@@ -30,8 +31,8 @@ public class SettingFragment extends PreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        if (preference.getKey().equals("key2")){
-
+        if (preference.getKey().equals("background")){
+            Toast.makeText(MyApplication.getContext(), "制作中= =", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
