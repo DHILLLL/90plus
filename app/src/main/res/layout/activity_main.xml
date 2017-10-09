@@ -29,7 +29,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="0dp"
-                    android:src="@drawable/jay"
+                    android:src="@drawable/head"
                     app:civ_border_color="#f4f4f4"
                     app:civ_border_width="1dp"></de.hdodenhof.circleimageview.CircleImageView>
 

@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,7 @@ public class MainActivity extends MyActivity implements
     private scheduleFragment sf;
     LocalBroadcastManager localBroadcastManager;
     CircleImageView bigHead;
+    int x = 0;
 
     Bitmap bmp;
     String s;
@@ -254,6 +256,7 @@ public class MainActivity extends MyActivity implements
         c = (EditText)view1.findViewById(R.id.pa_code);
         image = (ImageView)view1.findViewById(R.id.pa_image);
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -316,7 +319,13 @@ public class MainActivity extends MyActivity implements
                                                     }
                                                 }
 
+                                                List<Course> temp;
+
                                                 for (Map map : maps){
+                                                    temp = DataSupport.where("name = ?",map.get("lessonName").toString()).find(Course.class);
+                                                    if (temp.size() != 0) continue;
+
+
                                                     Course course = new Course();
                                                     course.setNote("");
                                                     course.setName(map.get("lessonName").toString());

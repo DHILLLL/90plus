@@ -8,7 +8,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/head_image"
-        android:src="@drawable/jay"
+        android:src="@drawable/head"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/university"
         android:layout_alignParentBottom="true"
-        android:text="武汉大学"
+        android:text="请登录↗"
         android:textColor="#FFF"
         android:textSize="14sp" />
 

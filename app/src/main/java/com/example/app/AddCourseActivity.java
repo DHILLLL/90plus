@@ -97,6 +97,20 @@ public class AddCourseActivity extends MyActivity {
 
     private void addCourse(){
 
+        List<Course> temp = DataSupport.where("name = ?",name.getText().toString()).find(Course.class);
+        if (temp.size() != 0){
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddCourseActivity.this);
+            builder.setMessage("此课程已存在！");
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                }
+            }).show();
+
+            return;
+        }
+
         if ((TextUtils.isEmpty(weekFrom.getText().toString())) || (TextUtils.isEmpty(weekTo.getText().toString()))){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(AddCourseActivity.this);
