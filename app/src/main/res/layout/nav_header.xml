@@ -9,7 +9,8 @@
         android:layout_height="100dp"
         android:id="@+id/head_image"
         android:src="@drawable/jay"
-        android:layout_centerInParent="true"/>
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"

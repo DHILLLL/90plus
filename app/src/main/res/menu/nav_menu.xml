@@ -7,6 +7,9 @@
         <item android:id="@+id/settings"
             android:icon="@drawable/ishezhi"
             android:title="系统设置"/>
+        <item android:id="@+id/update"
+            android:icon="@drawable/igengxin"
+            android:title="软件更新"/>
         <item android:id="@+id/sign_up"
             android:icon="@drawable/iqiandao"
             android:title="敬请期待" />
@@ -15,9 +18,6 @@
             android:title="敬请期待" />
         <item android:id="@+id/store"
             android:icon="@drawable/ijinbi"
-            android:title="敬请期待"/>
-        <item android:id="@+id/update"
-            android:icon="@drawable/igengxin"
             android:title="敬请期待"/>
         <item android:id="@+id/feedback"
             android:icon="@drawable/ifankui"

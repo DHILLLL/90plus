@@ -55,6 +55,7 @@ public class MainActivity extends MyActivity implements
     private int currentWeek;
     private scheduleFragment sf;
     LocalBroadcastManager localBroadcastManager;
+    CircleImageView bigHead;
 
     Bitmap bmp;
     String s;
@@ -102,14 +103,22 @@ public class MainActivity extends MyActivity implements
             }
         });
 
-
-
-
     }
 
     //初始化侧栏选项
     private void initNavigationView(){
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
+
+        View headView = nav.getHeaderView(0);
+        bigHead = (CircleImageView) headView.findViewById(R.id.head_image);
+        bigHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
@@ -140,6 +149,27 @@ public class MainActivity extends MyActivity implements
                         item.setChecked(true);
                         Intent intent1 = new Intent(MainActivity.this,SettingActivity.class);
                         startActivity(intent1);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    Thread.sleep(50);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        item.setChecked(false);
+                                    }
+                                });
+                            }
+                        }).start();
+                        break;
+                    case R.id.update:
+                        item.setChecked(true);
+                        Intent intent2 = new Intent(MainActivity.this,UpdateActivity.class);
+                        startActivity(intent2);
                         new Thread(new Runnable() {
                             @Override
                             public void run() {

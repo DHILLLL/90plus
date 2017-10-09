@@ -7,10 +7,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
-
-        android:name="com.example.app.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="90+"
@@ -28,7 +26,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,20 +35,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".courseActivity"
+        <activity
+            android:name=".courseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AddCourseActivity"
+        <activity
+            android:name=".AddCourseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SelectThemeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".EditCourseActivity"
+        <activity
+            android:name=".SelectThemeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AddHomeworkActivity"
+        <activity
+            android:name=".EditCourseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".EditHomeworkActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SettingActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AddHomeworkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditHomeworkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingActivity"
+            android:screenOrientation="portrait" />
         <!--
         <receiver android:name=".CourseWidgetBig">
             <intent-filter>
@@ -78,8 +84,8 @@
         <receiver android:name=".CourseWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.app.UPDATE_WIDGET"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="com.example.app.UPDATE_WIDGET" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
 
             <meta-data
@@ -90,7 +96,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.example.app.UPDATE_WIDGET" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
 
             <meta-data
@@ -98,7 +104,9 @@
                 android:resource="@xml/homework_widget_info" />
         </receiver>
 
-
+        <activity android:name=".UpdateActivity" />
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".RegisterActivity"/>
     </application>
 
 </manifest>
