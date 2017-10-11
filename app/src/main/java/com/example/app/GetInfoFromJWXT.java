@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,8 @@ public class GetInfoFromJWXT {
     private final String[] SERVERADDR = {"210.42.121.134", "210.42.121.133", "210.42.121.132", "210.42.121.241"};
     private int serverIndex = 0;
     private String cookie = null;
+
+    private static final String TAG = "dong";
 
     /**
      * @author Ding Zhang
@@ -172,8 +175,12 @@ public class GetInfoFromJWXT {
                 while (matcher2.find()) {
                     tempMap.put(extractedDataTh.get(listThIndex++), matcher2.group(1));
                 }
+                if (tempMap.size() != extractedDataTh.size()){
+                    tempMap.put(extractedDataTh.get(listThIndex),"");
+                }
                 extractedDataFinal.add(tempMap);
             }
+
         return extractedDataFinal;
     }
 

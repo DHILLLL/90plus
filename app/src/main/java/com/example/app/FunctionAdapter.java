@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +47,21 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
         }
         View view = LayoutInflater.from(context).inflate(R.layout.function_item,parent,false);
         final ViewHolder holder = new ViewHolder(view);
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                Intent intent;
+                switch (position){
+                    case 0:
+                        intent = new Intent(context,ScoreActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    default:
+                }
+            }
+        });
 
         return holder;
     }

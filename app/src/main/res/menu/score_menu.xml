@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/score_refresh"
+        android:icon="@drawable/update"
+        android:title="刷新"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/score_calculate"
+        android:icon="@drawable/update"
+        android:title="计算"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/score_sort"
+        android:icon="@drawable/update"
+        android:title="排序"
+        app:showAsAction="never"/>
+
+
+
+</menu>
