@@ -20,7 +20,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -249,7 +248,7 @@ public class MainActivity extends MyActivity implements
 
     private void papapa(){
 
-        final GetCoursesInfo getCoursesInfo = new GetCoursesInfo();
+        final GetInfoFromJWXT getInfoFromJWXT = new GetInfoFromJWXT();
         view1 = View.inflate(MainActivity.this,R.layout.pa_dialog,null);
         u = (EditText)view1.findViewById(R.id.pa_username);
         p = (EditText)view1.findViewById(R.id.pa_password);
@@ -263,9 +262,9 @@ public class MainActivity extends MyActivity implements
                 try{
                     InputStream is = null;
                     try {
-                        is = getCoursesInfo.getGenImg();
+                        is = getInfoFromJWXT.getGenImg();
                     }
-                    catch (GetCoursesInfo.NetworkErrorException ex) {
+                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
                         ex.printStackTrace();
                         Looper.prepare();
                         Toast.makeText(MainActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
@@ -291,18 +290,18 @@ public class MainActivity extends MyActivity implements
                                             try {
                                                 List<Map<String, String>> maps = null;
                                                 try {
-                                                    maps = getCoursesInfo.getCourseData(u.getText().toString(), getCoursesInfo.md5(p.getText().toString()), c.getText().toString(), getCoursesInfo.getCookie());
-                                                } catch (GetCoursesInfo.VerificationCodeException e) {
+                                                    maps = getInfoFromJWXT.getCourseData(u.getText().toString(), getInfoFromJWXT.md5(p.getText().toString()), c.getText().toString(), getInfoFromJWXT.getCookie());
+                                                } catch (GetInfoFromJWXT.VerificationCodeException e) {
                                                     e.printStackTrace();
                                                     Looper.prepare();
                                                     Toast.makeText(MainActivity.this, "验证码错误，请重试", Toast.LENGTH_SHORT).show();
                                                     Looper.loop();
-                                                } catch (GetCoursesInfo.UsernamePasswordErrorException e) {
+                                                } catch (GetInfoFromJWXT.UsernamePasswordErrorException e) {
                                                     e.printStackTrace();
                                                     Looper.prepare();
                                                     Toast.makeText(MainActivity.this, "用户名/密码错误，请重试", Toast.LENGTH_SHORT).show();
                                                     Looper.loop();
-                                                } catch (GetCoursesInfo.TimeoutException e) {
+                                                } catch (GetInfoFromJWXT.TimeoutException e) {
                                                     e.printStackTrace();
                                                     Looper.prepare();
                                                     Toast.makeText(MainActivity.this, "会话超时，请重试", Toast.LENGTH_SHORT).show();

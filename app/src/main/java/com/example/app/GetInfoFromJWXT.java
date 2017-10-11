@@ -13,25 +13,27 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.*;
 
 
 /**
- * GetCoursesInfo @ Get_course_from_jwxt
+ * GetInfoFromJWXT @ Get_course_from_jwxt
  * Created by benjaminzhang on 27/09/2017.
- * Modified on 03/10/2017.
- * Version 1.3.7.1710032345
+ * Modified on 11/10/2017.
+ * Version 1.4.2.1710111152
  * Copyright © 2017 benjaminzhang.
  **/
-public class GetCoursesInfo {
+public class GetInfoFromJWXT {
     private final String[] SERVERADDR = {"210.42.121.134", "210.42.121.133", "210.42.121.132", "210.42.121.241"};
     private int serverIndex = 0;
     private String cookie = null;
 
     /**
      * @author Ding Zhang
-     * @return Cookies
+     * @return InputStream Verification code image's input stream
      */
     protected InputStream getGenImg() throws NetworkErrorException {
         InputStream is = null;
@@ -72,7 +74,7 @@ public class GetCoursesInfo {
             else if (data.contains("会话超时，请重新登陆")) throw new TimeoutException();
 
             String csrf = data.substring(data.indexOf("csrf"), data.indexOf("csrf") + 46);      // extract csrf code
-            System.out.println(csrf);
+            // System.out.println(csrf);
 
             Request request2 = new Request.Builder().addHeader("cookie", cookie).url("http://" + SERVERADDR[serverIndex] + "/servlet/Svlt_QueryStuLsn?action=queryStuLsn&" + csrf).build();
             Response response2 = client.newCall(request2).execute();
@@ -110,6 +112,76 @@ public class GetCoursesInfo {
         return extractedDataFinal;
     }
 
+    /**
+     * @author Ding Zhang
+     * @param username Username
+     * @param password Password
+     * @param veriCode Verification Code
+     * @param cookie   Cookies (from getGenImg())
+     * @return List<Map<String, String>> extractedDataFinal 每一个Map是一个课程的成绩信息，List里的是所有的课程。 / NULL WHEN ABNORMALITY OCCURRED
+     */
+    protected List<Map<String, String>> getScoresData(String username, String password, String veriCode, String cookie)
+            throws VerificationCodeException, UsernamePasswordErrorException, TimeoutException, IOException  {
+        List<Map<String, String>> extractedDataFinal = new ArrayList<>();
+            OkHttpClient client = new OkHttpClient();
+            FormBody body = new FormBody.Builder().add("id", username).add("pwd", password).add("xdvfb", veriCode).build();
+            Request request = new Request.Builder().addHeader("cookie", cookie).url("http://" + SERVERADDR[serverIndex] + "/servlet/Login").post(body).build();
+            Response response = client.newCall(request).execute();
+            String data0 = response.body().string();
+            if (data0.contains("验证码错误")) throw new VerificationCodeException();
+            else if (data0.contains("用户名/密码错误")) throw new UsernamePasswordErrorException();
+            else if (data0.contains("会话超时，请重新登陆")) throw new TimeoutException();
+
+            Request request2 = new Request.Builder().addHeader("cookie", cookie).url("http://210.42.121.134/stu/stu_score_parent.jsp").build();
+            Response response2 = client.newCall(request2).execute();
+            String data = response2.body().string();
+            String csrf = data.substring(data.indexOf("csrf"), data.indexOf("csrf") + 46);      // extract csrf code
+            // System.out.println(csrf);
+
+            Request request3 = new Request.Builder().addHeader("cookie", cookie).url("http://210.42.121.134/servlet/Svlt_QueryStuScore?" + csrf + "&year=0&term=&learnType=&scoreFlag=0").build();
+            Response response3 = client.newCall(request3).execute();
+            String data2 = response3.body().string();
+
+            String[] data3 = data2.split("\\n\\r");
+            String extractedRawData = null;
+            for (String i : data3) {
+                if (i.contains("<table")) {
+                    int tableStartIndex = i.indexOf("<table");
+                    int tableEndIndex = i.indexOf("</table");
+                    extractedRawData = i.substring(tableStartIndex, tableEndIndex);
+                }
+            }
+            extractedRawData = extractedRawData.replaceAll("\\n|\\t|\\r", "");
+            // System.out.println(extractedRawData);
+
+            List<String> extractedDataTh = new ArrayList<>();
+            Pattern regex = Pattern.compile("<tr(.*?)>.*?</tr>");
+            Pattern regex2 = Pattern.compile(">([^</]+)</");
+            Matcher matcher = regex.matcher(extractedRawData);
+            if (matcher.find()) {
+                Matcher matcher2 = regex2.matcher(matcher.group());
+                while (matcher2.find()) {
+                    extractedDataTh.add(matcher2.group(1));
+                }
+                extractedDataTh.remove(extractedDataTh.size() - 1);
+            }
+            while (matcher.find()) {
+                Matcher matcher2 = regex2.matcher(matcher.group());
+                Map<String, String> tempMap = new Hashtable<>();
+                int listThIndex = 0;
+                while (matcher2.find()) {
+                    tempMap.put(extractedDataTh.get(listThIndex++), matcher2.group(1));
+                }
+                extractedDataFinal.add(tempMap);
+            }
+        return extractedDataFinal;
+    }
+
+
+    /**
+     * @author Ding Zhang
+     * @param s String which needs to be encrypted
+     */
     protected String md5(String s) {
         char hexDigits[] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
         try {
