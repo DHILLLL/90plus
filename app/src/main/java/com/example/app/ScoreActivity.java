@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +32,8 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +44,24 @@ public class ScoreActivity extends MyActivity {
 
     private ScoreAdapter adapter;
     Bitmap bmp;
-    String s;
+    String sort[] = {"score","name","credit","teacher","type","gpa"};
+    int SORT = 0;
+    int time = 0;
     List<Score> list,result;
     List<String> semesters = new ArrayList<>();
     ImageView image;
     EditText u,p,c;
-    TextView title;
+    TextView title,Sscore,Sname,Scredit,Steacher,Stype,Sgpa;
+    TextView[] tvs = {Sscore,Sname,Scredit,Steacher,Stype,Sgpa};
     View view1;
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
+    CheckBox cb;
+    String[] resource = {"大一上学期","大一下学期","大二上学期","大二下学期","大三上学期","大三下学期","大四上学期","大四下学期"};
+    String[] xueqi;
+    int way;
+    List<Integer> chosenSemesters,chosenTypes;
+    String[] types = {"公共必修","公共选修","专业必修","专业选修"};
 
     private IntentFilter intentFilter;
     private MyBroadcastReceiver myBroadcastReceiver;
@@ -66,9 +82,6 @@ public class ScoreActivity extends MyActivity {
         //停止接收广播
         localBroadcastManager.unregisterReceiver(myBroadcastReceiver);
     }
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +110,41 @@ public class ScoreActivity extends MyActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         list = DataSupport.select("semester").order("semester desc").find(Score.class);
-        result = DataSupport.where("semester = ?",list.get(0).getSemester()).find(Score.class);
+        if(list.size() != 0){
+
+            for (Score score : list){
+                boolean exist = false;
+                for(String semester : semesters){
+                    if(score.getSemester().equals(semester)){
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) semesters.add(score.getSemester());
+            }
+
+            xueqi = new String[semesters.size()];
+            for (int i = 0;i<semesters.size();i++){
+                xueqi[i] = resource[semesters.size() - 1 - i];
+            }
+
+        }
+
+        tvs[0] = (TextView)findViewById(R.id.score_sort_score);
+        tvs[1] = (TextView)findViewById(R.id.score_sort_name);
+        tvs[2] = (TextView)findViewById(R.id.score_sort_credit);
+        tvs[3] = (TextView)findViewById(R.id.score_sort_teacher);
+        tvs[4] = (TextView)findViewById(R.id.score_sort_type);
+        tvs[5] = (TextView)findViewById(R.id.score_sort_gpa);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.score_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 
@@ -105,38 +152,52 @@ public class ScoreActivity extends MyActivity {
     protected void onResume() {
         super.onResume();
 
-        title.setText(result.get(0).getSemester());
-        adapter = new ScoreAdapter(result);
-        recyclerView.setAdapter(adapter);
+        if (list.size() != 0){
+            tvs[SORT].setBackgroundColor(0xFFAAAAAA);
+            tvs[SORT].setTextColor(0xFFFFFFFF);
 
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (Score score : list){
-                    boolean exist = false;
-                    for(String semester : semesters){
-                        if(score.getSemester().equals(semester)){
-                            exist = true;
-                            break;
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+                    builder.setItems(xueqi, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            time = which;
+                            Intent intent = new Intent("com.example.app.UPDATE_SCORE");
+                            localBroadcastManager.sendBroadcast(intent);
                         }
-                    }
-                    if (!exist) semesters.add(score.getSemester());
+                    });
+                    builder.show();
                 }
+            });
 
+            result = DataSupport.where("semester = ?",semesters.get(time)).order(sort[SORT] + " desc").find(Score.class);
+            title.setText(xueqi[time]);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+            adapter = new ScoreAdapter(result);
+            recyclerView.setAdapter(adapter);
 
-                builder.setItems(semesters.toArray(new String[semesters.size()]), new DialogInterface.OnClickListener() {
+            for(int i = 0;i<6;i++){
+                Log.d(TAG, "**** " + i);
+                final int temp = i;
+                tvs[i].setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        result = DataSupport.where("semester = ?",semesters.get(which)).find(Score.class);
+                    public void onClick(View v) {
+                        tvs[SORT].setBackgroundColor(0xFFFFFFFF);
+                        tvs[SORT].setTextColor(0xFF777777);
+                        SORT = temp;
+
                         Intent intent = new Intent("com.example.app.UPDATE_SCORE");
                         localBroadcastManager.sendBroadcast(intent);
                     }
                 });
-                builder.show();
             }
-        });
+
+        }else{
+            title.setText("请更新信息");
+        }
 
     }
 
@@ -153,12 +214,179 @@ public class ScoreActivity extends MyActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.score_refresh:
-                refresh();
+            case R.id.score_calculate:
+                if(list.size() != 0){
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+                    builder.setTitle("请选择计算方式");
+                    final String[] options = {"累计保研GPA(无公选)","累计平均GPA(全部)","当前页保研GPA(无公选)","当前页平均GPA(全部)","累计均绩","自定义"};
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            List<Score> temp;
+                            switch (which){
+                                case 0:
+                                    temp = DataSupport.where("type != ?","公共选修").find(Score.class);
+                                    calculate(temp);
+                                    way = 0;
+                                    break;
+                                case 1:
+                                    temp = DataSupport.findAll(Score.class);
+                                    calculate(temp);
+                                    way = 0;
+                                    break;
+                                case 2:
+                                    temp = DataSupport.where("type != ? and semester = ?","公共选修",semesters.get(time)).find(Score.class);
+                                    calculate(temp);
+                                    way = 0;
+                                    break;
+                                case 3:
+                                    temp = DataSupport.where("semester = ?",semesters.get(time)).find(Score.class);
+                                    calculate(temp);
+                                    way = 0;
+                                    break;
+                                case 4:
+                                    temp = DataSupport.findAll(Score.class);
+                                    calculate(temp);
+                                    way = 1;
+                                    break;
+                                case 5:
+                                    DIY();
+                                    break;
+                                default:
+
+                            }
+                        }
+                    }).show();
+                }else {
+                    Toast.makeText(ScoreActivity.this,"还是先刷新成绩吧",Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
         }
         return true;
+    }
+
+    private void DIY(){
+        final boolean[] bs = new boolean[xueqi.length];
+        for(boolean b : bs) b = false;
+        chosenSemesters = new ArrayList<>();
+        chosenTypes = new ArrayList<>();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+        builder.setTitle("选择计算项目");
+        final String[] options = {"平均GPA","均绩","总学分"};
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                way = which;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+                builder.setTitle("选择计算学期(可多选)");
+                builder.setMultiChoiceItems(xueqi, bs, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if(isChecked) chosenSemesters.add(which);
+                        else {
+                            for(int i = 0;i<chosenSemesters.size();i++){
+                                if (chosenSemesters.get(i) == which) chosenSemesters.remove(i);
+                            }
+                        }
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+                        builder.setTitle("选择计算类型(可多选)");
+                        builder.setMultiChoiceItems(types, new boolean[]{false,false,false,false}, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                if(isChecked) chosenTypes.add(which);
+                                else {
+                                    for(int i = 0;i<chosenTypes.size();i++){
+                                        if (chosenTypes.get(i) == which) chosenTypes.remove(i);
+                                    }
+                                }
+                            }
+                        });
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                List<Score> temp = new ArrayList<Score>();
+                                for(int i = 0;i < chosenTypes.size();i++){
+                                    for(int j = 0;j<chosenSemesters.size();j++){
+                                        temp.addAll(DataSupport.where("type = ? and semester = ?",types[chosenTypes.get(i)],semesters.get(chosenSemesters.get(j))).find(Score.class));
+                                    }
+                                }
+                                calculate(temp);
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+                builder.show();
+
+            }
+        }).show();
+    }
+
+    private void calculate(List<Score> temp){
+
+        double credits = 0,total = 0,answer = 0;
+        String str;
+        BigDecimal bd;
+
+        switch (way){
+            case 0:
+                for(Score m : temp){
+                    if (m.getScore() != -1.0){
+                        total += m.getCredit() * m.getGpa();
+                        credits += m.getCredit();
+                    }
+                }
+                if (credits == 0){
+                    str = "无计算结果";
+                    break;
+                }
+                bd = new BigDecimal(total / credits);
+                answer = bd.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
+                str = "参与计算总GPA * 学分：" + total + "\n参与计算总学分：" + credits + "\n结果：" + answer;
+                break;
+            case 1:
+                for(Score m : temp){
+                    if (m.getScore() != -1.0){
+                        total += m.getCredit() * m.getScore();
+                        credits += m.getCredit();
+                    }
+                }
+                if (credits == 0){
+                    str = "无计算结果";
+                    break;
+                }
+                bd = new BigDecimal(total / credits);
+                answer = bd.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
+                str = "参与计算总GPA * 成绩：" + total + "\n参与计算总学分：" + credits + "\n结果：" + answer;
+                break;
+            case 2:
+                for (Score m : temp)
+                    answer += m.getCredit();
+                str = "结果：" + answer;
+                break;
+            default:
+                str = "";
+        }
+
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(ScoreActivity.this);
+        builder1.setMessage(str);
+        builder1.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        }).show();
     }
 
     private void refresh(){
@@ -168,6 +396,7 @@ public class ScoreActivity extends MyActivity {
         u = (EditText)view1.findViewById(R.id.pa_username);
         p = (EditText)view1.findViewById(R.id.pa_password);
         c = (EditText)view1.findViewById(R.id.pa_code);
+        cb = (CheckBox)view1.findViewById(R.id.pa_check);
         image = (ImageView)view1.findViewById(R.id.pa_image);
 
 
@@ -196,9 +425,26 @@ public class ScoreActivity extends MyActivity {
                             dialog.setTitle("登录教务系统");
                             dialog.setView(view1,100,40,100,0);
                             image.setImageBitmap(bmp);
+
+                            SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+
+                            if(sp.getBoolean("remember",false)){
+                                u.setText(sp.getString("username",""));
+                                p.setText(sp.getString("password",""));
+                                cb.setChecked(true);
+                            }
+
                             dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (cb.isChecked()){
+                                        SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                        editor.putString("username",u.getText().toString());
+                                        editor.putString("password",p.getText().toString());
+                                        editor.putBoolean("remember",true);
+                                        editor.apply();
+                                    }
+
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -255,6 +501,7 @@ public class ScoreActivity extends MyActivity {
                                                     Intent intent = new Intent("com.example.app.UPDATE_SCORE");
                                                     localBroadcastManager.sendBroadcast(intent);
 
+
                                                 } catch (GetInfoFromJWXT.VerificationCodeException e) {
                                                     e.printStackTrace();
                                                     Looper.prepare();
@@ -277,12 +524,13 @@ public class ScoreActivity extends MyActivity {
                                             }
                                         }
                                     }).start();
+                                    //swipeRefreshLayout.setRefreshing(false);
                                 }
                             });
                             dialog.setButton(Dialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                                    //swipeRefreshLayout.setRefreshing(false);
                                 }
                             });
                             dialog.show();

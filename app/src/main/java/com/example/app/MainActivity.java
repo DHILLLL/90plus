@@ -20,9 +20,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +58,7 @@ public class MainActivity extends MyActivity implements
     private scheduleFragment sf;
     LocalBroadcastManager localBroadcastManager;
     CircleImageView bigHead;
+    GetInfoFromJWXT getInfoFromJWXT;
     int x = 0;
 
     Bitmap bmp;
@@ -63,6 +66,7 @@ public class MainActivity extends MyActivity implements
     List<String> list = new ArrayList();
     ImageView image;
     EditText u,p,c;
+    CheckBox cb;
     View view1;
 
 
@@ -248,11 +252,12 @@ public class MainActivity extends MyActivity implements
 
     private void papapa(){
 
-        final GetInfoFromJWXT getInfoFromJWXT = new GetInfoFromJWXT();
+        getInfoFromJWXT = new GetInfoFromJWXT();
         view1 = View.inflate(MainActivity.this,R.layout.pa_dialog,null);
         u = (EditText)view1.findViewById(R.id.pa_username);
         p = (EditText)view1.findViewById(R.id.pa_password);
         c = (EditText)view1.findViewById(R.id.pa_code);
+        cb = (CheckBox)view1.findViewById(R.id.pa_check);
         image = (ImageView)view1.findViewById(R.id.pa_image);
 
 
@@ -280,10 +285,27 @@ public class MainActivity extends MyActivity implements
 
                             dialog.setTitle("登录教务系统");
                             dialog.setView(view1,100,40,100,0);
+
+                            SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+
+                            if(sp.getBoolean("remember",false)){
+                                u.setText(sp.getString("username",""));
+                                p.setText(sp.getString("password",""));
+                                cb.setChecked(true);
+                            }
+
                             image.setImageBitmap(bmp);
                             dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (cb.isChecked()){
+                                        SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                        editor.putString("username",u.getText().toString());
+                                        editor.putString("password",p.getText().toString());
+                                        editor.putBoolean("remember",true);
+                                        editor.apply();
+                                    }
+
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -348,6 +370,8 @@ public class MainActivity extends MyActivity implements
                                                     course.setHomework(false);
                                                     course.save();
                                                 }
+
+                                                //Log.d(TAG, "");
 
                                                 changeSet();
 

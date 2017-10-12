@@ -63,4 +63,12 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/pa_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#777777"
+        android:text="记住密码"
+        android:buttonTint="#777777"/>
+
 </LinearLayout>
