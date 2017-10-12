@@ -524,13 +524,12 @@ public class ScoreActivity extends MyActivity {
                                             }
                                         }
                                     }).start();
-                                    //swipeRefreshLayout.setRefreshing(false);
                                 }
                             });
                             dialog.setButton(Dialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    //swipeRefreshLayout.setRefreshing(false);
+
                                 }
                             });
                             dialog.show();
