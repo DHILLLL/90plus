@@ -34,15 +34,15 @@ import java.util.List;
 import java.util.Map;
 
 public class ScoreActivity extends MyActivity {
-    private static final String TAG = "dong";  
+    private static final String TAG = "dong";
 
     private ScoreAdapter adapter;
     Bitmap bmp;
     String s;
-    List<Score> list,result;
+    List<Score> list, result;
     List<String> semesters = new ArrayList<>();
     ImageView image;
-    EditText u,p,c;
+    EditText u, p, c;
     TextView title;
     View view1;
     RecyclerView recyclerView;
@@ -68,8 +68,6 @@ public class ScoreActivity extends MyActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,14 +78,14 @@ public class ScoreActivity extends MyActivity {
         intentFilter = new IntentFilter();
         intentFilter.addAction("com.example.app.UPDATE_SCORE");
         myBroadcastReceiver = new MyBroadcastReceiver();
-        localBroadcastManager.registerReceiver(myBroadcastReceiver,intentFilter);
+        localBroadcastManager.registerReceiver(myBroadcastReceiver, intentFilter);
 
         setContentView(R.layout.activity_score);
         Toolbar toolbar = (Toolbar) findViewById(R.id.score_toolbar);
         title = (TextView) findViewById(R.id.score_semester);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
@@ -97,7 +95,7 @@ public class ScoreActivity extends MyActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         list = DataSupport.select("semester").order("semester desc").find(Score.class);
-        result = DataSupport.where("semester = ?",list.get(0).getSemester()).find(Score.class);
+        result = DataSupport.where("semester = ?", list.get(0).getSemester()).find(Score.class);
 
     }
 
@@ -112,10 +110,10 @@ public class ScoreActivity extends MyActivity {
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (Score score : list){
+                for (Score score : list) {
                     boolean exist = false;
-                    for(String semester : semesters){
-                        if(score.getSemester().equals(semester)){
+                    for (String semester : semesters) {
+                        if (score.getSemester().equals(semester)) {
                             exist = true;
                             break;
                         }
@@ -129,7 +127,7 @@ public class ScoreActivity extends MyActivity {
                 builder.setItems(semesters.toArray(new String[semesters.size()]), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        result = DataSupport.where("semester = ?",semesters.get(which)).find(Score.class);
+                        result = DataSupport.where("semester = ?", semesters.get(which)).find(Score.class);
                         Intent intent = new Intent("com.example.app.UPDATE_SCORE");
                         localBroadcastManager.sendBroadcast(intent);
                     }
@@ -142,14 +140,14 @@ public class ScoreActivity extends MyActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.score_menu,menu);
+        getMenuInflater().inflate(R.menu.score_menu, menu);
         return true;
     }
 
     //设置左上右上按钮事件
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
@@ -161,25 +159,24 @@ public class ScoreActivity extends MyActivity {
         return true;
     }
 
-    private void refresh(){
+    private void refresh() {
 
         final GetInfoFromJWXT getInfoFromJWXT = new GetInfoFromJWXT();
-        view1 = View.inflate(ScoreActivity.this,R.layout.pa_dialog,null);
-        u = (EditText)view1.findViewById(R.id.pa_username);
-        p = (EditText)view1.findViewById(R.id.pa_password);
-        c = (EditText)view1.findViewById(R.id.pa_code);
-        image = (ImageView)view1.findViewById(R.id.pa_image);
+        view1 = View.inflate(ScoreActivity.this, R.layout.pa_dialog, null);
+        u = (EditText) view1.findViewById(R.id.pa_username);
+        p = (EditText) view1.findViewById(R.id.pa_password);
+        c = (EditText) view1.findViewById(R.id.pa_code);
+        image = (ImageView) view1.findViewById(R.id.pa_image);
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     InputStream is = null;
                     try {
                         is = getInfoFromJWXT.getGenImg();
-                    }
-                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
+                    } catch (GetInfoFromJWXT.NetworkErrorException ex) {
                         ex.printStackTrace();
                         Looper.prepare();
                         Toast.makeText(ScoreActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
@@ -194,7 +191,7 @@ public class ScoreActivity extends MyActivity {
                             final AlertDialog dialog = builder.create();
 
                             dialog.setTitle("登录教务系统");
-                            dialog.setView(view1,100,40,100,0);
+                            dialog.setView(view1, 100, 40, 100, 0);
                             image.setImageBitmap(bmp);
                             dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
                                 @Override
@@ -203,58 +200,9 @@ public class ScoreActivity extends MyActivity {
                                         @Override
                                         public void run() {
                                             try {
+                                                List<Map<String, String>> download = null;
                                                 try {
-                                                    List<Map<String,String>> download  = getInfoFromJWXT.getScoresData(u.getText().toString(), getInfoFromJWXT.md5(p.getText().toString()), c.getText().toString(), getInfoFromJWXT.getCookie());
-
-                                                    DataSupport.deleteAll(Score.class);
-
-                                                    for (Map<String,String> map : download){
-                                                        Score score = new Score();
-                                                        score.setName(map.get("课程名称"));
-                                                        score.setCredit(Double.parseDouble(map.get("学分")));
-                                                        score.setNumber(map.get("课头号"));
-                                                        score.setSemester(map.get("学年") + "-" + (Integer.parseInt(map.get("学年"))+1) + "学年" + map.get("学期") + "学期");
-                                                        score.setTeacher(map.get("教师"));
-                                                        score.setType(map.get("课程类型"));
-                                                        if (map.get("成绩").equals("")){
-                                                            score.setGpa(-1.0);
-                                                            score.setScore(-1.0);
-                                                        }else{
-                                                            double SCORE = Double.parseDouble(map.get("成绩"));
-                                                            score.setScore(SCORE);
-
-                                                            if(SCORE >= 90.0){
-                                                                score.setGpa(4.0);
-                                                            }else if(SCORE >= 85.0){
-                                                                score.setGpa(3.7);
-                                                            }else if(SCORE >= 82.0){
-                                                                score.setGpa(3.3);
-                                                            }else if(SCORE >= 78.0){
-                                                                score.setGpa(3.0);
-                                                            }else if(SCORE >= 75.0){
-                                                                score.setGpa(2.7);
-                                                            }else if(SCORE >= 72.0){
-                                                                score.setGpa(2.3);
-                                                            }else if(SCORE >= 68.0){
-                                                                score.setGpa(2.0);
-                                                            }else if(SCORE >= 64.0){
-                                                                score.setGpa(1.5);
-                                                            }else if(SCORE >= 60.0){
-                                                                score.setGpa(1.0);
-                                                            }else {
-                                                                score.setGpa(0.0);
-                                                            }
-                                                        }
-
-                                                        score.save();
-                                                    }
-
-                                                    list = DataSupport.select("semester").order("semester desc").find(Score.class);
-                                                    result = DataSupport.where("semester = ?",list.get(0).getSemester()).find(Score.class);
-
-                                                    Intent intent = new Intent("com.example.app.UPDATE_SCORE");
-                                                    localBroadcastManager.sendBroadcast(intent);
-
+                                                    download = getInfoFromJWXT.getScoresData(u.getText().toString(), getInfoFromJWXT.md5(p.getText().toString()), c.getText().toString(), getInfoFromJWXT.getCookie());
                                                 } catch (GetInfoFromJWXT.VerificationCodeException e) {
                                                     e.printStackTrace();
                                                     Looper.prepare();
@@ -271,8 +219,56 @@ public class ScoreActivity extends MyActivity {
                                                     Toast.makeText(ScoreActivity.this, "会话超时，请重试", Toast.LENGTH_SHORT).show();
                                                     Looper.loop();
                                                 }
+                                                DataSupport.deleteAll(Score.class);
 
-                                            }catch (Exception e){
+                                                for (Map<String, String> map : download) {
+                                                    Score score = new Score();
+                                                    score.setName(map.get("课程名称"));
+                                                    score.setCredit(Double.parseDouble(map.get("学分")));
+                                                    score.setNumber(map.get("课头号"));
+                                                    score.setSemester(map.get("学年") + "-" + (Integer.parseInt(map.get("学年")) + 1) + "学年" + map.get("学期") + "学期");
+                                                    score.setTeacher(map.get("教师"));
+                                                    score.setType(map.get("课程类型"));
+                                                    if (map.get("成绩").equals("")) {
+                                                        score.setGpa(-1.0);
+                                                        score.setScore(-1.0);
+                                                    } else {
+                                                        double SCORE = Double.parseDouble(map.get("成绩"));
+                                                        score.setScore(SCORE);
+
+                                                        if (SCORE >= 90.0) {
+                                                            score.setGpa(4.0);
+                                                        } else if (SCORE >= 85.0) {
+                                                            score.setGpa(3.7);
+                                                        } else if (SCORE >= 82.0) {
+                                                            score.setGpa(3.3);
+                                                        } else if (SCORE >= 78.0) {
+                                                            score.setGpa(3.0);
+                                                        } else if (SCORE >= 75.0) {
+                                                            score.setGpa(2.7);
+                                                        } else if (SCORE >= 72.0) {
+                                                            score.setGpa(2.3);
+                                                        } else if (SCORE >= 68.0) {
+                                                            score.setGpa(2.0);
+                                                        } else if (SCORE >= 64.0) {
+                                                            score.setGpa(1.5);
+                                                        } else if (SCORE >= 60.0) {
+                                                            score.setGpa(1.0);
+                                                        } else {
+                                                            score.setGpa(0.0);
+                                                        }
+                                                    }
+
+                                                    score.save();
+                                                }
+
+                                                list = DataSupport.select("semester").order("semester desc").find(Score.class);
+                                                result = DataSupport.where("semester = ?", list.get(0).getSemester()).find(Score.class);
+
+                                                Intent intent = new Intent("com.example.app.UPDATE_SCORE");
+                                                localBroadcastManager.sendBroadcast(intent);
+
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -290,7 +286,7 @@ public class ScoreActivity extends MyActivity {
                         }
                     });
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
