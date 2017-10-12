@@ -75,7 +75,7 @@ public class MainActivity extends MyActivity implements
         super.onCreate(savedInstanceState);
         //ActivityCollector.finishOthers();
 
-       // DataSupport.deleteAll(Course.class);
+        //DataSupport.deleteAll(Course.class);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
 
@@ -344,11 +344,10 @@ public class MainActivity extends MyActivity implements
 
                                                 for (Map map : maps){
                                                     temp = DataSupport.where("name = ?",map.get("lessonName").toString()).find(Course.class);
-                                                    if (temp.size() != 0) continue;
+                                                    if (temp.size() >= names.get(map.get("lessonName").toString())) continue;
 
 
                                                     Course course = new Course();
-                                                    course.setNote("");
                                                     course.setName(map.get("lessonName").toString());
                                                     course.setPlace(map.get("areaName").toString() + " " + map.get("classRoom").toString());
                                                     course.setTeacher(map.get("teacherName").toString());
@@ -371,7 +370,12 @@ public class MainActivity extends MyActivity implements
                                                     course.save();
                                                 }
 
-                                                //Log.d(TAG, "");
+                                                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                                editor.putInt("firstDay",getInfoFromJWXT.getTermStartDayIndex() - 7);
+                                                editor.apply();
+
+
+                                                currentWeek = CourseWidget.setCurrentWeek();
 
                                                 changeSet();
 

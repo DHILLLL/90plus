@@ -123,9 +123,13 @@ public class CourseWidget extends AppWidgetProvider {
     }
 
     public static int setCurrentWeek(){
+        SharedPreferences sp = MyApplication.getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
+        int x = sp.getInt("firstDay",0);
+        if (x == 0) return 1;
+
         Calendar calendar = Calendar.getInstance();
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
-        return  (dayOfYear - 239) / 7;
+        return  (dayOfYear - x) / 7;
     }
 
 
