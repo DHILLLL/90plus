@@ -61,6 +61,7 @@ public class AddHomeworkActivity extends MyActivity {
     private Uri imageUri;
     private boolean hasPic = false;
     private String path = null;
+    private static final String TAG = "dong";
 
     //此acticity拍照、打开相册功能部分来自书293
 
@@ -307,7 +308,7 @@ public class AddHomeworkActivity extends MyActivity {
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(path,options);
                         int width = options.outWidth;
-                        int intSampleSize = 2;
+                        int intSampleSize = 1;
                         if (width > 800) {
                             float ratio = (float) width / 800.0f;
                             intSampleSize = (int) ratio;
@@ -448,7 +449,7 @@ public class AddHomeworkActivity extends MyActivity {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(temp,options);
                 int width = options.outWidth;
-                int intSampleSize = 2;
+                int intSampleSize = 1;
                 if (width > 800) {
                     float ratio = (float) width / 800.0f;
                     intSampleSize = (int) ratio;

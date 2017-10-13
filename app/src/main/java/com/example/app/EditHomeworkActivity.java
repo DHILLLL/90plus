@@ -303,7 +303,7 @@ public class EditHomeworkActivity extends MyActivity {
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(path,options);
                         int width = options.outWidth;
-                        int intSampleSize = 2;
+                        int intSampleSize = 1;
                         if (width > 800) {
                             float ratio = (float) width / 800.0f;
                             intSampleSize = (int) ratio;
@@ -438,7 +438,7 @@ public class EditHomeworkActivity extends MyActivity {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(temp,options);
                 int width = options.outWidth;
-                int intSampleSize = 2;
+                int intSampleSize = 1;
                 if (width > 800) {
                     float ratio = (float) width / 800.0f;
                     intSampleSize = (int) ratio;

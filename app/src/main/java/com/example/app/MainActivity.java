@@ -244,6 +244,10 @@ public class MainActivity extends MyActivity implements
 
             case R.id.change_set:
                 changeSet();
+                Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                localBroadcastManager.sendBroadcast(intent);
+                Intent intent2 = new Intent("com.example.app.UPDATE_HOMEWORK");
+                localBroadcastManager.sendBroadcast(intent2);
                 break;
 
             case R.id.add_homework:
@@ -474,8 +478,8 @@ public class MainActivity extends MyActivity implements
         }
 
         //发送广播更新作业界面
-        Intent intent2 = new Intent("com.example.app.UPDATE_WIDGET");
-        sendBroadcast(intent2);
+        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        sendBroadcast(intent1);
 
     }
 

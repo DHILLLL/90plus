@@ -131,6 +131,47 @@ public class ScoreActivity extends MyActivity {
             }
         });
 
+/*
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
+        builder.setTitle("title");
+        builder.setMessage("meessag");
+
+        builder.setItems(new String[]{"0", "1"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        Toast.makeText(ScoreActivity.this, "0", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(ScoreActivity.this, "1", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                }
+            }
+        });
+
+        builder.setMultiChoiceItems(new String[]{"0", "1"}, new boolean[]{false, true}, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+            }
+        });
+
+        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+*/
     }
 
     @Override
