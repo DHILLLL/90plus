@@ -354,6 +354,8 @@ public class ScoreActivity extends MyActivity {
                     str = "无计算结果";
                     break;
                 }
+                bd = new BigDecimal(total);
+                total = bd.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                 bd = new BigDecimal(total / credits);
                 answer = bd.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
                 str = "参与计算总GPA * 学分：" + total + "\n参与计算总学分：" + credits + "\n结果：" + answer;
@@ -369,6 +371,8 @@ public class ScoreActivity extends MyActivity {
                     str = "无计算结果";
                     break;
                 }
+                bd = new BigDecimal(total);
+                total = bd.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                 bd = new BigDecimal(total / credits);
                 answer = bd.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
                 str = "参与计算总GPA * 成绩：" + total + "\n参与计算总学分：" + credits + "\n结果：" + answer;

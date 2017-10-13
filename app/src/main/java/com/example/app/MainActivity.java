@@ -13,6 +13,7 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -397,12 +398,16 @@ public class MainActivity extends MyActivity implements
 
                                                 SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
                                                 editor.putInt("firstDay",getInfoFromJWXT.getTermStartDayIndex() - 7);
+                                                currentWeek = CourseWidget.setCurrentWeek();
+                                                editor.putInt("currentWeek",currentWeek);
                                                 editor.apply();
 
-
-                                                currentWeek = CourseWidget.setCurrentWeek();
-
                                                 changeSet();
+
+                                                final Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                overridePendingTransition(0,0);
 
                                             }catch (Exception e){
                                                 e.printStackTrace();
@@ -441,6 +446,8 @@ public class MainActivity extends MyActivity implements
                 }
             }
             if (!repeat) names.add(course.getName());
+
+            //middleTitle.setText("第" +currentWeek+ "周");
         }
 
         //获取当前主题包含颜色
@@ -467,10 +474,6 @@ public class MainActivity extends MyActivity implements
         }
 
         //发送广播更新作业界面
-        Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
-        localBroadcastManager.sendBroadcast(intent);
-        Intent intent1 = new Intent("com.example.app.UPDATE_SCHEDULE");
-        localBroadcastManager.sendBroadcast(intent1);
         Intent intent2 = new Intent("com.example.app.UPDATE_WIDGET");
         sendBroadcast(intent2);
 
