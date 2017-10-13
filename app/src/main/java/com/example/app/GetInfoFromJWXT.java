@@ -214,10 +214,18 @@ public class GetInfoFromJWXT {
         }
     }
 
+    /**
+     * @return cookie
+     * @author Ding Zhang
+     */
     protected String getCookie() {
         return cookie;
     }
 
+    /**
+     * @return int
+     * @author Ding Zhang
+     */
     protected int getTermStartDayIndex() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.WEEK_OF_YEAR, 1 - termCurrentWeekIndex);

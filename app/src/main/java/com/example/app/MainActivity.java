@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -76,6 +77,11 @@ public class MainActivity extends MyActivity implements
         //ActivityCollector.finishOthers();
 
         //DataSupport.deleteAll(Course.class);
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+                .detectDiskWrites().detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+
 
         localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
 
@@ -280,7 +286,7 @@ public class MainActivity extends MyActivity implements
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             final AlertDialog dialog = builder.create();
 
                             dialog.setTitle("登录教务系统");
@@ -295,6 +301,21 @@ public class MainActivity extends MyActivity implements
                             }
 
                             image.setImageBitmap(bmp);
+                            image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    InputStream is2 = null;
+                                    try {
+                                        is2 = getInfoFromJWXT.getGenImg();
+                                    }
+                                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
+                                        ex.printStackTrace();
+                                        Toast.makeText(MainActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                    bmp = BitmapFactory.decodeStream(is2);
+                                    image.setImageBitmap(bmp);
+                                }
+                            });
                             dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -86,6 +87,11 @@ public class ScoreActivity extends MyActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+                .detectDiskWrites().detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
 
         //设置接收广播
         localBroadcastManager = localBroadcastManager.getInstance(this);
@@ -424,6 +430,21 @@ public class ScoreActivity extends MyActivity {
                             dialog.setTitle("登录教务系统");
                             dialog.setView(view1,100,40,100,0);
                             image.setImageBitmap(bmp);
+                            image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    InputStream is2 = null;
+                                    try {
+                                        is2 = getInfoFromJWXT.getGenImg();
+                                    }
+                                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
+                                        ex.printStackTrace();
+                                        Toast.makeText(ScoreActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                    bmp = BitmapFactory.decodeStream(is2);
+                                    image.setImageBitmap(bmp);
+                                }
+                            });
 
                             SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
 
