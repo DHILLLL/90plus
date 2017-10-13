@@ -109,27 +109,6 @@ public class ScoreActivity extends MyActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        list = DataSupport.select("semester").order("semester desc").find(Score.class);
-        if(list.size() != 0){
-
-            for (Score score : list){
-                boolean exist = false;
-                for(String semester : semesters){
-                    if(score.getSemester().equals(semester)){
-                        exist = true;
-                        break;
-                    }
-                }
-                if (!exist) semesters.add(score.getSemester());
-            }
-
-            xueqi = new String[semesters.size()];
-            for (int i = 0;i<semesters.size();i++){
-                xueqi[i] = resource[semesters.size() - 1 - i];
-            }
-
-        }
-
         tvs[0] = (TextView)findViewById(R.id.score_sort_score);
         tvs[1] = (TextView)findViewById(R.id.score_sort_name);
         tvs[2] = (TextView)findViewById(R.id.score_sort_credit);
@@ -152,7 +131,27 @@ public class ScoreActivity extends MyActivity {
     protected void onResume() {
         super.onResume();
 
+        list = DataSupport.select("semester").order("semester desc").find(Score.class);
+
         if (list.size() != 0){
+
+            for (Score score : list){
+                boolean exist = false;
+                for(String semester : semesters){
+                    if(score.getSemester().equals(semester)){
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) semesters.add(score.getSemester());
+            }
+
+            xueqi = new String[semesters.size()];
+            for (int i = 0;i<semesters.size();i++){
+                xueqi[i] = resource[semesters.size() - 1 - i];
+            }
+
+
             tvs[SORT].setBackgroundColor(0xFFAAAAAA);
             tvs[SORT].setTextColor(0xFFFFFFFF);
 
@@ -196,7 +195,7 @@ public class ScoreActivity extends MyActivity {
             }
 
         }else{
-            title.setText("请更新信息");
+            title.setText("请下拉更新信息");
         }
 
     }
