@@ -443,6 +443,10 @@ public class ScoreActivity extends MyActivity {
                                         editor.putString("password",p.getText().toString());
                                         editor.putBoolean("remember",true);
                                         editor.apply();
+                                    }else{
+                                        SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                        editor.putBoolean("remember",false);
+                                        editor.apply();
                                     }
 
                                     new Thread(new Runnable() {
