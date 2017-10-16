@@ -90,7 +90,7 @@ public class MainActivity extends MyActivity implements
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        initiation(11);
+        //initiation(11);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -638,7 +638,7 @@ public class MainActivity extends MyActivity implements
     }
 
 
-    private void initiation(int version){
+    private void initiation(int version,int version_id){
         SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         //检测是否是第一次安装程序
         if(sharedPreferences.getBoolean("FirstStart" + String.valueOf(version),true)) {
@@ -647,7 +647,9 @@ public class MainActivity extends MyActivity implements
             editor.putBoolean("FirstStart" + String.valueOf(version), false);
             editor.remove("FirstStart" + String.valueOf(version - 1));
             editor.putString("theme", "candy");
+            editor.putInt("version_id",15);
             editor.apply();
+
 
 
             /*

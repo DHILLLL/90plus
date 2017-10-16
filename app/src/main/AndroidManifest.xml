@@ -112,6 +112,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ScoreActivity"
             android:screenOrientation="portrait"/>
+
+        <service android:name=".DownloadService"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>
