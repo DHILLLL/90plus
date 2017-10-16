@@ -1,7 +1,9 @@
 package com.example.app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -72,7 +74,27 @@ public class UpdateActivity extends MyActivity {
     }
 
     private void update(){
+        GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
+        getVersionInfoFromDB.connAndGetVersionInfo();
+        String[] verInfoFromDB = {"版本序号：" + getVersionInfoFromDB.getVersionID(), "版  本：" + getVersionInfoFromDB.getVersion(),
+                "关键版本：" + getVersionInfoFromDB.isCritical(), "下载地址：" + getVersionInfoFromDB.getDownloadAddress(), "更新日志：" + getVersionInfoFromDB.getChangeLog()};
+        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
+        // TODO change the code below!!!
+        builder.setTitle("最新版本信息 -- DevUseOnly");
+        builder.setItems(verInfoFromDB, null);
+        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
 }

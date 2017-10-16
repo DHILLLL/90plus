@@ -27,7 +27,7 @@ import okhttp3.*;
  * Version 1.4.5.171011121224
  * Copyright © 2017 benjaminzhang.
  **/
-public class GetInfoFromJWXT {
+class GetInfoFromJWXT {
     private final String[] SERVERADDR = {"210.42.121.134", "210.42.121.133", "210.42.121.132", "210.42.121.241"};
     private int serverIndex = 0;
     private String cookie = null;
