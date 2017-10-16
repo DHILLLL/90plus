@@ -112,8 +112,9 @@ public class UpdateActivity extends MyActivity {
     private void update(){
         final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
         getVersionInfoFromDB.connAndGetVersionInfo();
-        String[] verInfoFromDB = {"版本序号：" + getVersionInfoFromDB.getVersionID(), "版  本：" + getVersionInfoFromDB.getVersion(),
-                "关键版本：" + getVersionInfoFromDB.isCritical(), "下载地址：" + getVersionInfoFromDB.getDownloadAddress(), "更新日志：" + getVersionInfoFromDB.getChangeLog()};
+        String[] verInfoFromDB = {"版本序号：" + getVersionInfoFromDB.getVersionID(), "版        本：" + getVersionInfoFromDB.getVersion(),
+                "关键版本：" + getVersionInfoFromDB.isCritical(), "文件大小：" + getVersionInfoFromDB.getFileSize() + "MB",
+                "下载地址：" + getVersionInfoFromDB.getDownloadAddress(), "更新日志：" + getVersionInfoFromDB.getChangeLog()};
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
         // TODO change the code below!!!
         builder.setTitle("最新版本信息 -- DevUseOnly");

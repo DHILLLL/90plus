@@ -24,6 +24,7 @@ class GetVersionInfoFromDB {
     private String info = null;
     private String changeLog = null;
     private boolean critical = false;
+    private double fileSize = 0.0;
     private String downloadAddress = null;
 
     private void connMySQLDatabase() {
@@ -57,7 +58,8 @@ class GetVersionInfoFromDB {
                 info = rs.getString(3);
                 changeLog = rs.getString(4);
                 critical = rs.getBoolean(5);
-                downloadAddress = rs.getString(6);
+                fileSize = rs.getDouble(6);
+                downloadAddress = rs.getString(7);
             }
             rs.close();
             stmt.close();
@@ -98,6 +100,10 @@ class GetVersionInfoFromDB {
 
     protected boolean isCritical() {
         return critical;
+    }
+
+    protected double getFileSize() {
+        return fileSize;
     }
 
     protected String getDownloadAddress() {
