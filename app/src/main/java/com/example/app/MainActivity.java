@@ -1,18 +1,22 @@
 package com.example.app;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -82,6 +86,9 @@ public class MainActivity extends MyActivity implements
                 .detectDiskWrites().detectNetwork().penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
 
 
         localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
@@ -90,7 +97,7 @@ public class MainActivity extends MyActivity implements
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        //initiation(11);
+        initiation(12,9);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -647,135 +654,8 @@ public class MainActivity extends MyActivity implements
             editor.putBoolean("FirstStart" + String.valueOf(version), false);
             editor.remove("FirstStart" + String.valueOf(version - 1));
             editor.putString("theme", "candy");
-            editor.putInt("version_id",15);
+            editor.putInt("version_id",version_id);
             editor.apply();
-
-
-
-            /*
-
-            DataSupport.deleteAll(Course.class);
-
-            //添加示范课程数据
-            Course course0 = new Course();
-            course0.setName("计算机安全保密");
-            course0.setPlace("3区3-401");
-            course0.setTeacher("罗敏");
-            course0.setType("专业选修");
-            course0.setHomework(false);
-            course0.setCredit("2.0");
-            course0.setWeekFrom(1);
-            course0.setWeekTo(12);
-            course0.setTimesPerWeek(1);
-            course0.setWeekday(1);
-            course0.setHourFrom(3);
-            course0.setHourTo(5);
-            course0.setColor(0XFF93CBDC);
-            course0.setEveryWeek(true);
-            course0.save();
-
-            Course course1 = new Course();
-            course1.setName("计算机网络与通信原理");
-            course1.setPlace("3区2-212");
-            course1.setTeacher("胡继承");
-            course1.setType("专业必修");
-            course1.setHomework(false);
-            course1.setCredit("3.0");
-            course1.setWeekFrom(1);
-            course1.setWeekTo(18);
-            course1.setTimesPerWeek(1);
-            course1.setWeekday(2);
-            course1.setHourFrom(3);
-            course1.setHourTo(5);
-            course1.setColor(0XFF93A7DC);
-            course1.setEveryWeek(true);
-            course1.save();
-
-            Course course2 = new Course();
-            course2.setName("C++程序设计");
-            course2.setPlace("3区1-327");
-            course2.setTeacher("李雪飞");
-            course2.setType("专业选修");
-            course2.setHomework(false);
-            course2.setCredit("3.0");
-            course2.setWeekFrom(1);
-            course2.setWeekTo(9);
-            course2.setTimesPerWeek(2);
-            course2.setWeekday(3);
-            course2.setHourFrom(1);
-            course2.setHourTo(2);
-            course2.setColor(0XFFA493DC);
-            course2.setEveryWeek(true);
-            course2.save();
-
-            Course course22 = new Course();
-            course22.setName("C++程序设计");
-            course22.setPlace("3区1-327");
-            course22.setTeacher("李雪飞");
-            course22.setType("专业选修");
-            course22.setHomework(false);
-            course22.setCredit("3.0");
-            course22.setWeekFrom(1);
-            course22.setWeekTo(9);
-            course22.setTimesPerWeek(2);
-            course22.setColor(0XFFA493DC);
-            course22.setWeekday(5);
-            course22.setHourFrom(1);
-            course22.setHourTo(2);
-            course22.setEveryWeek(true);
-            course22.save();
-
-            Course course3 = new Course();
-            course3.setName("编译原理");
-            course3.setPlace("3区2-104");
-            course3.setTeacher("应时");
-            course3.setType("专业必修");
-            course3.setHomework(false);
-            course3.setCredit("3.0");
-            course3.setWeekFrom(1);
-            course3.setWeekTo(18);
-            course3.setTimesPerWeek(1);
-            course3.setWeekday(4);
-            course3.setHourFrom(3);
-            course3.setHourTo(5);
-            course3.setColor(0XFFC993DC);
-            course3.setEveryWeek(true);
-            course3.save();
-
-            Course course4 = new Course();
-            course4.setName("算法设计与分析");
-            course4.setPlace("3区1-528");
-            course4.setTeacher("田纲");
-            course4.setType("专业选修");
-            course4.setHomework(false);
-            course4.setCredit("3.0");
-            course4.setWeekFrom(1);
-            course4.setWeekTo(18);
-            course4.setTimesPerWeek(1);
-            course4.setWeekday(1);
-            course4.setHourFrom(6);
-            course4.setHourTo(8);
-            course4.setColor(0XFFDC93CB);
-            course4.setEveryWeek(true);
-            course4.save();
-
-            Course course5 = new Course();
-            course5.setName("计算机体系结构");
-            course5.setPlace("3区1-203");
-            course5.setTeacher("陈丹");
-            course5.setType("专业必修");
-            course5.setHomework(false);
-            course5.setCredit("2.0");
-            course5.setWeekFrom(1);
-            course5.setWeekTo(12);
-            course5.setTimesPerWeek(1);
-            course5.setWeekday(2);
-            course5.setHourFrom(6);
-            course5.setHourTo(8);
-            course5.setColor(0XFFDC93A7);
-            course5.setEveryWeek(true);
-            course5.save();
-            */
 
 
             //删除旧主题数据

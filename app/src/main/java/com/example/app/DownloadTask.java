@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 import android.webkit.DownloadListener;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import okhttp3.Response;
  */
 
 class DownloadTask extends AsyncTask<String, Integer, Integer> {
+    private static final String TAG = "dong";
     public static final int TYPE_SUCCESS = 0;
     public static final int TYPE_FAILED = 1;
     public static final int TYPE_CANCELED = 2;
@@ -46,7 +48,7 @@ class DownloadTask extends AsyncTask<String, Integer, Integer> {
             String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
             file = new File(directory + fileName);
             if (file.exists()){
-                downloadLength = file.length();
+                file.delete();
             }
             long contentLength = getContentLength(downloadUrl);
             if (contentLength == 0){
@@ -54,6 +56,13 @@ class DownloadTask extends AsyncTask<String, Integer, Integer> {
             }else if (contentLength == downloadLength){
                 return TYPE_SUCCESS;
             }
+
+            GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
+            getVersionInfoFromDB.connAndGetVersionInfo();
+            long myLength = (long) (getVersionInfoFromDB.getFileSize() * 1024 * 1024);
+            Log.d(TAG, String.valueOf(getVersionInfoFromDB.getFileSize()));
+            Log.d(TAG, String.valueOf(myLength));
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().addHeader("RANGE","bytes=" + downloadLength + "-").url(downloadUrl).build();
             Response response = client.newCall(request).execute();
@@ -70,7 +79,7 @@ class DownloadTask extends AsyncTask<String, Integer, Integer> {
                     }else {
                         total += len;
                         savedFile.write(b,0,len);
-                        int progress = (int) ((total + downloadLength) * 100 / contentLength);
+                        int progress = (int) ((total + downloadLength) * 100 / myLength);
                         publishProgress(progress);
                     }
                 }
@@ -145,10 +154,4 @@ class DownloadTask extends AsyncTask<String, Integer, Integer> {
         }
         return 0;
     }
-
-
-
-
-
-
 }

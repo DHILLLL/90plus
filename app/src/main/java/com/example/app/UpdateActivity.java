@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.DownloadListener;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +79,7 @@ public class UpdateActivity extends MyActivity {
         Intent intent = new Intent(this, DownloadService.class);
         startService(intent);
         bindService(intent,connection,BIND_AUTO_CREATE);
-        if (ContextCompat.checkSelfPermission(UpdateActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(UpdateActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
+
 
     }
 
@@ -109,30 +109,40 @@ public class UpdateActivity extends MyActivity {
         return true;
     }
 
-    private void update(){
+    public void update(){
         final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
         getVersionInfoFromDB.connAndGetVersionInfo();
-        String[] verInfoFromDB = {"版本序号：" + getVersionInfoFromDB.getVersionID(), "版        本：" + getVersionInfoFromDB.getVersion(),
-                "关键版本：" + getVersionInfoFromDB.isCritical(), "文件大小：" + getVersionInfoFromDB.getFileSize() + "MB",
-                "下载地址：" + getVersionInfoFromDB.getDownloadAddress(), "更新日志：" + getVersionInfoFromDB.getChangeLog()};
-        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
-        // TODO change the code below!!!
-        builder.setTitle("最新版本信息 -- DevUseOnly");
-        builder.setItems(verInfoFromDB, null);
-        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String url = getVersionInfoFromDB.getDownloadAddress();
-                downloadBinder.startDownload(url);
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+        Log.d(TAG, "" + sp.getInt("version_id",0));
+        final boolean critical = getVersionInfoFromDB.isCritical();
+        if (getVersionInfoFromDB.getVersionID() > sp.getInt("version_id",0)){
 
-            }
-        });
-        builder.show();
+            final String verInfoFromDB = "版本号：" + getVersionInfoFromDB.getVersion() + "\n大小：" +
+                    getVersionInfoFromDB.getFileSize() + "MB\n更新日志：" + getVersionInfoFromDB.getChangeLog() +
+                    (critical?"\n(此为关键版本，若不更新则无法使用！)":"");
+            AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
+            builder.setTitle("检测到新版本");
+            builder.setMessage(verInfoFromDB);
+            builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String url = getVersionInfoFromDB.getDownloadAddress();
+                    downloadBinder.startDownload(url);
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (critical)
+                        ActivityCollector.finishAll();
+                }
+            });
+            builder.show();
+        }else {
+            Toast.makeText(this, "当前已为最新版本", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
 }
