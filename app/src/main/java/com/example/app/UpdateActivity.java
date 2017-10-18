@@ -42,7 +42,12 @@ public class UpdateActivity extends MyActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
+        try {
+            unbindService(connection);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private UpdateAdapter adapter;
@@ -58,26 +63,57 @@ public class UpdateActivity extends MyActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.update_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        try {
-            getVersionInfoFromDB.connAndGetVersionInfo();
-            adapter = new UpdateAdapter(getVersionInfoFromDB.getUpdateHistory());
-            recyclerView.setAdapter(adapter);
 
-            Intent intent = new Intent(this, DownloadService.class);
-            startService(intent);
-            bindService(intent, connection, BIND_AUTO_CREATE);
-        } catch (GetVersionInfoFromDB.UnknownErrorException ex) {
-            ex.printStackTrace();
-            Looper.prepare();
-            Toast.makeText(UpdateActivity.this, "未知错误，请稍后重试", Toast.LENGTH_SHORT).show();
-            Looper.loop();
-        } catch (GetVersionInfoFromDB.NetworkErrorException ex) {
-            ex.printStackTrace();
-            Toast.makeText(UpdateActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
-        }
+
+        Intent intent = new Intent(UpdateActivity.this, DownloadService.class);
+        startService(intent);
+        bindService(intent, connection, BIND_AUTO_CREATE);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getVersionInfoFromDB.connAndGetVersionInfo();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.update_list);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(UpdateActivity.this);
+                            recyclerView.setLayoutManager(layoutManager);
+                            adapter = new UpdateAdapter(getVersionInfoFromDB.getUpdateHistory());
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+
+                } catch (GetVersionInfoFromDB.UnknownErrorException ex) {
+                    ex.printStackTrace();
+                    Looper.prepare();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(UpdateActivity.this, "未知错误，请稍后重试", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    Looper.loop();
+                } catch (GetVersionInfoFromDB.NetworkErrorException ex) {
+                    ex.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(UpdateActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     @Override
