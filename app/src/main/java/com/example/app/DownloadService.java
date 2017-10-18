@@ -112,7 +112,7 @@ public class DownloadService extends Service {
 
     private Notification getNotification(String title, int progress, boolean finished){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.igengxin);
+        builder.setSmallIcon(R.drawable.notif_gengxin);
         if(finished){
             String filename = downloadUrl.substring(downloadUrl.lastIndexOf("/"));
             String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();

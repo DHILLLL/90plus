@@ -120,7 +120,7 @@ public class MainActivity extends MyActivity implements
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        initiation(12,9);
+        initiation(15,10);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -155,6 +155,18 @@ public class MainActivity extends MyActivity implements
             }
         }).start();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "拒绝的话以后将无法下载更新，请去设置中打开！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
     }
 
     private void update() {

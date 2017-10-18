@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#FFFFFF"
-                android:text="软件更新"
+                android:text="更新历史"
                 android:textSize="20sp" />
 
         </android.support.v7.widget.Toolbar>
