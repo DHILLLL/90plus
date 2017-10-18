@@ -1,38 +1,30 @@
 package com.example.app;
 
-import android.Manifest;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.webkit.DownloadListener;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateActivity extends MyActivity {
     private static final String TAG = "dong";
+    private final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
 
     private DownloadService.DownloadBinder downloadBinder;
     private ServiceConnection connection = new ServiceConnection() {
@@ -53,9 +45,6 @@ public class UpdateActivity extends MyActivity {
         unbindService(connection);
     }
 
-    private UpdateInformation ui = new UpdateInformation("Version 0.5.1.171009","1. 解决了修改课程信息后作业标记失效的bug\n2. 解决了更换主题闪退的bug（也许吧）\n3. 添加了不显示非当周课程的选项（侧滑菜单-系统设置中）");
-
-    private List<UpdateInformation> list = new ArrayList<>();
     private UpdateAdapter adapter;
 
     @Override
@@ -65,27 +54,32 @@ public class UpdateActivity extends MyActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.update_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.update_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        init();
-        adapter = new UpdateAdapter(list);
-        recyclerView.setAdapter(adapter);
+        try {
+            getVersionInfoFromDB.connAndGetVersionInfo();
+            adapter = new UpdateAdapter(getVersionInfoFromDB.getUpdateHistory());
+            recyclerView.setAdapter(adapter);
 
-        Intent intent = new Intent(this, DownloadService.class);
-        startService(intent);
-        bindService(intent,connection,BIND_AUTO_CREATE);
-
-
-    }
-
-    private void init(){
-        for (int i = 0;i < 20;i++)
-            list.add(ui);
+            Intent intent = new Intent(this, DownloadService.class);
+            startService(intent);
+            bindService(intent, connection, BIND_AUTO_CREATE);
+        } catch (GetVersionInfoFromDB.UnknownErrorException ex) {
+            ex.printStackTrace();
+            Looper.prepare();
+            Toast.makeText(UpdateActivity.this, "未知错误，请稍后重试", Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        } catch (GetVersionInfoFromDB.NetworkErrorException ex) {
+            ex.printStackTrace();
+            Looper.prepare();
+            Toast.makeText(UpdateActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        }
     }
 
     @Override
@@ -110,15 +104,13 @@ public class UpdateActivity extends MyActivity {
     }
 
     private void update(){
-        final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
-        getVersionInfoFromDB.connAndGetVersionInfo();
         SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
         Log.d(TAG, "" + sp.getInt("version_id",0));
-        final boolean critical = getVersionInfoFromDB.isCritical();
-        if (getVersionInfoFromDB.getVersionID() > sp.getInt("version_id",0)){
-
-            final String verInfoFromDB = "版本号：" + getVersionInfoFromDB.getVersion() + "\n大小：" +
-                    getVersionInfoFromDB.getFileSize() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getChangeLog() +
+        final boolean critical = getVersionInfoFromDB.isLatestCritical();
+        if (getVersionInfoFromDB.getLatestVersionID() > sp.getInt("version_id",0)){
+            BigDecimal bigDecimal = new BigDecimal((double)getVersionInfoFromDB.getLatestFileSize()/(1024*1024));
+            final String verInfoFromDB = "版  本  号：" + getVersionInfoFromDB.getLatestVersion() + "\n大        小：" +
+                    bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getLatestChangeLog() +
                     (critical?"\n\n(此为关键版本，若不更新则无法使用！)":"");
             AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
             builder.setTitle("检测到新版本");
@@ -126,7 +118,7 @@ public class UpdateActivity extends MyActivity {
             builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String url = getVersionInfoFromDB.getDownloadAddress();
+                    String url = getVersionInfoFromDB.getLatestDownloadAddress();
                     downloadBinder.startDownload(url);
                 }
             });
@@ -142,9 +134,5 @@ public class UpdateActivity extends MyActivity {
             Toast.makeText(this, "当前已为最新版本", Toast.LENGTH_SHORT).show();
         }
 
-
     }
-
 }
-
-

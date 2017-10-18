@@ -60,5 +60,3 @@ public class UpdateAdapter extends RecyclerView.Adapter<UpdateAdapter.ViewHolder
         return list.size();
     }
 }
-
-

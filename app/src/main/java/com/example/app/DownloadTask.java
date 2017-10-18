@@ -3,7 +3,6 @@ package com.example.app;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import android.webkit.DownloadListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,8 +58,8 @@ class DownloadTask extends AsyncTask<String, Integer, Integer> {
 
             GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
             getVersionInfoFromDB.connAndGetVersionInfo();
-            long myLength = (long) (getVersionInfoFromDB.getFileSize() * 1024 * 1024);
-            Log.d(TAG, String.valueOf(getVersionInfoFromDB.getFileSize()));
+            long myLength = getVersionInfoFromDB.getLatestFileSize();
+            Log.d(TAG, String.valueOf(getVersionInfoFromDB.getLatestFileSize()));
             Log.d(TAG, String.valueOf(myLength));
 
             OkHttpClient client = new OkHttpClient();

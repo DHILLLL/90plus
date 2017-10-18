@@ -45,6 +45,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import org.litepal.crud.DataSupport;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -156,50 +157,57 @@ public class MainActivity extends MyActivity implements
 
     }
 
-    private void update(){
+    private void update() {
         final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
-        getVersionInfoFromDB.connAndGetVersionInfo();
-        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
-        final int version_id = getVersionInfoFromDB.getVersionID();
-        final boolean critical = getVersionInfoFromDB.isCritical();
-        if ((version_id > sp.getInt("version_id",0)) && !sp.getBoolean("noMoreUpdateRemind" + version_id,false)){
+        try {
+            getVersionInfoFromDB.connAndGetVersionInfo();
+            SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+            final int version_id = getVersionInfoFromDB.getLatestVersionID();
+            final boolean critical = getVersionInfoFromDB.isLatestCritical();
+            if ((version_id > sp.getInt("version_id", 0)) && !sp.getBoolean("noMoreUpdateRemind" + version_id, false)) {
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    final String verInfoFromDB = "版本号：" + getVersionInfoFromDB.getVersion() + "\n大小：" +
-                            getVersionInfoFromDB.getFileSize() + "MB\n更新日志：\n" + getVersionInfoFromDB.getChangeLog() +
-                            (critical?"\n(此为关键版本，若不更新则无法使用！)":"");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("检测到新版本");
-                    builder.setMessage(verInfoFromDB);
-                    builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String url = getVersionInfoFromDB.getDownloadAddress();
-                            downloadBinder.startDownload(url);
-                        }
-                    });
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (critical)
-                                ActivityCollector.finishAll();
-                        }
-                    });
-                    if (!critical){
-                        builder.setNeutralButton("此版本不再提醒", new DialogInterface.OnClickListener() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BigDecimal bigDecimal = new BigDecimal((double) getVersionInfoFromDB.getLatestFileSize() / (1024 * 1024));
+                        final String verInfoFromDB = "版  本  号：" + getVersionInfoFromDB.getLatestVersion() + "\n大        小：" +
+                                bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getLatestChangeLog() +
+                                (critical ? "\n(此为关键版本，若不更新则无法使用！)" : "");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("检测到新版本");
+                        builder.setMessage(verInfoFromDB);
+                        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
-                                editor.putBoolean("noMoreUpdateRemind" + version_id,true);
-                                editor.apply();
+                                String url = getVersionInfoFromDB.getLatestDownloadAddress();
+                                downloadBinder.startDownload(url);
                             }
                         });
+                        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (critical)
+                                    ActivityCollector.finishAll();
+                            }
+                        });
+                        if (!critical) {
+                            builder.setNeutralButton("此版本不再提醒", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                                    editor.putBoolean("noMoreUpdateRemind" + version_id, true);
+                                    editor.apply();
+                                }
+                            });
+                        }
+                        builder.show();
                     }
-                    builder.show();
-                }
-            });
+                });
+            }
+        } catch (GetVersionInfoFromDB.UnknownErrorException ex) {
+            ex.printStackTrace();
+        } catch (GetVersionInfoFromDB.NetworkErrorException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -401,7 +409,7 @@ public class MainActivity extends MyActivity implements
                                     }
                                     catch (GetInfoFromJWXT.NetworkErrorException ex) {
                                         ex.printStackTrace();
-                                        Toast.makeText(MainActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
                                     }
                                     bmp = BitmapFactory.decodeStream(is2);
                                     image.setImageBitmap(bmp);

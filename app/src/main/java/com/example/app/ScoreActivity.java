@@ -130,48 +130,6 @@ public class ScoreActivity extends MyActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
-/*
-        final AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
-        builder.setTitle("title");
-        builder.setMessage("meessag");
-
-        builder.setItems(new String[]{"0", "1"}, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        Toast.makeText(ScoreActivity.this, "0", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        Toast.makeText(ScoreActivity.this, "1", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                }
-            }
-        });
-
-        builder.setMultiChoiceItems(new String[]{"0", "1"}, new boolean[]{false, true}, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-
-            }
-        });
-
-        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.show();
-*/
     }
 
     @Override
@@ -461,7 +419,7 @@ public class ScoreActivity extends MyActivity {
                     catch (GetInfoFromJWXT.NetworkErrorException ex) {
                         ex.printStackTrace();
                         Looper.prepare();
-                        Toast.makeText(ScoreActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScoreActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
                         Looper.loop();
                     }
                     bmp = BitmapFactory.decodeStream(is);
