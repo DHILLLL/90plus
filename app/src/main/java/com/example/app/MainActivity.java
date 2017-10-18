@@ -810,6 +810,8 @@ public class MainActivity extends MyActivity implements
                     + (long)(calendar.get(Calendar.DAY_OF_MONTH)) * 1000000L + (long)(calendar.get(Calendar.HOUR_OF_DAY)) * 10000L
                     + (long)(calendar.get(Calendar.MINUTE)) * 100L + (long)(calendar.get(Calendar.SECOND));
 
+        }
+        if (sharedPreferences.getBoolean("newUser",true)){
             Homework homework = new Homework();
             homework.setFinished(false);
             homework.setWord("1.本APP带有课程表和作业的桌面小插件哦\n2.如果某个科目有未完成的作业，它会在课程表界面和插件上显示出一个萌萌的小折角\n" +
@@ -818,9 +820,11 @@ public class MainActivity extends MyActivity implements
             homework.setIsPhoto(false);
             homework.setCourse("软件小贴士");
             homework.setTime(x+1);
-
             homework.save();
 
+            SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+            editor.putBoolean("newUser", false);
+            editor.apply();
         }
     }
 
