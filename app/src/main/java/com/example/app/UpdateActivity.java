@@ -76,9 +76,7 @@ public class UpdateActivity extends MyActivity {
             Looper.loop();
         } catch (GetVersionInfoFromDB.NetworkErrorException ex) {
             ex.printStackTrace();
-            Looper.prepare();
-            Toast.makeText(UpdateActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
-            Looper.loop();
+            Toast.makeText(UpdateActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -106,32 +104,38 @@ public class UpdateActivity extends MyActivity {
     private void update(){
         SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
         Log.d(TAG, "" + sp.getInt("version_id",0));
-        final boolean critical = getVersionInfoFromDB.isLatestCritical();
-        if (getVersionInfoFromDB.getLatestVersionID() > sp.getInt("version_id",0)){
-            BigDecimal bigDecimal = new BigDecimal((double)getVersionInfoFromDB.getLatestFileSize()/(1024*1024));
-            final String verInfoFromDB = "版  本  号：" + getVersionInfoFromDB.getLatestVersion() + "\n大        小：" +
-                    bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getLatestChangeLog() +
-                    (critical?"\n\n(此为关键版本，若不更新则无法使用！)":"");
-            AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
-            builder.setTitle("检测到新版本");
-            builder.setMessage(verInfoFromDB);
-            builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String url = getVersionInfoFromDB.getLatestDownloadAddress();
-                    downloadBinder.startDownload(url);
-                }
-            });
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (critical)
-                        ActivityCollector.finishAll();
-                }
-            });
-            builder.show();
-        }else {
-            Toast.makeText(this, "当前已为最新版本", Toast.LENGTH_SHORT).show();
+        try {
+            final boolean critical = getVersionInfoFromDB.isLatestCritical();
+            if (getVersionInfoFromDB.getLatestVersionID() > sp.getInt("version_id", 0)) {
+                BigDecimal bigDecimal = new BigDecimal((double) getVersionInfoFromDB.getLatestFileSize() / (1024 * 1024));
+                final String verInfoFromDB = "版  本  号：" + getVersionInfoFromDB.getLatestVersion() + "\n大        小：" +
+                        bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getLatestChangeLog() +
+                        (critical ? "\n\n(此为关键版本，若不更新则无法使用！)" : "");
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
+                builder.setTitle("检测到新版本");
+                builder.setMessage(verInfoFromDB);
+                builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String url = getVersionInfoFromDB.getLatestDownloadAddress();
+                        downloadBinder.startDownload(url);
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (critical)
+                            ActivityCollector.finishAll();
+                    }
+                });
+                builder.show();
+            } else {
+                Toast.makeText(this, "当前已为最新版本", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            Toast.makeText(UpdateActivity.this, "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
         }
 
     }
