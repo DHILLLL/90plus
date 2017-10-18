@@ -2,14 +2,17 @@ package com.example.app;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -75,6 +78,25 @@ public class MainActivity extends MyActivity implements
     CheckBox cb;
     View view1;
 
+    private DownloadService.DownloadBinder downloadBinder;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            downloadBinder = (DownloadService.DownloadBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +144,63 @@ public class MainActivity extends MyActivity implements
             }
         });
 
+        Intent intent = new Intent(this, DownloadService.class);
+        startService(intent);
+        bindService(intent,connection,BIND_AUTO_CREATE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                update();
+            }
+        }).start();
+
+    }
+
+    private void update(){
+        final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
+        getVersionInfoFromDB.connAndGetVersionInfo();
+        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+        final int version_id = getVersionInfoFromDB.getVersionID();
+        final boolean critical = getVersionInfoFromDB.isCritical();
+        if ((version_id > sp.getInt("version_id",0)) && !sp.getBoolean("noMoreUpdateRemind" + version_id,false)){
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final String verInfoFromDB = "版本号：" + getVersionInfoFromDB.getVersion() + "\n大小：" +
+                            getVersionInfoFromDB.getFileSize() + "MB\n更新日志：\n" + getVersionInfoFromDB.getChangeLog() +
+                            (critical?"\n(此为关键版本，若不更新则无法使用！)":"");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("检测到新版本");
+                    builder.setMessage(verInfoFromDB);
+                    builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String url = getVersionInfoFromDB.getDownloadAddress();
+                            downloadBinder.startDownload(url);
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (critical)
+                                ActivityCollector.finishAll();
+                        }
+                    });
+                    if (!critical){
+                        builder.setNeutralButton("此版本不再提醒", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                editor.putBoolean("noMoreUpdateRemind" + version_id,true);
+                                editor.apply();
+                            }
+                        });
+                    }
+                    builder.show();
+                }
+            });
+        }
     }
 
     //初始化侧栏选项

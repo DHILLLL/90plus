@@ -109,7 +109,7 @@ public class UpdateActivity extends MyActivity {
         return true;
     }
 
-    public void update(){
+    private void update(){
         final GetVersionInfoFromDB getVersionInfoFromDB = new GetVersionInfoFromDB();
         getVersionInfoFromDB.connAndGetVersionInfo();
         SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
@@ -118,8 +118,8 @@ public class UpdateActivity extends MyActivity {
         if (getVersionInfoFromDB.getVersionID() > sp.getInt("version_id",0)){
 
             final String verInfoFromDB = "版本号：" + getVersionInfoFromDB.getVersion() + "\n大小：" +
-                    getVersionInfoFromDB.getFileSize() + "MB\n更新日志：" + getVersionInfoFromDB.getChangeLog() +
-                    (critical?"\n(此为关键版本，若不更新则无法使用！)":"");
+                    getVersionInfoFromDB.getFileSize() + "MB\n\n更新日志：\n" + getVersionInfoFromDB.getChangeLog() +
+                    (critical?"\n\n(此为关键版本，若不更新则无法使用！)":"");
             AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
             builder.setTitle("检测到新版本");
             builder.setMessage(verInfoFromDB);
