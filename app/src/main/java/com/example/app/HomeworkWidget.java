@@ -114,8 +114,8 @@ public class HomeworkWidget extends AppWidgetProvider {
             }
             if (homework.getIsPhoto()) {
                 try {
-                    String uri = homework.getPic().replaceAll(".jpg","s.jpg");
-                    Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(),Uri.parse(uri));
+                    //String uri = homework.getPic().replaceAll(".jpg","s.jpg");
+                    Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(),Uri.parse(homework.getPic()));
                     remoteViews.setImageViewBitmap(R.id.homework_widget_pic, bm);
 
                 } catch (Exception e) {

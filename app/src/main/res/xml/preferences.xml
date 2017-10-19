@@ -18,4 +18,29 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="清除数据">
+
+        <Preference
+            android:key="delCourses"
+            android:layout="@layout/preference_item"
+            android:summary="删除所有的课程信息"
+            android:title="清除所有课程"/>
+
+        <Preference
+            android:key="delScores"
+            android:layout="@layout/preference_item"
+            android:summary="删除所有的成绩信息"
+            android:title="清除所有成绩"/>
+
+        <Preference
+            android:key="delHomeworks"
+            android:layout="@layout/preference_item"
+            android:summary="删除所有的作业信息（包括图片）"
+            android:title="清除所有作业"/>
+
+    </PreferenceCategory>
+
+
 </PreferenceScreen>

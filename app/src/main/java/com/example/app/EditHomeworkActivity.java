@@ -216,7 +216,7 @@ public class EditHomeworkActivity extends MyActivity {
                 if(outputImage.exists())
                     outputImage.delete();
 
-                outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),id + "s.jpg");
+                outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),id + ".jpg");
                 if(outputImage.exists())
                     outputImage.delete();
             }
@@ -303,16 +303,18 @@ public class EditHomeworkActivity extends MyActivity {
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(path,options);
                         int width = options.outWidth;
+                        int height = options.outHeight;
+                        int max = (width > height) ? width : height;
                         int intSampleSize = 1;
-                        if (width > 800) {
-                            float ratio = (float) width / 800.0f;
+                        if (max > 1000) {
+                            float ratio = (float) max / 1000.0f;
                             intSampleSize = (int) ratio;
                         }
                         options.inJustDecodeBounds = false;
                         options.inSampleSize = intSampleSize;
                         Bitmap smallBitmap = BitmapFactory.decodeFile(path,options);
 
-                        outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), id + "s.jpg");
+                        outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), id + ".jpg");
                         if(outputImage.exists()){
                             outputImage.delete();
                         }
@@ -438,16 +440,18 @@ public class EditHomeworkActivity extends MyActivity {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(temp,options);
                 int width = options.outWidth;
+                int height = options.outHeight;
+                int max = (width > height) ? width : height;
                 int intSampleSize = 1;
-                if (width > 800) {
-                    float ratio = (float) width / 800.0f;
+                if (max > 1000) {
+                    float ratio = (float) max / 1000.0f;
                     intSampleSize = (int) ratio;
                 }
                 options.inJustDecodeBounds = false;
                 options.inSampleSize = intSampleSize;
                 Bitmap smallBitmap = BitmapFactory.decodeFile(temp,options);
 
-                File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), id + "s.jpg");
+                File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), id + ".jpg");
                 if(outputImage1.exists()){
                     outputImage1.delete();
                 }

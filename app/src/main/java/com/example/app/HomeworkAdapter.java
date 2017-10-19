@@ -217,9 +217,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
                                         if(outputImage.exists())
                                             outputImage.delete();
 
-                                        outputImage = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),homework.getTime() + "s.jpg");
-                                        if(outputImage.exists())
-                                            outputImage.delete();
                                     }
 
                                     //发送广播更新作业 课程表和插件
@@ -282,9 +279,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
                                         if(outputImage.exists())
                                             outputImage.delete();
 
-                                        outputImage = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),homework.getTime() + "s.jpg");
-                                        if(outputImage.exists())
-                                            outputImage.delete();
                                     }
 
                                     Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
@@ -342,9 +336,9 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         //有图片的话显示，否则隐藏图片区域
         if(homework.getIsPhoto()){
-            String uri = homework.getPic().replaceAll(".jpg","s.jpg");
+            //String uri = homework.getPic().replaceAll(".jpg","s.jpg");
             //Glide.with(context).load(Uri.parse(homework.getPic())).into(holder.pic);
-            holder.pic.setImageURI(Uri.parse(uri));
+            holder.pic.setImageURI(Uri.parse(homework.getPic()));
             holder.pic.setVisibility(View.VISIBLE);
         }else holder.pic.setVisibility(View.GONE);
 

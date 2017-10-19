@@ -213,10 +213,6 @@ public class AddHomeworkActivity extends MyActivity {
                 if(outputImage.exists())
                     outputImage.delete();
 
-                //两张照片都删除
-                outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),String.valueOf(x) + "s.jpg");
-                if(outputImage.exists())
-                    outputImage.delete();
             }
         });
 
@@ -308,9 +304,11 @@ public class AddHomeworkActivity extends MyActivity {
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(path,options);
                         int width = options.outWidth;
+                        int height = options.outHeight;
+                        int max = (width > height) ? width : height;
                         int intSampleSize = 1;
-                        if (width > 800) {
-                            float ratio = (float) width / 800.0f;
+                        if (max > 1000) {
+                            float ratio = (float) max / 1000.0f;
                             intSampleSize = (int) ratio;
                         }
                         options.inJustDecodeBounds = false;
@@ -318,7 +316,7 @@ public class AddHomeworkActivity extends MyActivity {
                         Bitmap smallBitmap = BitmapFactory.decodeFile(path,options);
 
                         //保存小图，文件名为原图加s
-                        File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), String.valueOf(x) + "s.jpg");
+                        File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), String.valueOf(x) + ".jpg");
                         if(outputImage1.exists()){
                             outputImage1.delete();
                         }
@@ -449,9 +447,11 @@ public class AddHomeworkActivity extends MyActivity {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(temp,options);
                 int width = options.outWidth;
+                int height = options.outHeight;
+                int max = (width > height) ? width : height;
                 int intSampleSize = 1;
-                if (width > 800) {
-                    float ratio = (float) width / 800.0f;
+                if (max > 1000) {
+                    float ratio = (float) max / 1000.0f;
                     intSampleSize = (int) ratio;
                 }
                 options.inJustDecodeBounds = false;
@@ -459,7 +459,7 @@ public class AddHomeworkActivity extends MyActivity {
                 Bitmap smallBitmap = BitmapFactory.decodeFile(temp,options);
 
                 //保存小图，s结尾
-                File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), String.valueOf(x) + "s.jpg");
+                File outputImage1 = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), String.valueOf(x) + ".jpg");
                 if(outputImage1.exists()){
                     outputImage1.delete();
                 }

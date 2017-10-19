@@ -174,12 +174,18 @@ public class scheduleFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        SharedPreferences sp,sp1;
 
-        //获取当前周
-        SharedPreferences sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
-        currentWeek = sp.getInt("currentWeek",1);
-        SharedPreferences sp1 = getContext().getSharedPreferences("Setting",Context.MODE_PRIVATE);
-        showAll = sp1.getBoolean("showAll",true);
+        try {
+            //获取当前周
+            sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
+            currentWeek = sp.getInt("currentWeek",1);
+            sp1 = getContext().getSharedPreferences("Setting",Context.MODE_PRIVATE);
+            showAll = sp1.getBoolean("showAll",true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         //刷新
         refresh();

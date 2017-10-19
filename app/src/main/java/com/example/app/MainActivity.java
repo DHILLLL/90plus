@@ -752,7 +752,7 @@ public class MainActivity extends MyActivity implements
             //标记从此不是第一次
             editor.putBoolean("FirstStart" + String.valueOf(version), false);
             editor.remove("FirstStart" + String.valueOf(version - 1));
-            editor.putString("theme", "candy");
+            //editor.putString("theme", "candy");
             editor.putInt("version_id",version_id);
             editor.apply();
 
