@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.app">
+    package="com.whuLoveStudyGroup.app">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.whuLoveStudyGroup.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="90+"
@@ -18,7 +18,7 @@
         tools:replace="android:label">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.app.fileprovider"
+            android:authorities="com.whuLoveStudyGroup.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -27,7 +27,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.whuLoveStudyGroup.app.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,25 +36,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".courseActivity"
+            android:name="com.whuLoveStudyGroup.app.courseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddCourseActivity"
+            android:name="com.whuLoveStudyGroup.app.AddCourseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SelectThemeActivity"
+            android:name="com.whuLoveStudyGroup.app.SelectThemeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditCourseActivity"
+            android:name="com.whuLoveStudyGroup.app.EditCourseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddHomeworkActivity"
+            android:name="com.whuLoveStudyGroup.app.AddHomeworkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EditHomeworkActivity"
+            android:name="com.whuLoveStudyGroup.app.EditHomeworkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettingActivity"
+            android:name="com.whuLoveStudyGroup.app.SettingActivity"
             android:screenOrientation="portrait" />
         <!--
         <receiver android:name=".CourseWidgetBig">
@@ -81,7 +81,7 @@
         </receiver>
         -->
 
-        <receiver android:name=".CourseWidget">
+        <receiver android:name="com.whuLoveStudyGroup.app.CourseWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.example.app.UPDATE_WIDGET" />
@@ -92,7 +92,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/course_widget_info" />
         </receiver>
-        <receiver android:name=".HomeworkWidget">
+        <receiver android:name="com.whuLoveStudyGroup.app.HomeworkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.example.app.UPDATE_WIDGET" />
@@ -104,16 +104,16 @@
                 android:resource="@xml/homework_widget_info" />
         </receiver>
 
-        <activity android:name=".UpdateActivity"
+        <activity android:name="com.whuLoveStudyGroup.app.UpdateActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.whuLoveStudyGroup.app.LoginActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".RegisterActivity"
+        <activity android:name="com.whuLoveStudyGroup.app.RegisterActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ScoreActivity"
+        <activity android:name="com.whuLoveStudyGroup.app.ScoreActivity"
             android:screenOrientation="portrait"/>
 
-        <service android:name=".DownloadService"
+        <service android:name="com.whuLoveStudyGroup.app.DownloadService"
             android:exported="true"
             android:enabled="true"/>
     </application>

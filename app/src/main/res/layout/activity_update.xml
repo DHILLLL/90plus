@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.app.UpdateActivity">
+    tools:context="com.whuLoveStudyGroup.app.UpdateActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
             android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="5dp"
             android:id="@+id/update_list"/>
 
     </android.support.v4.widget.NestedScrollView>
