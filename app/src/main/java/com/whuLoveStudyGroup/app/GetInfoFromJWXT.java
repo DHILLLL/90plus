@@ -62,7 +62,6 @@ class GetInfoFromJWXT {
      * @return List<Map<String, String>> extractedDataFinal 每一个Map是一个课程的信息，List里的是所有的课程。
      * @author Ding Zhang
      */
-
     protected List<Map<String, String>> getCourseData(String username, String password, String veriCode, String cookie)
             throws VerificationCodeException, UsernamePasswordErrorException, TimeoutException, IOException {
         List<Map<String, String>> extractedDataFinal = null;
@@ -76,6 +75,9 @@ class GetInfoFromJWXT {
         else if (data.contains("会话超时，请重新登陆")) throw new TimeoutException();
 
         termCurrentWeekIndex = Integer.parseInt(data.substring(data.indexOf("教学周") - 1, data.indexOf("教学周")));
+        Calendar calendar = Calendar.getInstance();
+        String currentYear = String.valueOf(calendar.get(Calendar.YEAR));
+        String currentTerm = (calendar.get(Calendar.MONTH) <= 7) ? "%CF%C2" : "%C9%CF";
         String csrf = data.substring(data.indexOf("csrf"), data.indexOf("csrf") + 46);      // extract csrf code
         // System.out.println(csrf);
 
@@ -83,6 +85,11 @@ class GetInfoFromJWXT {
         Response response2 = client.newCall(request2).execute();
         String data2 = response2.body().string();
         String[] data3 = data2.split("\\n\\r");
+
+        Request request3 = new Request.Builder().addHeader("cookie", cookie).url("http://" + SERVERADDR[serverIndex] + "/servlet/Svlt_QueryStuLsn?" + csrf + "&action=normalLsn&year=" + currentYear + "&term=" + currentTerm + "&state=").build();
+        Response response3 = client.newCall(request3).execute();
+        String data4 = response3.body().string();
+
         List<String> extractedRawData = new ArrayList<>();
         for (String i : data3) {
             if (i.contains("lessonName")) extractedRawData.add(i);
@@ -112,6 +119,47 @@ class GetInfoFromJWXT {
             }
             extractedDataFinal.add(tempMap);
         }
+
+        String[] data5 = data4.split("\\n\\r");
+        String extractedRawData2 = null;
+        List<Map<String, String>> extractedDataFinal2 = new ArrayList<>();
+        for (String i : data5) {
+            if (i.contains("<table")) {
+                int tableStartIndex = i.indexOf("<table");
+                int tableEndIndex = i.indexOf("</table");
+                extractedRawData2 = i.substring(tableStartIndex, tableEndIndex);
+            }
+        }
+        extractedRawData2 = extractedRawData2.replaceAll("\\n|\\t|\\r| ", "");
+
+        List<String> extractedDataTh = new ArrayList<>();
+        Pattern regex = Pattern.compile("<tr(.*?)>.*?</tr>");
+        Pattern regex2 = Pattern.compile(">([^</]+)</");
+        Matcher matcher = regex.matcher(extractedRawData2);
+        if (matcher.find()) {
+            Matcher matcher2 = regex2.matcher(matcher.group());
+            while (matcher2.find()) {
+                extractedDataTh.add(matcher2.group(1));
+            }
+            extractedDataTh.remove(extractedDataTh.size() - 1);
+        }
+        while (matcher.find()) {
+            Matcher matcher2 = regex2.matcher(matcher.group());
+            Map<String, String> tempMap = new Hashtable<>();
+            int listThIndex = 0;
+            while (matcher2.find()) {
+                tempMap.put(extractedDataTh.get(listThIndex++), matcher2.group(1));
+                if (listThIndex > 1)    break;
+            }
+            extractedDataFinal2.add(tempMap);
+        }
+        for (Map<String, String> tempMap : extractedDataFinal) {
+            for (Map<String, String> tempMap2 : extractedDataFinal2) {
+                if (tempMap.get("lessonName").equals(tempMap2.get("课程名")))
+                    tempMap.put("lessonID", tempMap2.get("课头号"));
+            }
+        }
+
         return extractedDataFinal;
     }
 
