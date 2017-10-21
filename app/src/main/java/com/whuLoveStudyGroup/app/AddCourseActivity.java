@@ -25,7 +25,7 @@ import java.util.List;
 public class AddCourseActivity extends MyActivity {
     private static final String TAG = "dong";
 
-    EditText name,place,teacher,type,credit,weekFrom,weekTo,timePerWeek,weekday0,
+    EditText name,id,place,teacher,type,credit,weekFrom,weekTo,timePerWeek,weekday0,
             weekday1,weekday2, hourFrom0,hourFrom1,hourFrom2,hourTo0,hourTo1,hourTo2;
     RadioButton every0,every1,every2;
 
@@ -46,6 +46,7 @@ public class AddCourseActivity extends MyActivity {
         }
 
         name = (EditText) findViewById(R.id.add_course_name);
+        id = (EditText) findViewById(R.id.add_course_id);
         place = (EditText) findViewById(R.id.add_course_place);
         teacher = (EditText) findViewById(R.id.add_course_teacher);
         type = (EditText) findViewById(R.id.add_course_type);
@@ -214,6 +215,7 @@ public class AddCourseActivity extends MyActivity {
 
                 //添加其他信息
                 course.setName(name.getText().toString());
+                course.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course.setPlace(place.getText().toString());
                 course.setTeacher(teacher.getText().toString());
                 course.setType(type.getText().toString());
@@ -287,6 +289,7 @@ public class AddCourseActivity extends MyActivity {
 
 
                 course1.setName(name.getText().toString());
+                course1.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course1.setPlace(place.getText().toString());
                 course1.setTeacher(teacher.getText().toString());
                 course1.setType(type.getText().toString());
@@ -361,6 +364,7 @@ public class AddCourseActivity extends MyActivity {
 
 
                 course2.setName(name.getText().toString());
+                course2.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course2.setPlace(place.getText().toString());
                 course2.setTeacher(teacher.getText().toString());
                 course2.setType(type.getText().toString());
@@ -398,7 +402,7 @@ public class AddCourseActivity extends MyActivity {
         editor.apply();
 
         //发送广播更新插件
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent1);
 
         finish();

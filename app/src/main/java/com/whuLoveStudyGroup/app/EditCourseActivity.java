@@ -27,7 +27,7 @@ import java.util.List;
 public class EditCourseActivity extends MyActivity {
 
     private String currentCourse,note;
-    private EditText place,teacher,type,credit,weekFrom,weekTo,timePerWeek,weekday0,
+    private EditText id,place,teacher,type,credit,weekFrom,weekTo,timePerWeek,weekday0,
             weekday1,weekday2, hourFrom0,hourFrom1,hourFrom2,hourTo0,hourTo1,hourTo2;
     private TextView name;
     private RadioButton every0,not0,every1,not1,every2,not2;
@@ -50,6 +50,7 @@ public class EditCourseActivity extends MyActivity {
 
 
         name = (TextView) findViewById(R.id.edit_course_name);
+        id = (EditText) findViewById(R.id.edit_course_id);
         place = (EditText) findViewById(R.id.edit_course_place);
         teacher = (EditText) findViewById(R.id.edit_course_teacher);
         type = (EditText) findViewById(R.id.edit_course_type);
@@ -84,6 +85,7 @@ public class EditCourseActivity extends MyActivity {
 
 
         name.setText(course.getName());
+        id.setText(course.getLessoneID());
         place.setText(course.getPlace());
         teacher.setText(course.getTeacher());
         type.setText(course.getType());
@@ -205,6 +207,7 @@ public class EditCourseActivity extends MyActivity {
                 }
 
                 Course course = new Course();
+                course.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course.setNote(note);
                 course.setColor(color);
                 course.setName(name.getText().toString());
@@ -246,7 +249,7 @@ public class EditCourseActivity extends MyActivity {
                 }
                 Course course1 = new Course();
                 course1.setNote(note);
-
+                course1.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course1.setColor(color);
                 course1.setName(name.getText().toString());
                 course1.setPlace(place.getText().toString());
@@ -288,7 +291,7 @@ public class EditCourseActivity extends MyActivity {
 
                 Course course2 = new Course();
                 course2.setNote(note);
-
+                course2.setLessoneID(id.getText().toString().equals("")?"0":id.getText().toString());
                 course2.setColor(color);
                 course2.setName(name.getText().toString());
                 course2.setPlace(place.getText().toString());
@@ -321,7 +324,7 @@ public class EditCourseActivity extends MyActivity {
                 return;
         }
 
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent1);
 
         finish();

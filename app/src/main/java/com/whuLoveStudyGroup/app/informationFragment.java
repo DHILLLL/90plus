@@ -22,7 +22,7 @@ import java.util.List;
 public class informationFragment extends Fragment {
     private static final String TAG = "dongheyou";
     private String currentCourse;
-    private TextView name,time,week,teacher,type,credit,place;
+    private TextView name,time,week,teacher,type,credit,place,id;
     private EditText note;
 
     @Override
@@ -37,14 +37,15 @@ public class informationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.course_infomation,container,false);
-        name = (TextView) view.findViewById(R.id.coure_name);
-        time = (TextView) view.findViewById(R.id.coure_time);
-        teacher = (TextView) view.findViewById(R.id.coure_teacher);
-        week = (TextView) view.findViewById(R.id.coure_week);
-        type = (TextView) view.findViewById(R.id.coure_type);
-        credit = (TextView) view.findViewById(R.id.coure_credit);
-        place = (TextView) view.findViewById(R.id.coure_place);
-        note = (EditText) view.findViewById(R.id.coure_note);
+        id = (TextView) view.findViewById(R.id.course_id);
+        name = (TextView) view.findViewById(R.id.course_name);
+        time = (TextView) view.findViewById(R.id.course_time);
+        teacher = (TextView) view.findViewById(R.id.course_teacher);
+        week = (TextView) view.findViewById(R.id.course_week);
+        type = (TextView) view.findViewById(R.id.course_type);
+        credit = (TextView) view.findViewById(R.id.course_credit);
+        place = (TextView) view.findViewById(R.id.course_place);
+        note = (EditText) view.findViewById(R.id.course_note);
         return view;
     }
 
@@ -60,6 +61,7 @@ public class informationFragment extends Fragment {
         List<Course> courses = DataSupport.where("name = ?",currentCourse).order("weekday ASC").find(Course.class);
         Course course = courses.get(0);
         name.setText(course.getName());
+        id.setText(course.getLessoneID());
 
         //显示时间
         switch (course.getTimesPerWeek()){

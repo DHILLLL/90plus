@@ -85,6 +85,32 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:layout_gravity="center"
+                            android:text="课号："
+                            android:textColor="?android:attr/colorPrimary"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/edit_course_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:hint="可不填，部分功能将无法使用"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="20dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_gravity="center"
                             android:text="地点："
                             android:textColor="?android:attr/colorPrimary"
                             android:textSize="16sp" />

@@ -6,7 +6,18 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view3">
+        android:id="@+id/recycler_view3"
+        android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/comment_ban"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:text="该课未设置课头号\n本功能无法使用"
+        android:gravity="center"
+        android:visibility="visible"/>
+
 </LinearLayout>

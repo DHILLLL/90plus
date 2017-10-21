@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class scheduleFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         //设置接收广播
         intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.app.UPDATE_SCHEDULE");
+        intentFilter.addAction("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
         localBroadcastManager = localBroadcastManager.getInstance(getContext());
         myBroadcastReceiver = new MyBroadcastReceiver();
         localBroadcastManager.registerReceiver(myBroadcastReceiver,intentFilter);
@@ -227,7 +228,7 @@ public class scheduleFragment extends Fragment {
         }
 
         //发送广播更新作业界面
-        Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
+        Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
         localBroadcastManager.sendBroadcast(intent);
 
         refresh();
@@ -382,6 +383,7 @@ public class scheduleFragment extends Fragment {
         clear();
         //获取所有课程
         List<Course> courses = DataSupport.findAll(Course.class);
+        Log.d(TAG, "" + courses.size());
         //依次显示课程
         for(Course course: courses){
             if ((course.getWeekFrom() <= currentWeek) && course.getWeekTo() >= currentWeek){

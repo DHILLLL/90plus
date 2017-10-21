@@ -178,7 +178,7 @@ public class EditHomeworkActivity extends MyActivity {
                                     e.printStackTrace();
                                 }
                                 if (Build.VERSION.SDK_INT >= 24) {
-                                    imageUri = FileProvider.getUriForFile(EditHomeworkActivity.this,"com.example.app.fileprovider",outputImage);
+                                    imageUri = FileProvider.getUriForFile(EditHomeworkActivity.this,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
                                 }else {
                                     imageUri = Uri.fromFile(outputImage);
                                 }
@@ -463,7 +463,7 @@ public class EditHomeworkActivity extends MyActivity {
                 e.printStackTrace();
             }
             if (Build.VERSION.SDK_INT >= 24) {
-                imageUri = FileProvider.getUriForFile(EditHomeworkActivity.this,"com.example.app.fileprovider",outputImage);
+                imageUri = FileProvider.getUriForFile(EditHomeworkActivity.this,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
             }else {
                 imageUri = Uri.fromFile(outputImage);
             }
@@ -514,7 +514,7 @@ public class EditHomeworkActivity extends MyActivity {
         if(hasPic) homework.setPic(imageUri.toString());
         homework.save();
 
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent1);
     }
 

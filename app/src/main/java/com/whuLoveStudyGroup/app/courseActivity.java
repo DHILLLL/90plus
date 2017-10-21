@@ -136,7 +136,7 @@ public class courseActivity extends MyActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataSupport.deleteAll(Course.class,"name = ?",currentCourse);
-                        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+                        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
                         sendBroadcast(intent1);
                         finish();
                     }

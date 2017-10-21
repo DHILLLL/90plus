@@ -22,6 +22,11 @@ public class Course extends DataSupport{
     private String type;
     private String note;//课程笔记
     private boolean homework;//是否有未完成作业
+    private String lessoneID;
+
+    public void setLessoneID(String lessoneID) {
+        this.lessoneID = lessoneID;
+    }
 
     public void setHomework(boolean homework) {
         this.homework = homework;
@@ -143,8 +148,9 @@ public class Course extends DataSupport{
         return homework;
     }
 
-
-
+    public String getLessoneID() {
+        return lessoneID;
+    }
 }
 
 

@@ -29,6 +29,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,11 +116,11 @@ public class MainActivity extends MyActivity implements
 
         localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
 
-        Intent intent2 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent2 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        initiation(15,10);
+        initiation(18,10);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -349,9 +350,9 @@ public class MainActivity extends MyActivity implements
 
             case R.id.change_set:
                 changeSet();
-                Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                 localBroadcastManager.sendBroadcast(intent);
-                Intent intent2 = new Intent("com.example.app.UPDATE_HOMEWORK");
+                Intent intent2 = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
                 localBroadcastManager.sendBroadcast(intent2);
                 break;
 
@@ -476,6 +477,7 @@ public class MainActivity extends MyActivity implements
                                                 }
 
                                                 List<Course> temp;
+                                                Log.d(TAG, "" + maps.size());
 
                                                 for (Map map : maps){
                                                     temp = DataSupport.where("name = ?",map.get("lessonName").toString()).find(Course.class);
@@ -495,6 +497,7 @@ public class MainActivity extends MyActivity implements
                                                     course.setHourFrom(Integer.parseInt(map.get("beginTime").toString()));
                                                     course.setHourTo(Integer.parseInt(map.get("endTime").toString()));
                                                     course.setNote(map.get("note").toString());
+                                                    course.setLessoneID(map.get("lessonID").toString());
 
                                                     if(map.get("weekInterVal=").toString().equals("1"))
                                                         course.setEveryWeek(true);
@@ -583,7 +586,7 @@ public class MainActivity extends MyActivity implements
         }
 
         //发送广播更新作业界面
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent1);
 
     }
@@ -616,7 +619,7 @@ public class MainActivity extends MyActivity implements
                                 SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
                                 currentWeek = sp.getInt("currentWeek",1);
 
-                                Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                                Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                                 localBroadcastManager.sendBroadcast(intent);
                             }
                         });
@@ -661,7 +664,7 @@ public class MainActivity extends MyActivity implements
                                     default:
                                         break;
                                 }
-                                Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
+                                Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
                                 localBroadcastManager.sendBroadcast(intent);
                             }
                         });
@@ -754,6 +757,13 @@ public class MainActivity extends MyActivity implements
             //editor.putString("theme", "candy");
             editor.putInt("version_id",version_id);
             editor.apply();
+/*
+            Course course = new Course();
+            course.setName("sd");
+            course.setId("0");
+            course.setPlace("sd");
+            course.save();
+            */
 
 
             //删除旧主题数据

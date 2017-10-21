@@ -181,7 +181,7 @@ public class HomeworkWidget extends AppWidgetProvider {
             editor.apply();
         }
 
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         context.sendBroadcast(intent1);
     }
 
@@ -201,7 +201,7 @@ public class HomeworkWidget extends AppWidgetProvider {
 
         SharedPreferences.Editor editor = context.getSharedPreferences("widget",Context.MODE_PRIVATE).edit();
 
-        if (intent.getAction().equals("com.example.app.UPDATE_WIDGET") || intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
+        if (intent.getAction().equals("com.whuLoveStudyGroup.app.UPDATE_WIDGET") || intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
             editor.putInt("currentHomework",0);
             editor.apply();
             set(context,remoteViews,0);
@@ -261,7 +261,7 @@ public class HomeworkWidget extends AppWidgetProvider {
                 break;
             case R.id.homework_widget_add:
                 Intent startAcIntent = new Intent();
-                startAcIntent.setComponent(new ComponentName("com.example.app","com.example.app.AddHomeworkActivity"));//第一个是包名，第二个是类所在位置的全称
+                startAcIntent.setComponent(new ComponentName("com.whuLoveStudyGroup.app","com.whuLoveStudyGroup.app.AddHomeworkActivity"));//第一个是包名，第二个是类所在位置的全称
                 startAcIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(startAcIntent);
                 break;

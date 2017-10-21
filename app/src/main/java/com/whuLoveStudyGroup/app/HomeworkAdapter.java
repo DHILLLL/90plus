@@ -131,16 +131,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
                 //如果存在筛选，发送广播刷新列表
                 if (display != 0){
-                    Intent intent = new Intent("com.example.app.UPDATE_HOMEWORK");
+                    Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
                     localBroadcastManager.sendBroadcast(intent);
                 }
 
                 //发送广播刷新课程表
-                Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                 localBroadcastManager.sendBroadcast(intent);
 
                 //发送广播刷新插件
-                Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+                Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
                 context.sendBroadcast(intent1);
             }
         });
@@ -206,11 +206,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
                                     }
 
                                     //发送广播更新作业 课程表和插件
-                                    Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                                    Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                                     localBroadcastManager.sendBroadcast(intent);
-                                    Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+                                    Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
                                     context.sendBroadcast(intent1);
-                                    Intent intent2 = new Intent("com.example.app.UPDATE_HOMEWORK");
+                                    Intent intent2 = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
                                     localBroadcastManager.sendBroadcast(intent2);
                                 }
                             });
@@ -267,11 +267,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
                                     }
 
-                                    Intent intent = new Intent("com.example.app.UPDATE_SCHEDULE");
+                                    Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                                     localBroadcastManager.sendBroadcast(intent);
-                                    Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+                                    Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
                                     context.sendBroadcast(intent1);
-                                    Intent intent2 = new Intent("com.example.app.UPDATE_HOMEWORK");
+                                    Intent intent2 = new Intent("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
                                     localBroadcastManager.sendBroadcast(intent2);
                                 }
                             });

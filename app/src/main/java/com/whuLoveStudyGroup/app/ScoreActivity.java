@@ -94,7 +94,7 @@ public class ScoreActivity extends MyActivity {
         localBroadcastManager = localBroadcastManager.getInstance(this);
 
         intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.app.UPDATE_SCORE");
+        intentFilter.addAction("com.whuLoveStudyGroup.app.UPDATE_SCORE");
         myBroadcastReceiver = new MyBroadcastReceiver();
         localBroadcastManager.registerReceiver(myBroadcastReceiver,intentFilter);
 
@@ -166,7 +166,7 @@ public class ScoreActivity extends MyActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             time = which;
-                            Intent intent = new Intent("com.example.app.UPDATE_SCORE");
+                            Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCORE");
                             localBroadcastManager.sendBroadcast(intent);
                         }
                     });
@@ -190,7 +190,7 @@ public class ScoreActivity extends MyActivity {
                         tvs[SORT].setTextColor(0xFF777777);
                         SORT = temp;
 
-                        Intent intent = new Intent("com.example.app.UPDATE_SCORE");
+                        Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCORE");
                         localBroadcastManager.sendBroadcast(intent);
                     }
                 });
@@ -522,7 +522,7 @@ public class ScoreActivity extends MyActivity {
                                                     list = DataSupport.select("semester").order("semester desc").find(Score.class);
                                                     result = DataSupport.where("semester = ?",list.get(0).getSemester()).find(Score.class);
 
-                                                    Intent intent = new Intent("com.example.app.UPDATE_SCORE");
+                                                    Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCORE");
                                                     localBroadcastManager.sendBroadcast(intent);
 
 

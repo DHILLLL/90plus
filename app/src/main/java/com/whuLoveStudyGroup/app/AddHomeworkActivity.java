@@ -168,7 +168,7 @@ public class AddHomeworkActivity extends MyActivity {
                                     e.printStackTrace();
                                 }
                                 if (Build.VERSION.SDK_INT >= 24) {
-                                    imageUri = FileProvider.getUriForFile(AddHomeworkActivity.this,"com.example.app.fileprovider",outputImage);
+                                    imageUri = FileProvider.getUriForFile(AddHomeworkActivity.this,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
                                 }else {
                                     imageUri = Uri.fromFile(outputImage);
                                 }
@@ -467,7 +467,7 @@ public class AddHomeworkActivity extends MyActivity {
                 e.printStackTrace();
             }
             if (Build.VERSION.SDK_INT >= 24) {
-                imageUri = FileProvider.getUriForFile(AddHomeworkActivity.this,"com.example.app.fileprovider",outputImage);
+                imageUri = FileProvider.getUriForFile(AddHomeworkActivity.this,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
             }else {
                 imageUri = Uri.fromFile(outputImage);
             }
@@ -513,7 +513,7 @@ public class AddHomeworkActivity extends MyActivity {
         homework.save();
 
         //发送广播更新插件
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent1);
 
         //设置作业对应课程（如果有）有作业

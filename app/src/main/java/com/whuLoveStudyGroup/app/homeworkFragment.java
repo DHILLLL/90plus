@@ -53,7 +53,7 @@ public class homeworkFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.app.UPDATE_HOMEWORK");
+        intentFilter.addAction("com.whuLoveStudyGroup.app.UPDATE_HOMEWORK");
         localBroadcastManager = localBroadcastManager.getInstance(getContext());
         myBroadcastReceiver = new MyBroadcastReceiver();
         localBroadcastManager.registerReceiver(myBroadcastReceiver,intentFilter);

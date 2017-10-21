@@ -156,7 +156,7 @@ public class CourseWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
-        Intent intent1 = new Intent("com.example.app.UPDATE_WIDGET");
+        Intent intent1 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         context.sendBroadcast(intent1);
     }
 
@@ -173,13 +173,13 @@ public class CourseWidget extends AppWidgetProvider {
         SharedPreferences sp1 = context.getSharedPreferences("data",Context.MODE_PRIVATE);
         currentWeek = sp1.getInt("currentWeekReal",1);
 
-        if (intent.getAction().equals("com.example.app.UPDATE_WIDGET") || intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
+        if (intent.getAction().equals("com.whuLoveStudyGroup.app.UPDATE_WIDGET") || intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
             refresh(remoteViews,context);
         }
         
         if(intent.getAction().substring(0,3).equals("app")){
             Intent startAcIntent = new Intent();
-            startAcIntent.setComponent(new ComponentName("com.example.app","com.example.app.courseActivity"));//第一个是包名，第二个是类所在位置的全称
+            startAcIntent.setComponent(new ComponentName("com.whuLoveStudyGroup.app","com.example.app.courseActivity"));//第一个是包名，第二个是类所在位置的全称
             startAcIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startAcIntent.putExtra("course",intent.getAction().substring(3));
             context.startActivity(startAcIntent);

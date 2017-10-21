@@ -84,7 +84,7 @@
         <receiver android:name="com.whuLoveStudyGroup.app.CourseWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.app.UPDATE_WIDGET" />
+                <action android:name="com.whuLoveStudyGroup.app.UPDATE_WIDGET" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
 
@@ -95,7 +95,7 @@
         <receiver android:name="com.whuLoveStudyGroup.app.HomeworkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.app.UPDATE_WIDGET" />
+                <action android:name="com.whuLoveStudyGroup.app.UPDATE_WIDGET" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
 
