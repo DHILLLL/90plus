@@ -70,6 +70,10 @@ public class HomeworkWidget extends AppWidgetProvider {
 
     private void set(Context context, final RemoteViews remoteViews, int currentHomework){
 
+        remoteViews.setOnClickPendingIntent(R.id.homework_widget_left,getPendingIntent(context,R.id.homework_widget_left,"change"));
+        remoteViews.setOnClickPendingIntent(R.id.homework_widget_right,getPendingIntent(context,R.id.homework_widget_right,"change"));
+        remoteViews.setOnClickPendingIntent(R.id.homework_widget_add,getPendingIntent(context,R.id.homework_widget_add,"add"));
+
         List<Homework> homeworks = DataSupport.where("finished = ?","0").order("time DESC").find(Homework.class);
 
         if (homeworks.size() != 0) {
