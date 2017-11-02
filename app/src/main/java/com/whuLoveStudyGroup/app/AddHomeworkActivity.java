@@ -55,6 +55,7 @@ public class AddHomeworkActivity extends MyActivity {
     private Uri imageUri;
     private boolean hasPic = false;
     private String path = null;
+    private int ddl = 99999999;
     private static final String TAG = "dong";
 
     //此acticity拍照、打开相册功能部分来自书293
@@ -139,7 +140,9 @@ public class AddHomeworkActivity extends MyActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddHomeworkActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        ddl = year * 10000 + month * 100 + dayOfMonth;
                         deadline.setText(year + "." + (month+1) + "." + dayOfMonth + "(" + weekday(year,month,dayOfMonth) + ")");
+                        deadline.setFocusable(false);
                     }
                 },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
@@ -509,6 +512,7 @@ public class AddHomeworkActivity extends MyActivity {
         homework.setIsPhoto(hasPic?true:false);
         homework.setCourse(course.getText().toString());
         homework.setTime(x);
+        homework.setDdl(ddl);
         if(hasPic) homework.setPic(imageUri.toString());
         homework.save();
 

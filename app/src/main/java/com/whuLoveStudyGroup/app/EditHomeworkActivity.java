@@ -59,6 +59,7 @@ public class EditHomeworkActivity extends MyActivity {
     private Uri imageUri;
     private boolean hasPic,finished;
     private String path = null;
+    int ddl = 99999999;
 
 
     public static final int TAKE_PHOTO = 1;
@@ -97,6 +98,7 @@ public class EditHomeworkActivity extends MyActivity {
         deadline.setText(homeworks.get(0).getDeadLine());
         word.setText(homeworks.get(0).getWord());
         finished = homeworks.get(0).getFinished();
+        ddl = homeworks.get(0).getDdl();
         if(hasPic) imageUri = Uri.parse(homeworks.get(0).getPic());
 
 
@@ -150,7 +152,9 @@ public class EditHomeworkActivity extends MyActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(EditHomeworkActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        ddl = year * 10000 + month * 100 + dayOfMonth;
                         deadline.setText(year + "." + (month+1) + "." + dayOfMonth + "(" + weekday(year,month,dayOfMonth) + ")");
+                        deadline.setFocusable(false);
                     }
                 },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
@@ -511,6 +515,7 @@ public class EditHomeworkActivity extends MyActivity {
         homework.setIsPhoto(hasPic?true:false);
         homework.setCourse(course.getText().toString());
         homework.setTime(Long.valueOf(id));
+        homework.setDdl(ddl);
         if(hasPic) homework.setPic(imageUri.toString());
         homework.save();
 

@@ -227,28 +227,28 @@ public class ScoreActivity extends MyActivity {
                             switch (which){
                                 case 0:
                                     temp = DataSupport.where("type != ?","公共选修").find(Score.class);
-                                    calculate(temp);
                                     way = 0;
+                                    calculate(temp);
                                     break;
                                 case 1:
                                     temp = DataSupport.findAll(Score.class);
-                                    calculate(temp);
                                     way = 0;
+                                    calculate(temp);
                                     break;
                                 case 2:
                                     temp = DataSupport.where("type != ? and semester = ?","公共选修",semesters.get(time)).find(Score.class);
-                                    calculate(temp);
                                     way = 0;
+                                    calculate(temp);
                                     break;
                                 case 3:
                                     temp = DataSupport.where("semester = ?",semesters.get(time)).find(Score.class);
-                                    calculate(temp);
                                     way = 0;
+                                    calculate(temp);
                                     break;
                                 case 4:
                                     temp = DataSupport.findAll(Score.class);
-                                    calculate(temp);
                                     way = 1;
+                                    calculate(temp);
                                     break;
                                 case 5:
                                     DIY();

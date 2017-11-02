@@ -14,6 +14,11 @@ public class Homework extends DataSupport {
     private String deadLine;
     private boolean isPhoto;//此处笔误，应为hasPhoto，是否有图片
     private boolean finished;
+    private int ddl;
+
+    public void setDdl(int ddl) {
+        this.ddl = ddl;
+    }
 
     public void setDeadLine(String deadLine) {
         this.deadLine = deadLine;
@@ -67,5 +72,9 @@ public class Homework extends DataSupport {
 
     public String getDeadLine() {
         return deadLine;
+    }
+
+    public int getDdl() {
+        return ddl;
     }
 }

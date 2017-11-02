@@ -14,6 +14,7 @@
             android:summaryOn="显示所有的课程"
             android:summaryOff="只显示当周需要上的课程"
             android:title="显示非当周课"
+            android:defaultValue="true"
             android:widgetLayout="@layout/switch_layout"/>
 
     </PreferenceCategory>

@@ -74,7 +74,7 @@ public class HomeworkWidget extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.homework_widget_right,getPendingIntent(context,R.id.homework_widget_right,"change"));
         remoteViews.setOnClickPendingIntent(R.id.homework_widget_add,getPendingIntent(context,R.id.homework_widget_add,"add"));
 
-        List<Homework> homeworks = DataSupport.where("finished = ?","0").order("time DESC").find(Homework.class);
+        List<Homework> homeworks = DataSupport.where("finished = ?","0").order("ddl ASC").find(Homework.class);
 
         if (homeworks.size() != 0) {
 
@@ -198,7 +198,7 @@ public class HomeworkWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        List<Homework> homeworks = DataSupport.where("finished = ?","0").order("time DESC").find(Homework.class);
+        List<Homework> homeworks = DataSupport.where("finished = ?","0").order("ddl ASC").find(Homework.class);
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.homework_widget);
         SharedPreferences sp = context.getSharedPreferences("widget",Context.MODE_PRIVATE);
         int currentHomework = sp.getInt("currentHomework",0);
