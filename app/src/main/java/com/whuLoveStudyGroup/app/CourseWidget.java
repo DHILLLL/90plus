@@ -179,7 +179,7 @@ public class CourseWidget extends AppWidgetProvider {
         
         if(intent.getAction().substring(0,3).equals("app")){
             Intent startAcIntent = new Intent();
-            startAcIntent.setComponent(new ComponentName("com.whuLoveStudyGroup.app","com.example.app.courseActivity"));//第一个是包名，第二个是类所在位置的全称
+            startAcIntent.setComponent(new ComponentName("com.whuLoveStudyGroup.app","com.whuLoveStudyGroup.app.courseActivity"));//第一个是包名，第二个是类所在位置的全称
             startAcIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startAcIntent.putExtra("course",intent.getAction().substring(3));
             context.startActivity(startAcIntent);
