@@ -74,7 +74,7 @@ class GetInfoFromJWXT {
         else if (data.contains("用户名/密码错误")) throw new UsernamePasswordErrorException();
         else if (data.contains("会话超时，请重新登陆")) throw new TimeoutException();
 
-        termCurrentWeekIndex = Integer.parseInt(data.substring(data.indexOf("教学周") - 1, data.indexOf("教学周")));
+        termCurrentWeekIndex = Integer.parseInt(data.substring(data.indexOf("第") + 1, data.indexOf("教学周")));
         Calendar calendar = Calendar.getInstance();
         String currentYear = String.valueOf(calendar.get(Calendar.YEAR));
         String currentTerm = (calendar.get(Calendar.MONTH) <= 7) ? "%CF%C2" : "%C9%CF";
