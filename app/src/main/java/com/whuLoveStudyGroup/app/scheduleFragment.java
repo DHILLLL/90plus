@@ -39,12 +39,13 @@ import java.util.TimeZone;
 
 public class scheduleFragment extends Fragment {
     PercentRelativeLayout sch;
-    int size;
+    int size,firstDay;
     int items = 0;
     int currentWeek;
     int[][] shownCourses = new int[8][14];
     TextView month,mon,tue,wed,thu,fri,sat,sun;
     boolean showAll;
+
 
     private static final String TAG = "dongheyou";
 
@@ -112,7 +113,7 @@ public class scheduleFragment extends Fragment {
         sat = (TextView) view.findViewById(R.id.set_saturday);
         sun = (TextView) view.findViewById(R.id.set_sunday);
 
-        setDate();
+
 
         /*
         //下拉更新课程配色
@@ -147,24 +148,24 @@ public class scheduleFragment extends Fragment {
 
     //显示日期
     private void setDate(){
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        if(firstDay == 0) return;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR,firstDay + 7 * currentWeek);
         month.setText((calendar.get(Calendar.MONTH) + 1) + "月");
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int way = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DAY_OF_MONTH,1 - way);
+
         sun.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         mon.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         tue.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         wed.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         thu.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         fri.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DATE,1);
         sat.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
 
     }
@@ -179,6 +180,7 @@ public class scheduleFragment extends Fragment {
             //获取当前周
             sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
             currentWeek = sp.getInt("currentWeek",1);
+            firstDay = sp.getInt("firstDay",0);
             sp1 = getContext().getSharedPreferences("Setting",Context.MODE_PRIVATE);
             showAll = sp1.getBoolean("showAll",true);
         }catch (Exception e){
@@ -380,6 +382,7 @@ public class scheduleFragment extends Fragment {
     }
 
     public void refresh(){
+        setDate();
         clear();
         //获取所有课程
         List<Course> courses = DataSupport.findAll(Course.class);
