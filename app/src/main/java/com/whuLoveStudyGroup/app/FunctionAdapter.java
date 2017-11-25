@@ -56,6 +56,10 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                         intent = new Intent(context,ScoreActivity.class);
                         context.startActivity(intent);
                         break;
+                    case 5:
+                        intent = new Intent(context,MovieActivity.class);
+                        context.startActivity(intent);
+                        break;
                     default:
                 }
             }
