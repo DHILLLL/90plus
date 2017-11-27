@@ -609,7 +609,7 @@ public class MainActivity extends MyActivity implements
                         final String[] week = {"第1周","第2周","第3周","第4周","第5周","第6周",
                                 "第7周","第8周","第9周","第10周","第11周","第12周","第13周",
                                 "第14周","第15周","第16周","第17周","第18周","第19周","第20周"};
-                        builder.setItems(week, new DialogInterface.OnClickListener() {
+                        builder.setSingleChoiceItems(week, currentWeek - 1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
@@ -621,6 +621,7 @@ public class MainActivity extends MyActivity implements
 
                                 Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCHEDULE");
                                 localBroadcastManager.sendBroadcast(intent);
+                                dialog.cancel();
                             }
                         });
                         builder.show();
