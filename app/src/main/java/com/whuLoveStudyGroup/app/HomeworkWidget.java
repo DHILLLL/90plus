@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -75,6 +76,9 @@ public class HomeworkWidget extends AppWidgetProvider {
         remoteViews.setOnClickPendingIntent(R.id.homework_widget_add,getPendingIntent(context,R.id.homework_widget_add,"add"));
 
         List<Homework> homeworks = DataSupport.where("finished = ?","0").order("ddl ASC").find(Homework.class);
+        SharedPreferences.Editor editor = context.getSharedPreferences("widget",Context.MODE_PRIVATE).edit();
+        editor.putInt("currentLength",homeworks.size());
+        editor.apply();
 
         if (homeworks.size() != 0) {
 
@@ -202,6 +206,7 @@ public class HomeworkWidget extends AppWidgetProvider {
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.homework_widget);
         SharedPreferences sp = context.getSharedPreferences("widget",Context.MODE_PRIVATE);
         int currentHomework = sp.getInt("currentHomework",0);
+        int currentLength = sp.getInt("currentLength",0);
 
         SharedPreferences.Editor editor = context.getSharedPreferences("widget",Context.MODE_PRIVATE).edit();
 
@@ -219,7 +224,11 @@ public class HomeworkWidget extends AppWidgetProvider {
         switch (resId){
             case R.id.homework_widget_left:
                 if (homeworks.size() != 0) {
-                    currentHomework = (currentHomework + homeworks.size() - 1) % homeworks.size();
+                    if(homeworks.size() == currentLength){
+                        currentHomework = (currentHomework + homeworks.size() - 1) % homeworks.size();
+                    }else if (currentHomework == homeworks.size()){
+                        currentHomework--;
+                    }
                 }else{
                     currentHomework = 0;
                 }
@@ -229,7 +238,11 @@ public class HomeworkWidget extends AppWidgetProvider {
                 break;
             case R.id.homework_widget_right:
                 if (homeworks.size() != 0) {
-                    currentHomework = (currentHomework + homeworks.size() + 1) % homeworks.size();
+                    if(homeworks.size() == currentLength){
+                        currentHomework = (currentHomework + homeworks.size() + 1) % homeworks.size();
+                    }else if (currentHomework == homeworks.size()){
+                        currentHomework--;
+                    }
                 }else{
                     currentHomework = 0;
                 }
