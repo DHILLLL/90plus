@@ -477,12 +477,10 @@ public class MainActivity extends MyActivity implements
                                                 }
 
                                                 List<Course> temp;
-                                                Log.d(TAG, "" + maps.size());
 
                                                 for (Map map : maps){
                                                     temp = DataSupport.where("name = ?",map.get("lessonName").toString()).find(Course.class);
                                                     if (temp.size() >= names.get(map.get("lessonName").toString())) continue;
-
 
                                                     Course course = new Course();
                                                     course.setName(map.get("lessonName").toString());

@@ -35,8 +35,10 @@ class GetInfoFromJWXT {
     private int termCurrent = -1;
     private int termCurrentYearStart = -1;
     private int termCurrentYearEnd = -1;
+    private String currentSemester = null;
     private String userChineseName = null;
     private String userAcademy = null;
+
 
     /**
      * @return InputStream Verification code image's input stream
@@ -81,6 +83,7 @@ class GetInfoFromJWXT {
 
         termCurrentWeekIndex = Integer.parseInt(data.substring(data.indexOf("第") + 1, data.indexOf("教学周")));
         String tempStr = data.substring(data.indexOf("<span id=\"term\">") + 17, data.indexOf(" <span id=\"showOrHide\">"));
+        currentSemester = tempStr;
         termCurrent = tempStr.contains("上学期") ? 0 : data.contains("下学期") ? 1 : -1;
         termCurrentYearStart = Integer.parseInt(tempStr.substring(0, 4));
         termCurrentYearEnd = Integer.parseInt(tempStr.substring(5, 9));;
@@ -88,7 +91,7 @@ class GetInfoFromJWXT {
         userAcademy = data.substring(data.indexOf("<span id=\"acade\">") + 17, data.indexOf("</span></div>"));
 
         String currentYear = Integer.toString(termCurrentYearStart);
-        String currentTerm = (termCurrent == 0) ? "%CF%C2" : "%C9%CF";
+        String currentTerm = (termCurrent == 1) ? "%CF%C2" : "%C9%CF";
         String csrf = data.substring(data.indexOf("csrf"), data.indexOf("csrf") + 46);      // extract csrf code
         // System.out.println(csrf);
 
@@ -196,6 +199,7 @@ class GetInfoFromJWXT {
 
         termCurrentWeekIndex = Integer.parseInt(data0.substring(data0.indexOf("第") + 1, data0.indexOf("教学周")));
         String tempStr = data0.substring(data0.indexOf("<span id=\"term\">") + 17, data0.indexOf(" <span id=\"showOrHide\">"));
+        currentSemester = tempStr;
         termCurrent = tempStr.contains("上学期") ? 0 : data0.contains("下学期") ? 1 : -1;
         termCurrentYearStart = Integer.parseInt(tempStr.substring(0, 4));
         termCurrentYearEnd = Integer.parseInt(tempStr.substring(5, 9));;
@@ -327,7 +331,7 @@ class GetInfoFromJWXT {
      * @return String
      * @author Ding Zhang
      */
-    public String getUserChineseName() {
+    protected String getUserChineseName() {
         return userChineseName;
     }
 
@@ -335,8 +339,12 @@ class GetInfoFromJWXT {
      * @return String
      * @author Ding Zhang
      */
-    public String getUserAcademy() {
+    protected String getUserAcademy() {
         return userAcademy;
+    }
+
+    protected String getCurrentSemester() {
+        return currentSemester;
     }
 
     class NetworkErrorException extends Exception {

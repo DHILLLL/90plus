@@ -44,7 +44,7 @@ public class ScoreActivity extends MyActivity {
     Bitmap bmp;
     String sort[] = {"score","name","credit","teacher","type","gpa"};
     int SORT = 0;
-    int time = 0;
+    int time;
     List<Score> list,result;
     List<String> semesters = new ArrayList<>();
     ImageView image;
@@ -112,6 +112,9 @@ public class ScoreActivity extends MyActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+        time = sp.getInt("currentSemester",0);
+
         tvs[0] = (TextView)findViewById(R.id.score_sort_score);
         tvs[1] = (TextView)findViewById(R.id.score_sort_name);
         tvs[2] = (TextView)findViewById(R.id.score_sort_credit);
@@ -175,13 +178,13 @@ public class ScoreActivity extends MyActivity {
             });
 
             result = DataSupport.where("semester = ?",semesters.get(time)).order(sort[SORT] + " desc").find(Score.class);
+
             title.setText(xueqi[time]);
 
             adapter = new ScoreAdapter(result);
             recyclerView.setAdapter(adapter);
 
             for(int i = 0;i<6;i++){
-                Log.d(TAG, "**** " + i);
                 final int temp = i;
                 tvs[i].setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -476,7 +479,10 @@ public class ScoreActivity extends MyActivity {
                                                 try {
                                                     List<Map<String,String>> download  = getInfoFromJWXT.getScoresData(u.getText().toString(), getInfoFromJWXT.md5(p.getText().toString()), c.getText().toString(), getInfoFromJWXT.getCookie());
 
+
+
                                                     DataSupport.deleteAll(Score.class);
+
 
                                                     for (Map<String,String> map : download){
                                                         Score score = new Score();
@@ -521,6 +527,35 @@ public class ScoreActivity extends MyActivity {
 
                                                     list = DataSupport.select("semester").order("semester desc").find(Score.class);
                                                     result = DataSupport.where("semester = ?",list.get(0).getSemester()).find(Score.class);
+
+                                                    List<String> semesters2 = new ArrayList<>();
+
+                                                    if (list.size() != 0){
+
+                                                        for (Score score : list){
+                                                            boolean exist = false;
+                                                            for(String semester : semesters2){
+                                                                if(score.getSemester().equals(semester)){
+                                                                    exist = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                            if (!exist) semesters2.add(score.getSemester());
+                                                        }
+
+                                                        String currentSemester = getInfoFromJWXT.getCurrentSemester();
+
+                                                        for(int i = 0;i<semesters2.size();i++){
+
+                                                            if (currentSemester.equals(semesters2.get(i))){
+                                                                time = i;
+                                                                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                                                editor.putInt("currentSemester",i);
+                                                                editor.apply();
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
 
                                                     Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCORE");
                                                     localBroadcastManager.sendBroadcast(intent);

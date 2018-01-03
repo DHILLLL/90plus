@@ -386,9 +386,9 @@ public class scheduleFragment extends Fragment {
         clear();
         //获取所有课程
         List<Course> courses = DataSupport.findAll(Course.class);
-        Log.d(TAG, "" + courses.size());
         //依次显示课程
         for(Course course: courses){
+
             if ((course.getWeekFrom() <= currentWeek) && course.getWeekTo() >= currentWeek){
                 if (course.getEveryWeek() || (!course.getEveryWeek() && (currentWeek % 2 == 0))){
                     AddItem(course,true);

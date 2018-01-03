@@ -125,7 +125,7 @@ public class CourseWidget extends AppWidgetProvider {
 
         Calendar calendar = Calendar.getInstance();
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
-        return  (dayOfYear - x) / 7;
+        return  ((dayOfYear + 365 - x) % 365) / 7;
     }
 
 
