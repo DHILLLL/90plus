@@ -527,6 +527,12 @@ public class MainActivity extends MyActivity implements
                                                 startActivity(intent);
                                                 overridePendingTransition(0,0);
 
+
+
+                                                Looper.prepare();
+                                                Toast.makeText(MainActivity.this, "课程刷新完毕", Toast.LENGTH_SHORT).show();
+                                                Looper.loop();
+
                                             }catch (Exception e){
                                                 e.printStackTrace();
                                             }

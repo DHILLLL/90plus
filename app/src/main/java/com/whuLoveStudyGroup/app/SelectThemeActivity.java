@@ -152,7 +152,7 @@ public class SelectThemeActivity extends MyActivity {
 
                 finish();
                 final Intent intent = new Intent(SelectThemeActivity.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 overridePendingTransition(0,0);
             }

@@ -560,6 +560,9 @@ public class ScoreActivity extends MyActivity {
                                                     Intent intent = new Intent("com.whuLoveStudyGroup.app.UPDATE_SCORE");
                                                     localBroadcastManager.sendBroadcast(intent);
 
+                                                    Looper.prepare();
+                                                    Toast.makeText(ScoreActivity.this, "成绩刷新完毕", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
 
                                                 } catch (GetInfoFromJWXT.VerificationCodeException e) {
                                                     e.printStackTrace();
