@@ -110,7 +110,6 @@ class GetVersionInfoFromDB {
     }
 
     protected boolean isLatestCritical() {
-        queryResult.get(queryResult.size() - 1).get("critical").toString();
         return (queryResult.get(queryResult.size() - 1).get("critical").toString().equals("1")) ? true : false;
     }
 
