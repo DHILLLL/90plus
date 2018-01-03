@@ -120,7 +120,7 @@ public class MainActivity extends MyActivity implements
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        initiation(18,11);
+        initiation(20,12);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -503,7 +503,7 @@ public class MainActivity extends MyActivity implements
                                                     course.setHourFrom(Integer.parseInt(map.get("beginTime").toString()));
                                                     course.setHourTo(Integer.parseInt(map.get("endTime").toString()));
                                                     course.setNote(map.get("note").toString());
-                                                    //course.setLessoneID(map.get("lessonID").toString());
+                                                    course.setLessoneID(map.get("lessonID").toString());
 
                                                     if(map.get("weekInterVal=").toString().equals("1"))
                                                         course.setEveryWeek(true);
@@ -764,17 +764,13 @@ public class MainActivity extends MyActivity implements
             //editor.putString("theme", "candy");
             editor.putInt("version_id",version_id);
             editor.apply();
-/*
-            Course course = new Course();
-            course.setName("sd");
-            course.setId("0");
-            course.setPlace("sd");
-            course.save();
-            */
 
 
-            //删除旧主题数据
+
+            //DataSupport.deleteAll(Course.class);
             DataSupport.deleteAll(Theme.class);
+
+
 
             //添加主题数据
             Theme theme = new Theme();
@@ -853,6 +849,7 @@ public class MainActivity extends MyActivity implements
             SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
             editor.putBoolean("newUser", false);
             editor.apply();
+
         }
     }
 
