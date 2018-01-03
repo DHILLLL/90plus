@@ -110,7 +110,8 @@ class GetVersionInfoFromDB {
     }
 
     protected boolean isLatestCritical() {
-        return Boolean.parseBoolean(queryResult.get(queryResult.size() - 1).get("critical").toString());
+        queryResult.get(queryResult.size() - 1).get("critical").toString();
+        return (queryResult.get(queryResult.size() - 1).get("critical").toString().equals("1")) ? true : false;
     }
 
     protected long getLatestFileSize() {

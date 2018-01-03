@@ -343,6 +343,10 @@ class GetInfoFromJWXT {
         return userAcademy;
     }
 
+    /**
+     * @return String
+     * @author Ding Zhang
+     */
     protected String getCurrentSemester() {
         return currentSemester;
     }

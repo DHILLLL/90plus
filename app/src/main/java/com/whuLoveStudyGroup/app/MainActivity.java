@@ -120,7 +120,7 @@ public class MainActivity extends MyActivity implements
         sendBroadcast(intent2);
 
         //第一次安装时初始化数据
-        initiation(18,10);
+        initiation(18,11);
 
         //获取当前周
         currentWeek = CourseWidget.setCurrentWeek();
@@ -202,6 +202,7 @@ public class MainActivity extends MyActivity implements
                                     ActivityCollector.finishAll();
                             }
                         });
+
                         if (!critical) {
                             builder.setNeutralButton("此版本不再提醒", new DialogInterface.OnClickListener() {
                                 @Override
@@ -209,6 +210,13 @@ public class MainActivity extends MyActivity implements
                                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                                     editor.putBoolean("noMoreUpdateRemind" + version_id, true);
                                     editor.apply();
+                                }
+                            });
+                        }else{
+                            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    ActivityCollector.finishAll();
                                 }
                             });
                         }
@@ -495,7 +503,7 @@ public class MainActivity extends MyActivity implements
                                                     course.setHourFrom(Integer.parseInt(map.get("beginTime").toString()));
                                                     course.setHourTo(Integer.parseInt(map.get("endTime").toString()));
                                                     course.setNote(map.get("note").toString());
-                                                    course.setLessoneID(map.get("lessonID").toString());
+                                                    //course.setLessoneID(map.get("lessonID").toString());
 
                                                     if(map.get("weekInterVal=").toString().equals("1"))
                                                         course.setEveryWeek(true);
@@ -515,7 +523,7 @@ public class MainActivity extends MyActivity implements
                                                 changeSet();
 
                                                 final Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                                 overridePendingTransition(0,0);
 
