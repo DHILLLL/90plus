@@ -23,15 +23,20 @@ import okhttp3.*;
 /**
  * GetInfoFromJWXT @ Get_course_from_jwxt
  * Created by benjaminzhang on 27/09/2017.
- * Modified on 12/10/2017.
- * Version 1.4.5.171011121224
- * Copyright © 2017 benjaminzhang.
+ * Modified on 01/03/2018.
+ * Version 1.5.2.1801031623
+ * Copyright © 2018 benjaminzhang.
  **/
 class GetInfoFromJWXT {
     private final String[] SERVERADDR = {"210.42.121.134", "210.42.121.133", "210.42.121.132", "210.42.121.241"};
     private int serverIndex = 0;
     private String cookie = null;
     private int termCurrentWeekIndex = -1;
+    private int termCurrent = -1;
+    private int termCurrentYearStart = -1;
+    private int termCurrentYearEnd = -1;
+    private String userChineseName = null;
+    private String userAcademy = null;
 
     /**
      * @return InputStream Verification code image's input stream
@@ -75,9 +80,15 @@ class GetInfoFromJWXT {
         else if (data.contains("会话超时，请重新登陆")) throw new TimeoutException();
 
         termCurrentWeekIndex = Integer.parseInt(data.substring(data.indexOf("第") + 1, data.indexOf("教学周")));
-        Calendar calendar = Calendar.getInstance();
-        String currentYear = String.valueOf(calendar.get(Calendar.YEAR));
-        String currentTerm = (calendar.get(Calendar.MONTH) <= 7) ? "%CF%C2" : "%C9%CF";
+        String tempStr = data.substring(data.indexOf("<span id=\"term\">") + 17, data.indexOf(" <span id=\"showOrHide\">"));
+        termCurrent = tempStr.contains("上学期") ? 0 : data.contains("下学期") ? 1 : -1;
+        termCurrentYearStart = Integer.parseInt(tempStr.substring(0, 4));
+        termCurrentYearEnd = Integer.parseInt(tempStr.substring(5, 9));;
+        userChineseName = data.substring(data.indexOf("<div id=\"nameLable\">") + 36, data.indexOf("\r\n\t            \t<img  src=\"../images/login_info_arrow.png\"/>"));
+        userAcademy = data.substring(data.indexOf("<span id=\"acade\">") + 17, data.indexOf("</span></div>"));
+
+        String currentYear = Integer.toString(termCurrentYearStart);
+        String currentTerm = (termCurrent == 0) ? "%CF%C2" : "%C9%CF";
         String csrf = data.substring(data.indexOf("csrf"), data.indexOf("csrf") + 46);      // extract csrf code
         // System.out.println(csrf);
 
@@ -183,6 +194,14 @@ class GetInfoFromJWXT {
         else if (data0.contains("用户名/密码错误")) throw new UsernamePasswordErrorException();
         else if (data0.contains("会话超时，请重新登陆")) throw new TimeoutException();
 
+        termCurrentWeekIndex = Integer.parseInt(data0.substring(data0.indexOf("第") + 1, data0.indexOf("教学周")));
+        String tempStr = data0.substring(data0.indexOf("<span id=\"term\">") + 17, data0.indexOf(" <span id=\"showOrHide\">"));
+        termCurrent = tempStr.contains("上学期") ? 0 : data0.contains("下学期") ? 1 : -1;
+        termCurrentYearStart = Integer.parseInt(tempStr.substring(0, 4));
+        termCurrentYearEnd = Integer.parseInt(tempStr.substring(5, 9));;
+        userChineseName = data0.substring(data0.indexOf("<div id=\"nameLable\">") + 36, data0.indexOf("\r\n\t            \t<img  src=\"../images/login_info_arrow.png\"/>"));
+        userAcademy = data0.substring(data0.indexOf("<span id=\"acade\">") + 17, data0.indexOf("</span></div>"));
+
         Request request2 = new Request.Builder().addHeader("cookie", cookie).url("http://210.42.121.134/stu/stu_score_parent.jsp").build();
         Response response2 = client.newCall(request2).execute();
         String data = response2.body().string();
@@ -278,6 +297,46 @@ class GetInfoFromJWXT {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.WEEK_OF_YEAR, 1 - termCurrentWeekIndex);
         return calendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_WEEK) + 1;
+    }
+
+    /**
+     * @return int
+     * @author Ding Zhang
+     */
+    protected int getTermCurrent() {
+        return termCurrent;
+    }
+
+    /**
+     * @return int
+     * @author Ding Zhang
+     */
+    protected int getTermCurrentYearStart() {
+        return termCurrentYearStart;
+    }
+
+    /**
+     * @return int
+     * @author Ding Zhang
+     */
+    protected int getTermCurrentYearEnd() {
+        return termCurrentYearEnd;
+    }
+
+    /**
+     * @return String
+     * @author Ding Zhang
+     */
+    public String getUserChineseName() {
+        return userChineseName;
+    }
+
+    /**
+     * @return String
+     * @author Ding Zhang
+     */
+    public String getUserAcademy() {
+        return userAcademy;
     }
 
     class NetworkErrorException extends Exception {
