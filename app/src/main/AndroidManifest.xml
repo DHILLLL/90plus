@@ -112,6 +112,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="com.whuLoveStudyGroup.app.ScoreActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.whuLoveStudyGroup.app.ResetActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.whuLoveStudyGroup.app.MovieActivity"
             android:screenOrientation="portrait"/>
 

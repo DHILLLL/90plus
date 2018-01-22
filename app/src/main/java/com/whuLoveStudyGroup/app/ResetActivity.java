@@ -11,19 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class RegisterActivity extends MyActivity {
+public class ResetActivity extends MyActivity {
 
     AutoCompleteTextView phone;
-    EditText code,password,passwordConfirm,nickname;
+    EditText code,password,passwordConfirm;
     Button commit,get,wait;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_reset);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.register_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.reset_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -31,14 +31,13 @@ public class RegisterActivity extends MyActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        phone = (AutoCompleteTextView)findViewById(R.id.register_phone);
-        code = (EditText)findViewById(R.id.register_code);
-        password = (EditText)findViewById(R.id.register_password);
-        passwordConfirm = (EditText)findViewById(R.id.register_password_confirm);
-        nickname = (EditText)findViewById(R.id.register_nickname);
-        commit = (Button)findViewById(R.id.register_commit);
-        get = (Button)findViewById(R.id.register_get);
-        wait = (Button)findViewById(R.id.register_wait);
+        phone = (AutoCompleteTextView)findViewById(R.id.reset_phone);
+        code = (EditText)findViewById(R.id.reset_code);
+        password = (EditText)findViewById(R.id.reset_password);
+        passwordConfirm = (EditText)findViewById(R.id.reset_password_confirm);
+        commit = (Button)findViewById(R.id.reset_commit);
+        get = (Button)findViewById(R.id.reset_get);
+        wait = (Button)findViewById(R.id.reset_wait);
 
         get.setOnClickListener(new View.OnClickListener() {
             @Override

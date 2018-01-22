@@ -54,10 +54,10 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/register_username"
+                    android:id="@+id/register_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="电话号码"
+                    android:hint="手机号码"
                     android:inputType="number"
                     android:maxLines="1" />
 
@@ -73,7 +73,7 @@
                     android:layout_weight="1">
 
                     <EditText
-                        android:id="@+id/register_password"
+                        android:id="@+id/register_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="短信验证码"
@@ -100,12 +100,54 @@
 
             </LinearLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/register_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="密码"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/register_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="确认密码"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/register_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="昵称"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/register_commit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="确定" />
+                android:text="注册" />
 
         </LinearLayout>
 

@@ -20,7 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class LoginActivity extends MyActivity {
 
     CircleImageView head;
-    AutoCompleteTextView username;
+    AutoCompleteTextView phone;
     EditText password;
     Button commit;
 
@@ -40,7 +40,7 @@ public class LoginActivity extends MyActivity {
         }
 
         head = (CircleImageView)findViewById(R.id.login_head);
-        username = (AutoCompleteTextView)findViewById(R.id.login_username);
+        phone = (AutoCompleteTextView)findViewById(R.id.login_phone);
         password = (EditText)findViewById(R.id.login_password);
         commit = (Button)findViewById(R.id.login_commit);
 
@@ -69,6 +69,8 @@ public class LoginActivity extends MyActivity {
                 startActivity(intent1);
                 break;
             case R.id.login_forget:
+                Intent intent2 = new Intent(LoginActivity.this,ResetActivity.class);
+                startActivity(intent2);
                 break;
             default:
         }
