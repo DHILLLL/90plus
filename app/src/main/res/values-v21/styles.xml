@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SeaT" parent="Sea">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppThemeT" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="CoffeeT" parent="Coffee">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="ButterflyT" parent="Butterfly">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="ForgiveT" parent="Forgive">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="PinkT" parent="Pink">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="HarvestT" parent="Harvest">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="SexlessT" parent="Sexless">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

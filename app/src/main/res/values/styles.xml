@@ -58,4 +58,28 @@
         <item name="colorAccent">#883333</item>
     </style>
 
+    <style name="SeaT" parent="Sea">
+    </style>
+
+    <style name="AppThemeT" parent="AppTheme">
+    </style>
+
+    <style name="CoffeeT" parent="Coffee">
+    </style>
+
+    <style name="ButterflyT" parent="Butterfly">
+    </style>
+
+    <style name="ForgiveT" parent="Forgive">
+    </style>
+
+    <style name="PinkT" parent="Pink">
+    </style>
+
+    <style name="HarvestT" parent="Harvest">
+    </style>
+
+    <style name="SexlessT" parent="Sexless">
+    </style>
+
 </resources>

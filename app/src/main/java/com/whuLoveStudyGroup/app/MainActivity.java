@@ -176,6 +176,7 @@ public class MainActivity extends MyActivity implements
             SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
             final int version_id = getVersionInfoFromDB.getLatestVersionID();
             final boolean critical = getVersionInfoFromDB.isLatestCritical();
+            Log.d(TAG, "critical: " + critical);
             if ((version_id > sp.getInt("version_id", 0)) && !sp.getBoolean("noMoreUpdateRemind" + version_id, false)) {
 
                 runOnUiThread(new Runnable() {
@@ -240,8 +241,21 @@ public class MainActivity extends MyActivity implements
         bigHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                final String[] options = {"登录前", "登录后"};
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent;
+                        if (which == 0)
+                            intent = new Intent(MainActivity.this,LoginActivity.class);
+                        else
+                            intent = new Intent(MainActivity.this,AccountActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+
             }
         });
 
