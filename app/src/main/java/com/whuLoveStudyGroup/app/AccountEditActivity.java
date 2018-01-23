@@ -11,14 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-public class AccountActivity extends AppCompatActivity {
-
-    public static final String FRUIT_NAME = "fruit_name";
-    public static final String FRUIT_IMAGE_ID = "fruit_image_id";
+public class AccountEditActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
@@ -60,13 +56,13 @@ public class AccountActivity extends AppCompatActivity {
         ActivityCollector.addActivity(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_account_edit);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.account_toolbar);
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.account_collapsing_toolbar);
-        ImageView portrait = (ImageView) findViewById(R.id.account_portrait);
-        FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.account_edit);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.account_edit_toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.account_edit_collapsing_toolbar);
+        ImageView portrait = (ImageView) findViewById(R.id.account_edit_portrait);
+        FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.account_edit_finish);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -78,8 +74,8 @@ public class AccountActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AccountActivity.this,AccountEditActivity.class);
-                startActivity(intent);
+                //提交修改资料
+                finish();
             }
         });
     }

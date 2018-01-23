@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,12 +21,14 @@ public class UpdateAdapter extends RecyclerView.Adapter<UpdateAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder{
         View mView;
         TextView version,information;
+        ImageView current;
 
         public ViewHolder(View view){
             super(view);
             mView = view;
             version = (TextView) view.findViewById(R.id.update_version);
             information = (TextView) view.findViewById(R.id.update_information);
+            current = (ImageView) view.findViewById(R.id.update_current);
         }
     }
 
@@ -49,6 +52,11 @@ public class UpdateAdapter extends RecyclerView.Adapter<UpdateAdapter.ViewHolder
         UpdateInformation ui = list.get(position);
         holder.version.setText(ui.getVersion());
         holder.information.setText(ui.getInformation());
+        if (ui.getVersion().equals("Version 0.5.33.180103"))
+            holder.current.setVisibility(View.VISIBLE);
+        else
+            holder.current.setVisibility(View.GONE);
+
     }
 
     @Override

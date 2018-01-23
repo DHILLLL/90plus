@@ -118,6 +118,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="com.whuLoveStudyGroup.app.AccountActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.whuLoveStudyGroup.app.AccountEditActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.whuLoveStudyGroup.app.DownloadService"
             android:exported="true"
