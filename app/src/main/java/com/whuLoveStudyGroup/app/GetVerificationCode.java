@@ -1,41 +1,40 @@
 package com.whuLoveStudyGroup.app;
 
+/**
+ * Created by benjaminzhang on 28/01/2018.
+ * Modified by benjaminzhang on 28/01/2018.
+ * Copyright © 2018 benjaminzhang.
+ * All rights reserved.
+ * Version 1.0.1.1801282200
+ */
+
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import okhttp3.*;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.MessageDigest;
 
-import okhttp3.*;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
-
-/**
- * Created by benjaminzhang on 16/10/2017.
- * Modified by benjaminzhang on 28/01/2018.
- * Copyright © 2018 benjaminzhang.
- * All rights reserved.
- * Version 1.2.1.1801282140
- */
-
-public class GetVersionInfoFromDB {
+public class GetVerificationCode {
     private final String PROTOCOL = "http://";
     private final String SERVERADDR = "39.108.108.43";
 //    private final String SERVERADDR = "127.0.0.1";
     private final String PORT = "9090";
-    private final String DBINFOLATESTADDR = "90plus/api/v1/get/software_info/latest";
-    private final String DBINFOALLADDR = "90plus/api/v1/get/software_info/all";
+    private final String REQUESTADDR = "90plus/api/v1/get/verification_code";
     private Resp resp = null;
 
-    protected void connAndGetVersionInfo() throws UnknownErrorException, NetworkErrorException{
+    protected int getVerificationCode(int code, String phoneNUmber) throws UnknownErrorException, NetworkErrorException {
         OkHttpClient okHttpClient = new OkHttpClient();
-        String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + DBINFOALLADDR;
-        System.out.println(url);
+        String req_time = Long.toString(System.currentTimeMillis());
+        String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR + "/" + req_time + "/" + phoneNUmber + "/" + code + "/" +
+                md5("code=" + code + "&receiver=" + phoneNUmber + "&req_time=" + req_time + "&secret_key=sulp09");
+//        System.out.println(url);
         Request request = new Request.Builder().url(url).build();
         Call call = okHttpClient.newCall(request);
         try {
@@ -53,59 +52,45 @@ public class GetVersionInfoFromDB {
         } catch (IOException e) {
             throw new UnknownErrorException();
         }
+        return resp.code;
     }
 
-    protected int getLatestVersionID() {
-        return resp.data[resp.data.length - 1].version_id;
+    protected String getResponceMsg() {
+        return resp.msg;
     }
 
-    protected String getLatestVersion() {
-        return resp.data[resp.data.length - 1].version;
-    }
-
-    protected String getLatestInfo() {
-        return resp.data[resp.data.length - 1].info;
-    }
-
-    protected String getLatestChangeLog() {
-        return resp.data[resp.data.length - 1].change_log;
-    }
-
-    protected boolean isLatestCritical() {
-        return resp.data[resp.data.length - 1].critical;
-    }
-
-    protected long getLatestFileSize() {
-        return resp.data[resp.data.length - 1].file_size;
-    }
-
-    protected String getLatestDownloadAddress() {
-        return resp.data[resp.data.length - 1].link;
-    }
-
-    protected List<UpdateInformation> getUpdateHistory() {
-        List<UpdateInformation> list = new ArrayList<>();
-        for (int i = resp.data.length - 1; i >= 0; i--) {
-            UpdateInformation temp = new UpdateInformation(resp.data[i].version.toString(), resp.data[i].change_log);
-            list.add(temp);
+    /**
+     * @param s String which needs to be encrypted
+     * @author Ding Zhang
+     */
+    private String md5(String s) {
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        try {
+            byte[] btInput = s.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (byte byte0 : md) {
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return list;
     }
 
     private class Resp {
         private String msg = null;
         private int code = 0;
-        private VersionInfo[] data = null;
-    }
-
-    private class VersionInfo {
-        private String change_log = null;
-        private boolean critical = false;
-        private long file_size = 0;
-        private String info = null;
-        private String link = null;
-        private String version = null;
-        private int version_id = 0;
     }
 
     protected class UnknownErrorException extends Exception {
