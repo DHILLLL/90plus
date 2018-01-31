@@ -25,7 +25,7 @@ public class playgroundFragment extends Fragment {
         new Function("失物招领",R.drawable.main_lnf),new Function("梅操电影",R.drawable.main_movie)};*/
 
     private Function[] functions = {new Function("成绩查询",R.drawable.main_grade),new Function("敬请期待",R.drawable.main_trouble),
-            new Function("敬请期待",R.drawable.main_search),new Function("敬请期待",R.drawable.main_map),
+            new Function("敬请期待",R.drawable.main_search),new Function("实用信息",R.drawable.main_map),
             new Function("敬请期待",R.drawable.main_lnf),new Function("敬请期待",R.drawable.main_movie)};
 
     private List<Function> functionList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.whuLoveStudyGroup.app;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -152,8 +153,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
                 int position = holder.getAdapterPosition();
                 Homework homework = HomeworkList.get(position);
 
+
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse(homework.getPic()), "image/*");
+
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 context.startActivity(intent);
 

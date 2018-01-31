@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/card_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="校园卡"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="（一）校园卡补办"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="\t需要带上身份证、学生证， 到财务部212办公室办理或者工学部的学生一站式服务中心，工本费20元。原卡余额充足会直接扣除，补卡成功后，原卡就自动作废了。补办的时间为周一到周五上午8:00-11:35（左右），下午2:00-5:10 ，周四下午不办理证件，周六日不上班。"
+                        android:lineSpacingMultiplier="1.1"
+                        android:textColor="#666666"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="（二）校园卡的冻结与解冻"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="\t校园卡消费以流水的形式记录，在POS机上刷卡消费时，系统会同时更改数据库金额并将余额回写卡片。少数持卡人在POS机上消费时，拿卡过快，正确的余额没有回写到卡片 上，造成校园卡的卡金额与数据库金额不相同。\n\t系统每日在当晚11：50对持卡人账户进行结算，若发现校园卡数据库余额为负或者数据库余额和卡片余额相差大于20元时就会冻结该账户。\n\t此外，转网费时一定要等所有步骤操作完后才能把卡拿走，否则会造成帐户余额被扣而卡片余额未扣的情况，最终导致卡片冻结。"
+                        android:lineSpacingMultiplier="1.1"
+                        android:textColor="#666666"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="（三）校园卡丢失后快速挂失"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="\t方式一：如果记得卡号，可拨打下列语音服务电话进行挂失：027-68773201、027-68773202、027-68773236、027-68773237；\n\t方式二：如果不记得卡号，可在圈存机上通过“校园卡业务”下“学工号挂失”输入学号或人事号进行挂失；\n\t方法三：如果不记得卡号，还可通过校园网访问“校园卡专题网站”，点击“校园卡查询系统”后输入您的学工号、校园卡查询密码和验证码登录进去后再进行挂失。"
+                        android:lineSpacingMultiplier="1.1"
+                        android:textColor="#666666"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="（三）校园卡的一些常见问题"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="a.圈存机充值后显示信息接受失败但银行卡已扣钱：\n\t带上身份证、银行卡到到中国银行打印当天的交易明细，然后带交易明细单、身份证、校园卡到校园卡中心，校园卡中心与银行对账后会把该笔款项打到校园卡账户里。\nb.用圈存机转账显示 “MAC错误”\n\t港澳台的中国银行卡都被冻结，要去梅园的中国银行弄\nc.、在圈存机上转账显示网络信息错误，结果银行卡扣钱了，校园卡里面却没有存钱进去。这是怎么回事？\n\t拨打财务部电话询问一下，另外去查找一下银行卡和校园卡的消费记录，看是否有相关证据，并告知财务部老师所使用的圈存机的位置"
+                        android:lineSpacingMultiplier="1.1"
+                        android:textColor="#666666"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="（四）特别提醒"
+                        android:textColor="#333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="a.因系统原因被冻结的卡，在办理解冻后，当天必须充值\nb.补办、换卡后可能第二天才能进图书馆\nc.校园卡在食堂等地方能用，而在校医院不能使用，请联系校医院吴老师：15337245415"
+                        android:lineSpacingMultiplier="1.1"
+                        android:textColor="#666666"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

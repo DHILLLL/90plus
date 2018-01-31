@@ -1,8 +1,19 @@
 package com.whuLoveStudyGroup.app;
 
+import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +22,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -56,6 +70,31 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                         intent = new Intent(context,ScoreActivity.class);
                         context.startActivity(intent);
                         break;
+                    case 3:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("请选择功能");
+                        final String[] options = {"地图","校车","校园卡"};
+                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent;
+                                switch (which){
+                                    case 0:
+                                        openMap();
+                                        break;
+                                    case 1:
+                                        intent = new Intent(context,BusActivity.class);
+                                        context.startActivity(intent);
+                                        break;
+                                    case 2:
+                                        intent = new Intent(context,CardActivity.class);
+                                        context.startActivity(intent);
+                                        break;
+
+                                }
+                            }
+                        }).show();
+                        break;
                     case 5:
                         intent = new Intent(context,MovieActivity.class);
                         context.startActivity(intent);
@@ -66,6 +105,53 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
         });
 
         return holder;
+    }
+
+    void openMap(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        SharedPreferences sp = context.getSharedPreferences("data",Context.MODE_PRIVATE);
+        String uri = sp.getString("campus_map","failed");
+        if (uri.equals("failed")){
+            saveMap();
+            sp = context.getSharedPreferences("data",Context.MODE_PRIVATE);
+            uri = sp.getString("campus_map","failed");
+        }
+        intent.setDataAndType(Uri.parse(uri), "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(intent);
+        return;
+    }
+
+    void saveMap(){
+        String str_uri;
+        try{
+            File outputImage = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),"campus_map.jpg");
+            outputImage.createNewFile();
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 2;
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.campus_map);
+            FileOutputStream out = new FileOutputStream(outputImage);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+            out.flush();out.close();
+
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= 24) {
+                uri = FileProvider.getUriForFile(context,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
+            }else {
+                uri = Uri.fromFile(outputImage);
+            }
+            str_uri = uri.toString();
+
+        } catch (IOException e){
+            e.printStackTrace();
+            str_uri = "failed";
+        }
+
+
+        SharedPreferences.Editor editor = context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS).edit();
+        editor.putString("campus_map",str_uri);
+        editor.apply();
+
     }
 
     @Override
