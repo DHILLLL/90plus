@@ -124,6 +124,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="com.whuLoveStudyGroup.app.CardActivity"
         android:screenOrientation="portrait"/>
+        <activity android:name="com.whuLoveStudyGroup.app.LnfActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.whuLoveStudyGroup.app.DownloadService"
             android:exported="true"

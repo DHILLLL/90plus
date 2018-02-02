@@ -176,7 +176,6 @@ public class MainActivity extends MyActivity implements
             SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
             final int version_id = getVersionInfoFromDB.getLatestVersionID();
             final boolean critical = getVersionInfoFromDB.isLatestCritical();
-            Log.d(TAG, "critical: " + critical);
             if ((version_id > sp.getInt("version_id", 0)) && !sp.getBoolean("noMoreUpdateRemind" + version_id, false)) {
 
                 runOnUiThread(new Runnable() {

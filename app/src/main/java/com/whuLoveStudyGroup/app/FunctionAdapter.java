@@ -34,6 +34,7 @@ import java.util.List;
 public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHolder> {
     private Context context;
     private List<Function> functionList;
+    private static final String TAG = "dong";
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         View mView;
@@ -72,8 +73,8 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                         break;
                     case 3:
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("请选择功能");
-                        final String[] options = {"地图","校车","校园卡"};
+                        builder.setTitle("请选择信息");
+                        final String[] options = {"地图","校车","校园卡","校历"};
                         builder.setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -90,10 +91,20 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                                         intent = new Intent(context,CardActivity.class);
                                         context.startActivity(intent);
                                         break;
-
+                                    case 3:
+                                        intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse("http://ugs.whu.edu.cn/xl/a2017_2018nxl.htm");
+                                        intent.setData(content_url);
+                                        context.startActivity(intent);
+                                        break;
                                 }
                             }
                         }).show();
+                        break;
+                    case 4:
+                        intent = new Intent(context,LnfActivity.class);
+                        context.startActivity(intent);
                         break;
                     case 5:
                         intent = new Intent(context,MovieActivity.class);
@@ -131,9 +142,8 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
             opts.inSampleSize = 2;
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.campus_map);
             FileOutputStream out = new FileOutputStream(outputImage);
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
             out.flush();out.close();
-
             Uri uri;
             if (Build.VERSION.SDK_INT >= 24) {
                 uri = FileProvider.getUriForFile(context,"com.whuLoveStudyGroup.app.fileprovider",outputImage);
