@@ -281,6 +281,47 @@ public class ConnWithServer {
 
     /**
      *
+     * @param phoneNumber               Mobile phone number
+     * @param password                  Password
+     * @return Response status
+     * @throws UnknownErrorException    Unknown error or server error
+     * @throws NetworkErrorException    Network connection failed or error
+     */
+    protected int loginUser(String phoneNumber, String password) throws UnknownErrorException, NetworkErrorException {
+        resp = null;
+        final String REQUESTADDR = "90plus/api/v1/login/user/";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String md5ToBe = md5("mobile_phone_number=" + phoneNumber + "&password=" + password + "&secret_key=sulp09");
+        String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR;
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("password", password)
+                .add("mobile_phone_number", phoneNumber)
+                .add("md5", md5ToBe).build();
+
+        Request request = new Request.Builder().url(url).post(requestBody).build();
+        Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            String respStr = null;
+            if (response.body() != null) {
+                respStr = response.body().string();
+            } else throw new UnknownErrorException();
+            Gson gson = new Gson();
+            resp = gson.fromJson(respStr, Resp.class);
+        } catch (JsonSyntaxException e) {
+            throw new UnknownErrorException();
+        } catch (ConnectException e) {
+            throw new NetworkErrorException();
+        } catch (IOException e) {
+            throw new UnknownErrorException();
+        }
+        return resp.code;
+    }
+
+    /**
+     *
      * @return Response data
      */
     protected Object getResponseData() {
