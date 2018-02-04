@@ -59,8 +59,8 @@ public class ConnWithServer {
 
 
     private final String PROTOCOL = "http://";
-    //    private final String SERVERADDR = "39.108.108.43";
-    private final String SERVERADDR = "127.0.0.1";
+    private final String SERVERADDR = "39.108.108.43";
+//    private final String SERVERADDR = "127.0.0.1";
     private final String PORT = "9090";
     private Resp resp = null;
 
