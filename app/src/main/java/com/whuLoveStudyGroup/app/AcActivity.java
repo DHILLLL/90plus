@@ -1,0 +1,47 @@
+package com.whuLoveStudyGroup.app;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+
+public class AcActivity extends MyActivity {
+    private static final String TAG = "dong";  
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_ac);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.ac_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+
+
+    //设置左上右上按钮事件
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+        }
+        return true;
+    }
+
+}

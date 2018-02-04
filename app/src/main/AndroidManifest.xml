@@ -126,7 +126,8 @@
         android:screenOrientation="portrait"/>
         <activity android:name="com.whuLoveStudyGroup.app.LnfActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name="com.whuLoveStudyGroup.app.AcActivity"
+            android:screenOrientation="portrait"/>
         <service android:name="com.whuLoveStudyGroup.app.DownloadService"
             android:exported="true"
             android:enabled="true"/>

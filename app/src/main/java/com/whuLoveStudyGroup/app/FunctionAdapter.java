@@ -74,14 +74,19 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                     case 3:
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("请选择信息");
-                        final String[] options = {"地图","校车","校园卡","校历"};
+                        final String[] options = {"地图","校车","校园卡","校历","空调卡"};
                         builder.setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent;
                                 switch (which){
                                     case 0:
-                                        openMap();
+                                        //openMap();
+                                        intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri url = Uri.parse("https://gitee.com/makebignews/90Plus/raw/master/campus_map.jpg");
+                                        intent.setData(url);
+                                        context.startActivity(intent);
                                         break;
                                     case 1:
                                         intent = new Intent(context,BusActivity.class);
@@ -96,6 +101,10 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                                         intent.setAction("android.intent.action.VIEW");
                                         Uri content_url = Uri.parse("http://ugs.whu.edu.cn/xl/a2017_2018nxl.htm");
                                         intent.setData(content_url);
+                                        context.startActivity(intent);
+                                        break;
+                                    case 4:
+                                        intent = new Intent(context,AcActivity.class);
                                         context.startActivity(intent);
                                         break;
                                 }
@@ -136,11 +145,16 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
     void saveMap(){
         String str_uri;
         try{
-            File outputImage = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),"campus_map.jpg");
+            File outputImage = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),"map.jpg");
             outputImage.createNewFile();
             BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = 2;
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.campus_map);
+            opts.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(context.getResources(),R.drawable.campus_map,opts);
+            Log.d(TAG, "saveMap: " + opts.outWidth + " " + opts.outHeight);
+            opts.inSampleSize = opts.outWidth / 4000;
+            Log.d(TAG, "inSampleSize = " + opts.outWidth / 4000);
+            opts.inJustDecodeBounds = false;
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.campus_map,opts);
             FileOutputStream out = new FileOutputStream(outputImage);
             bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
             out.flush();out.close();
