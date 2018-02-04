@@ -1,45 +1,110 @@
 package com.whuLoveStudyGroup.app;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.security.MessageDigest;
 
 /**
  * Created by benjaminzhang on 29/01/2018.
- * Modified by benjaminzhang on 03/02/2018
+ * Modified by benjaminzhang on 04/02/2018
  * Copyright © 2018 benjaminzhang.
  * All rights reserved.
- * Version 1.2.1.1802031720
+ * Version 1.2.3.1802041720
  */
 
 public class ConnWithServer {
+    private final int SUCCESS = 0;
+
+    private final int SERVER_INTERNAL_ERROR = 500;
+    private final int DATABASE_QUERY_ERROR = 501;
+    private final int DATABASE_INSERT_ERROR = 502;
+    private final int DATABASE_UPDATE_ERROR = 503;
+
+
+    private final int SIGNATURE_ERROR = 400;
+
+    private final int MESSAGE_MOBILE_NUMBER_ILLEGAL = 40101;
+    private final int MESSAGE_PARAM_LENGTH_LIMIT = 40102;
+    private final int MESSAGE_BUSINESS_LIMIT_CONTROL = 40103;
+
+    private final int TIMEOUT_ERROR = 402;
+
+    private final int PARAM_ERROR = 404;
+    private final int PARAM_ERROR_VERIFICATION_CODE_LENGTH = 404011;
+    private final int PARAM_ERROR_VERIFICATION_CODE_ERROR = 404012;
+    private final int PARAM_ERROR_MESSAGE_RECEIVER_LENGTH = 404021;
+    private final int PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST = 404022;
+    private final int PARAM_ERROR_MOBILE_PHONE_ERROR = 404023;
+    private final int PARAM_ERROR_PASSWORD_LENGTH = 404031;
+    private final int PARAM_ERROR_PASSWORD_STRENGTH = 404032;
+    private final int PARAM_ERROR_PASSWORD_ERROR = 404033;
+    private final int PARAM_ERROR_USER_ID_ERROR = 404041;
+    private final int PARAM_ERROR_USER_NOT_EXIST = 404042;
+    private final int PARAM_ERROR_QQ_NUMBER_ERROR = 40405;
+    private final int PARAM_ERROR_USERNAME_LENGTH = 404061;
+    private final int PARAM_ERROR_USERNAME_ERROR = 404062;
+    private final int PARAM_ERROR_ACADEMY_LENGTH = 40407;
+    private final int PARAM_ERROR_PROFESSION_LENGTH = 40408;
+    private final int PARAM_ERROR_SIGNATURE_LENGTH = 40409;
+
+    private final int NETWORK_ERROR = 499;    //Client, server has not used
+
+
+    private final int UNKNOWN_ERROR = 999;
+
+
     private final String PROTOCOL = "http://";
-    private final String SERVERADDR = "39.108.108.43";
-//    private final String SERVERADDR = "127.0.0.1";
+    //    private final String SERVERADDR = "39.108.108.43";
+    private final String SERVERADDR = "127.0.0.1";
     private final String PORT = "9090";
     private Resp resp = null;
 
+    public static void main(String[] args) {
+        ConnWithServer xxx = new ConnWithServer();
+        int x = xxx.getVerificationCode("123456", "15927271755");
+//        int x = xxx.addUser(123456, "15927271755", "HelloWorld", "123456");
+//        File image = new File("test.png");
+//        int x = xxx.editUser("Computer School", null, 2015, null, "testtest",
+//                null, null, 1, "This is a test.", 19, "", image);
+//        int x = xxx.getUserImageAddr(19, "15927271755");
+        System.out.println(x);
+        System.out.println(xxx.getResponseMsg());
+        System.out.println(xxx.getResponseData());
+    }
 
     /**
      *
-     * @param code                      Verification code
-     * @param phoneNumber               Target mobile phone number
-     * @return Response status
-     * @throws UnknownErrorException    Unknown error or server error
-     * @throws NetworkErrorException    Network connection failed or error
+     * @param code          Verification code
+     * @param phoneNumber   Target mobile phone number
+     * @return              Response status
+     * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH 404011  Verification code length too short
+     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH  404021  Message receiver length error
+     * @throws SIGNATURE_ERROR                      400     Signature error
+     * @throws MESSAGE_MOBILE_NUMBER_ILLEGAL        40101   Mobile phone number illegal
+     * @throws MESSAGE_PARAM_LENGTH_LIMIT           40102   Verification code length error
+     * @throws MESSAGE_BUSINESS_LIMIT_CONTROL       40103   Send verification code too often
+     * @throws TIMEOUT_ERROR                        402     Timeout
+     * @throws NETWORK_ERROR                        499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                        999     Unknown
      */
-    protected int getVerificationCode(String code, String phoneNumber) throws UnknownErrorException, NetworkErrorException {
-        resp = null;
+    protected int getVerificationCode(String code, String phoneNumber) {
+        resp = new Resp();
+        if (code.length() < 6) {
+            resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
+            resp.msg = "PARAM_ERROR_VERIFICATION_CODE_LENGTH";
+            return resp.code;
+        }
+        if (phoneNumber.length() != 11) {
+            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
+            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            return resp.code;
+        }
+
         final String REQUESTADDR = "90plus/api/v1/get/verification_code/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String req_time = Long.toString(System.currentTimeMillis());
@@ -53,15 +118,22 @@ public class ConnWithServer {
             String respStr = null;
             if (response.body() != null) {
                 respStr = response.body().string();
-            } else throw new UnknownErrorException();
+            } else {
+                resp.code = 999;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
         } catch (JsonSyntaxException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         } catch (ConnectException e) {
-            throw new NetworkErrorException();
+            resp.code = 499;
+            resp.msg = "NETWORK_ERROR";
         } catch (IOException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         }
         return resp.code;
     }
@@ -70,16 +142,52 @@ public class ConnWithServer {
      * 调用完该方法后记得调用getResponseData获取userID信息。        !!!
      * 在获取userID之前请不要调用其他方法，否则将无法再次获得userID。  !!!
      *
-     * @param code                      Verification Code
-     * @param phoneNumber               Mobile phone number
-     * @param username                  Username
-     * @param password                  Password
-     * @return Response status
-     * @throws UnknownErrorException    Unknown error or server error
-     * @throws NetworkErrorException    Network connection failed or error
+     * @param code          Verification Code
+     * @param phoneNumber   Mobile phone number
+     * @param username      Username
+     * @param password      Password
+     * @return              Response status
+     * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH     404011  Verification code length too short
+     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
+     * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
+     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password week
+     * @throws PARAM_ERROR_VERIFICATION_CODE_ERROR      404012  Verification code error
+     * @throws PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST   404022  Mobile phone number existed
+     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int addUser(String code, String phoneNumber, String username, String password) throws UnknownErrorException, NetworkErrorException {
-        resp = null;
+    protected int addUser(String code, String phoneNumber, String username, String password) {
+        resp = new Resp();
+        if (code.length() < 6) {
+            resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
+            resp.msg = "PARAM_ERROR_VERIFICATION_CODE_LENGTH";
+            return resp.code;
+        }
+        if (phoneNumber.length() != 11) {
+            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
+            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            return resp.code;
+        }
+        if (username.length() > 15) {
+            resp.code = PARAM_ERROR_USERNAME_LENGTH;
+            resp.msg = "PARAM_ERROR_USERNAME_LENGTH";
+            return resp.code;
+        }
+        if (password.length() < 8) {
+            resp.code = PARAM_ERROR_PASSWORD_LENGTH;
+            resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+            return resp.code;
+        } else {
+            if (password.matches("^\\d+$") || password.matches("^[a-zA-Z]+$")) {
+                resp.code = PARAM_ERROR_PASSWORD_STRENGTH;
+                resp.msg = "PARAM_ERROR_PASSWORD_STRENGTH";
+                return resp.code;
+            }
+        }
+
         final String REQUESTADDR = "90plus/api/v1/add/user/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String md5ToBe = md5("code=" + code + "&mobile_phone_number=" + phoneNumber + "&password=" + password + "&username=" + username + "&secret_key=sulp09");
@@ -100,15 +208,22 @@ public class ConnWithServer {
             String respStr = null;
             if (response.body() != null) {
                 respStr = response.body().string();
-            } else throw new UnknownErrorException();
+            } else {
+                resp.code = 999;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
         } catch (JsonSyntaxException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         } catch (ConnectException e) {
-            throw new NetworkErrorException();
+            resp.code = 499;
+            resp.msg = "NETWORK_ERROR";
         } catch (IOException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         }
         return resp.code;
     }
@@ -118,25 +233,39 @@ public class ConnWithServer {
      *
      * 除了userID以外的所有参数都可以不填。写成一个方法的原因是统一方法，不需要写多个方法。
      *
-     * @param academy                   学院
-     * @param code                      Verification code
-     * @param grade                     年级
-     * @param phoneNumber               Mobile phone number
-     * @param password                  Password
-     * @param profession                专业
-     * @param qqNum                     QQ number
-     * @param sex                       Sex (男则为1，女则为0，否则为-1)
-     * @param signature                 个性签名
-     * @param userID                    User unique id
-     * @param username                  Username
-     * @param userImage                 用户头像
-     * @return Response status
-     * @throws UnknownErrorException    Unknown error or server error
-     * @throws NetworkErrorException    Network connection failed or error
+     * @param academy       学院
+     * @param code          Verification code
+     * @param grade         年级
+     * @param phoneNumber   Mobile phone number
+     * @param password      Password
+     * @param profession    专业
+     * @param qqNum         QQ number
+     * @param sex           Sex (男则为1，女则为0，否则为-1)
+     * @param signature     个性签名
+     * @param userID        User unique id
+     * @param username      Username
+     * @param userImage     用户头像
+     * @return              Response status
+     * @throws PARAM_ERROR_ACADEMY_LENGTH               40407   User academy length too long
+     * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH     404011  Verification code length too short
+     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
+     * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
+     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password week
+     * @throws PARAM_ERROR_PROFESSION_LENGTH            40408   User profession length too long
+     * @throws PARAM_ERROR_SIGNATURE_LENGTH             40409   User signature length too long
+     * @throws PARAM_ERROR_USER_ID_ERROR                404041  User ID error
+     * @throws PARAM_ERROR_QQ_NUMBER_ERROR              40405   QQ number error
+     * @throws PARAM_ERROR_VERIFICATION_CODE_ERROR      404012  Verification code error
+     * @throws PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST   404022  Mobile phone number existed
+     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
      */
     protected int editUser(String academy, String code, int grade, String phoneNumber, String password, String profession, String qqNum,
-                           int sex, String signature, int userID, String username, File userImage) throws UnknownErrorException, NetworkErrorException {
-        resp = null;
+                           int sex, String signature, int userID, String username, File userImage) {
+        resp = new Resp();
         final String REQUESTADDR = "90plus/api/v1/edit/user/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR;
@@ -149,12 +278,22 @@ public class ConnWithServer {
 
         String toBeMd5 = "academy=";
         if (academy != null) {
+            if (academy.length() > 18) {
+                resp.code = PARAM_ERROR_ACADEMY_LENGTH;
+                resp.msg = "PARAM_ERROR_ACADEMY_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("academy", academy);
             toBeMd5 += academy;
         }
 
         toBeMd5 += "&code=";
         if (code != null) {
+            if (code.length() < 6) {
+                resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
+                resp.msg = "PARAM_ERROR_VERIFICATION_CODE_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("code", code);
             toBeMd5 += code;
         }
@@ -167,18 +306,39 @@ public class ConnWithServer {
 
         toBeMd5 += "&mobile_phone_number=";
         if (phoneNumber != null) {
+            if (phoneNumber.length() != 11) {
+                resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
+                resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("mobile_phone_number", phoneNumber);
             toBeMd5 += phoneNumber;
         }
 
         toBeMd5 += "&password=";
         if (password != null) {
+            if (password.length() < 8) {
+                resp.code = PARAM_ERROR_PASSWORD_LENGTH;
+                resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+                return resp.code;
+            } else {
+                if (password.matches("^\\d+$") || password.matches("^[a-zA-Z]+$")) {
+                    resp.code = PARAM_ERROR_PASSWORD_STRENGTH;
+                    resp.msg = "PARAM_ERROR_PASSWORD_STRENGTH";
+                    return resp.code;
+                }
+            }
             requestBodyPostBuilder.addFormDataPart("password", password);
             toBeMd5 += password;
         }
 
         toBeMd5 += "&profession=";
         if (profession != null) {
+            if (profession.length() > 22) {
+                resp.code = PARAM_ERROR_PROFESSION_LENGTH;
+                resp.msg = "PARAM_ERROR_PROFESSION_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("profession", profession);
             toBeMd5 += profession;
         }
@@ -201,6 +361,11 @@ public class ConnWithServer {
 
         toBeMd5 += "&signature=";
         if (signature != null) {
+            if (signature.length() > 200) {
+                resp.code = PARAM_ERROR_SIGNATURE_LENGTH;
+                resp.msg = "PARAM_ERROR_SIGNATURE_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("signature", signature);
             toBeMd5 += signature;
         }
@@ -209,10 +374,19 @@ public class ConnWithServer {
         if (userID > 0) {
             requestBodyPostBuilder.addFormDataPart("user_id", String.valueOf(userID));
             toBeMd5 += userID;
+        } else {
+            resp.code = PARAM_ERROR_USER_ID_ERROR;
+            resp.msg = "PARAM_ERROR_USER_ID_ERROR";
+            return resp.code;
         }
 
         toBeMd5 += "&username=";
         if (username != null) {
+            if (username.length() > 15) {
+                resp.code = PARAM_ERROR_USERNAME_LENGTH;
+                resp.msg = "PARAM_ERROR_USERNAME_LENGTH";
+                return resp.code;
+            }
             requestBodyPostBuilder.addFormDataPart("username", username);
             toBeMd5 += username;
         }
@@ -229,30 +403,50 @@ public class ConnWithServer {
             String respStr = null;
             if (response.body() != null) {
                 respStr = response.body().string();
-            } else throw new UnknownErrorException();
+            } else {
+                resp.code = 999;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
         } catch (JsonSyntaxException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         } catch (ConnectException e) {
-            throw new NetworkErrorException();
+            resp.code = 499;
+            resp.msg = "NETWORK_ERROR";
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         }
         return resp.code;
     }
 
     /**
      *
-     * @param userID                    User unique id
-     * @param phoneNumber               Mobile phone number
-     * @return Response status
-     * @throws UnknownErrorException    Unknown error or server error
-     * @throws NetworkErrorException    Network connection failed or error
+     * @param userID        User unique id
+     * @param phoneNumber   Mobile phone number
+     * @return              Response status
+     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_USER_ID_ERROR                404041  User ID error
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int getUserImageAddr(int userID, String phoneNumber) throws UnknownErrorException, NetworkErrorException {
-        resp = null;
+    protected int getUserImageAddr(int userID, String phoneNumber) {
+        resp = new Resp();
+        if (userID < 0) {
+            resp.code = PARAM_ERROR_USER_ID_ERROR;
+            resp.msg = "PARAM_ERROR_USER_ID_ERROR";
+            return resp.code;
+        }
+        if (phoneNumber.length() != 11) {
+            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
+            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            return resp.code;
+        }
+
         final String REQUESTADDR = "90plus/api/v1/get/user/image/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR + userID + "/" + phoneNumber + "/" +
@@ -265,30 +459,53 @@ public class ConnWithServer {
             String respStr = null;
             if (response.body() != null) {
                 respStr = response.body().string();
-            } else throw new UnknownErrorException();
+            } else {
+                resp.code = 999;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
-            resp.data = PROTOCOL + SERVERADDR + ":" + PORT + "/media/" + resp.data;
         } catch (JsonSyntaxException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         } catch (ConnectException e) {
-            throw new NetworkErrorException();
+            resp.code = 499;
+            resp.msg = "NETWORK_ERROR";
         } catch (IOException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         }
         return resp.code;
     }
 
     /**
      *
-     * @param phoneNumber               Mobile phone number
-     * @param password                  Password
-     * @return Response status
-     * @throws UnknownErrorException    Unknown error or server error
-     * @throws NetworkErrorException    Network connection failed or error
+     * @param phoneNumber   Mobile phone number
+     * @param password      Password
+     * @return              Response status
+     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
+     * @throws PARAM_ERROR_PASSWORD_ERROR               404033  Password incorrect
+     * @throws PARAM_ERROR_MOBILE_PHONE_ERROR           404023  Mobile phone not in users list
+     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int loginUser(String phoneNumber, String password) throws UnknownErrorException, NetworkErrorException {
-        resp = null;
+    protected int loginUser(String phoneNumber, String password) {
+        resp = new Resp();
+        if (phoneNumber.length() != 11) {
+            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
+            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            return resp.code;
+        }
+        if (password.length() < 8) {
+            resp.code = PARAM_ERROR_PASSWORD_LENGTH;
+            resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+            return resp.code;
+        }
+
         final String REQUESTADDR = "90plus/api/v1/login/user/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String md5ToBe = md5("mobile_phone_number=" + phoneNumber + "&password=" + password + "&secret_key=sulp09");
@@ -307,15 +524,22 @@ public class ConnWithServer {
             String respStr = null;
             if (response.body() != null) {
                 respStr = response.body().string();
-            } else throw new UnknownErrorException();
+            } else {
+                resp.code = 999;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
         } catch (JsonSyntaxException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         } catch (ConnectException e) {
-            throw new NetworkErrorException();
+            resp.code = 499;
+            resp.msg = "NETWORK_ERROR";
         } catch (IOException e) {
-            throw new UnknownErrorException();
+            resp.code = 999;
+            resp.msg = "UNKNOWN_ERROR";
         }
         return resp.code;
     }
@@ -371,161 +595,4 @@ public class ConnWithServer {
         private int code = 0;
         private Object data = null;
     }
-
-    protected class UnknownErrorException extends Exception {
-        public UnknownErrorException() {
-            super();
-        }
-
-        public UnknownErrorException(String message) {
-            super(message);
-        }
-
-        public UnknownErrorException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public UnknownErrorException(Throwable cause) {
-            super(cause);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        public UnknownErrorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-            super(message, cause, enableSuppression, writableStackTrace);
-        }
-
-        @Override
-        public String getMessage() {
-            return super.getMessage();
-        }
-
-        @Override
-        public String getLocalizedMessage() {
-            return super.getLocalizedMessage();
-        }
-
-        @Override
-        public synchronized Throwable getCause() {
-            return super.getCause();
-        }
-
-        @Override
-        public synchronized Throwable initCause(Throwable cause) {
-            return super.initCause(cause);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString();
-        }
-
-        @Override
-        public void printStackTrace() {
-            super.printStackTrace();
-        }
-
-        @Override
-        public void printStackTrace(PrintStream s) {
-            super.printStackTrace(s);
-        }
-
-        @Override
-        public void printStackTrace(PrintWriter s) {
-            super.printStackTrace(s);
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            return super.fillInStackTrace();
-        }
-
-        @Override
-        public StackTraceElement[] getStackTrace() {
-            return super.getStackTrace();
-        }
-
-        @Override
-        public void setStackTrace(StackTraceElement[] stackTrace) {
-            super.setStackTrace(stackTrace);
-        }
-    }
-
-    protected class NetworkErrorException extends Exception {
-        public NetworkErrorException() {
-            super();
-        }
-
-        public NetworkErrorException(String message) {
-            super(message);
-        }
-
-        public NetworkErrorException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public NetworkErrorException(Throwable cause) {
-            super(cause);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        public NetworkErrorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-            super(message, cause, enableSuppression, writableStackTrace);
-        }
-
-        @Override
-        public String getMessage() {
-            return super.getMessage();
-        }
-
-        @Override
-        public String getLocalizedMessage() {
-            return super.getLocalizedMessage();
-        }
-
-        @Override
-        public synchronized Throwable getCause() {
-            return super.getCause();
-        }
-
-        @Override
-        public synchronized Throwable initCause(Throwable cause) {
-            return super.initCause(cause);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString();
-        }
-
-        @Override
-        public void printStackTrace() {
-            super.printStackTrace();
-        }
-
-        @Override
-        public void printStackTrace(PrintStream s) {
-            super.printStackTrace(s);
-        }
-
-        @Override
-        public void printStackTrace(PrintWriter s) {
-            super.printStackTrace(s);
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            return super.fillInStackTrace();
-        }
-
-        @Override
-        public StackTraceElement[] getStackTrace() {
-            return super.getStackTrace();
-        }
-
-        @Override
-        public void setStackTrace(StackTraceElement[] stackTrace) {
-            super.setStackTrace(stackTrace);
-        }
-    }
-
 }
