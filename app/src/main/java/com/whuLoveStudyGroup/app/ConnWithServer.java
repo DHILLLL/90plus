@@ -37,12 +37,13 @@ public class ConnWithServer {
     private final int PARAM_ERROR = 404;
     private final int PARAM_ERROR_VERIFICATION_CODE_LENGTH = 404011;
     private final int PARAM_ERROR_VERIFICATION_CODE_ERROR = 404012;
-    private final int PARAM_ERROR_MESSAGE_RECEIVER_LENGTH = 404021;
+    private final int PARAM_ERROR_MOBILE_PHONE_LENGTH = 404021;
     private final int PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST = 404022;
     private final int PARAM_ERROR_MOBILE_PHONE_ERROR = 404023;
     private final int PARAM_ERROR_PASSWORD_LENGTH = 404031;
     private final int PARAM_ERROR_PASSWORD_STRENGTH = 404032;
     private final int PARAM_ERROR_PASSWORD_ERROR = 404033;
+    private final int PARAM_ERROR_PASSWORD_LENGTH2 = 404034;
     private final int PARAM_ERROR_USER_ID_ERROR = 404041;
     private final int PARAM_ERROR_USER_NOT_EXIST = 404042;
     private final int PARAM_ERROR_QQ_NUMBER_ERROR = 40405;
@@ -71,7 +72,7 @@ public class ConnWithServer {
      * @param phoneNumber   Target mobile phone number
      * @return              Response status
      * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH 404011  Verification code length too short
-     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH  404021  Message receiver length error
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH      404021  Message receiver length error
      * @throws SIGNATURE_ERROR                      400     Signature error
      * @throws MESSAGE_MOBILE_NUMBER_ILLEGAL        40101   Mobile phone number illegal
      * @throws MESSAGE_PARAM_LENGTH_LIMIT           40102   Verification code length error
@@ -88,8 +89,8 @@ public class ConnWithServer {
             return resp.code;
         }
         if (phoneNumber.length() != 11) {
-            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
-            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+            resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
             return resp.code;
         }
 
@@ -136,13 +137,14 @@ public class ConnWithServer {
      * @param password      Password
      * @return              Response status
      * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH     404011  Verification code length too short
-     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Message receiver length error
      * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
      * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
-     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password week
+     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password weak
+     * @throws PARAM_ERROR_PASSWORD_LENGTH2             404034  Password length too long
      * @throws PARAM_ERROR_VERIFICATION_CODE_ERROR      404012  Verification code error
      * @throws PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST   404022  Mobile phone number existed
-     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws PARAM_ERROR                              404     Parameters error
      * @throws SIGNATURE_ERROR                          400     Signature error
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
@@ -155,8 +157,8 @@ public class ConnWithServer {
             return resp.code;
         }
         if (phoneNumber.length() != 11) {
-            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
-            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+            resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
             return resp.code;
         }
         if (username.length() > 15) {
@@ -167,6 +169,10 @@ public class ConnWithServer {
         if (password.length() < 8) {
             resp.code = PARAM_ERROR_PASSWORD_LENGTH;
             resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+            return resp.code;
+        } else if (password.length() > 25) {
+            resp.code = PARAM_ERROR_PASSWORD_LENGTH2;
+            resp.msg = "PARAM_ERROR_PASSWORD_LENGTH2";
             return resp.code;
         } else {
             if (password.matches("^\\d+$") || password.matches("^[a-zA-Z]+$")) {
@@ -236,17 +242,18 @@ public class ConnWithServer {
      * @return              Response status
      * @throws PARAM_ERROR_ACADEMY_LENGTH               40407   User academy length too long
      * @throws PARAM_ERROR_VERIFICATION_CODE_LENGTH     404011  Verification code length too short
-     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Message receiver length error
      * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
      * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
-     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password week
+     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password weak
+     * @throws PARAM_ERROR_PASSWORD_LENGTH2             404034  Password length too long
      * @throws PARAM_ERROR_PROFESSION_LENGTH            40408   User profession length too long
      * @throws PARAM_ERROR_SIGNATURE_LENGTH             40409   User signature length too long
      * @throws PARAM_ERROR_USER_ID_ERROR                404041  User ID error
      * @throws PARAM_ERROR_QQ_NUMBER_ERROR              40405   QQ number error
      * @throws PARAM_ERROR_VERIFICATION_CODE_ERROR      404012  Verification code error
      * @throws PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST   404022  Mobile phone number existed
-     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws PARAM_ERROR                              404     Parameters error
      * @throws SIGNATURE_ERROR                          400     Signature error
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
@@ -295,8 +302,8 @@ public class ConnWithServer {
         toBeMd5 += "&mobile_phone_number=";
         if (phoneNumber != null) {
             if (phoneNumber.length() != 11) {
-                resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
-                resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+                resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+                resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
                 return resp.code;
             }
             requestBodyPostBuilder.addFormDataPart("mobile_phone_number", phoneNumber);
@@ -308,6 +315,10 @@ public class ConnWithServer {
             if (password.length() < 8) {
                 resp.code = PARAM_ERROR_PASSWORD_LENGTH;
                 resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+                return resp.code;
+            } else if (password.length() > 25) {
+                resp.code = PARAM_ERROR_PASSWORD_LENGTH2;
+                resp.msg = "PARAM_ERROR_PASSWORD_LENGTH2";
                 return resp.code;
             } else {
                 if (password.matches("^\\d+$") || password.matches("^[a-zA-Z]+$")) {
@@ -416,7 +427,7 @@ public class ConnWithServer {
      * @param userID        User unique id
      * @param phoneNumber   Mobile phone number
      * @return              Response status
-     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Message receiver length error
      * @throws PARAM_ERROR_USER_ID_ERROR                404041  User ID error
      * @throws SIGNATURE_ERROR                          400     Signature error
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
@@ -430,8 +441,8 @@ public class ConnWithServer {
             return resp.code;
         }
         if (phoneNumber.length() != 11) {
-            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
-            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+            resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
             return resp.code;
         }
 
@@ -472,11 +483,12 @@ public class ConnWithServer {
      * @param phoneNumber   Mobile phone number
      * @param password      Password
      * @return              Response status
-     * @throws PARAM_ERROR_MESSAGE_RECEIVER_LENGTH      404021  Message receiver length error
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Message receiver length error
      * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
+     * @throws PARAM_ERROR_PASSWORD_LENGTH2             404034  Password length too long
      * @throws PARAM_ERROR_PASSWORD_ERROR               404033  Password incorrect
      * @throws PARAM_ERROR_MOBILE_PHONE_ERROR           404023  Mobile phone not in users list
-     * @throws PARAM_ERROR                              400     Parameters error
+     * @throws PARAM_ERROR                              404     Parameters error
      * @throws SIGNATURE_ERROR                          400     Signature error
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
@@ -484,13 +496,17 @@ public class ConnWithServer {
     protected int loginUser(String phoneNumber, String password) {
         resp = new Resp();
         if (phoneNumber.length() != 11) {
-            resp.code = PARAM_ERROR_MESSAGE_RECEIVER_LENGTH;
-            resp.msg = "PARAM_ERROR_MESSAGE_RECEIVER_LENGTH";
+            resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+            resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
             return resp.code;
         }
         if (password.length() < 8) {
             resp.code = PARAM_ERROR_PASSWORD_LENGTH;
             resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
+            return resp.code;
+        } else if (password.length() > 25) {
+            resp.code = PARAM_ERROR_PASSWORD_LENGTH2;
+            resp.msg = "PARAM_ERROR_PASSWORD_LENGTH2";
             return resp.code;
         }
 
