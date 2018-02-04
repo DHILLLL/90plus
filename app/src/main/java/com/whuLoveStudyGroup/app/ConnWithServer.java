@@ -64,18 +64,6 @@ public class ConnWithServer {
     private final String PORT = "9090";
     private Resp resp = null;
 
-    public static void main(String[] args) {
-        ConnWithServer xxx = new ConnWithServer();
-        int x = xxx.getVerificationCode("123456", "15927271755");
-//        int x = xxx.addUser(123456, "15927271755", "HelloWorld", "123456");
-//        File image = new File("test.png");
-//        int x = xxx.editUser("Computer School", null, 2015, null, "testtest",
-//                null, null, 1, "This is a test.", 19, "", image);
-//        int x = xxx.getUserImageAddr(19, "15927271755");
-        System.out.println(x);
-        System.out.println(xxx.getResponseMsg());
-        System.out.println(xxx.getResponseData());
-    }
 
     /**
      *
