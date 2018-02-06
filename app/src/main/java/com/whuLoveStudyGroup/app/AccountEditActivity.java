@@ -154,40 +154,33 @@ public class AccountEditActivity extends AppCompatActivity {
             case 9:
                 if (resultCode == RESULT_OK){
                     try{
-                        Bundle extras = data.getExtras();
-                        if (extras != null){
-                            Bitmap temp = extras.getParcelable("data");
-                            portrait.setImageBitmap(temp);
-                        }
-
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inJustDecodeBounds = true;
-                        BitmapFactory.decodeFile(imageUri.getPath(),options);
-                        int width = options.outWidth;
-                        int intSampleSize = 1;
-                        if (width > 600) {
-                            intSampleSize = width / 600;
-                            Log.d(TAG, "inSAmpleSize: " + intSampleSize);
-                        }
-                        options.inJustDecodeBounds = false;
-                        options.inSampleSize = intSampleSize;
-                        Bitmap smallBitmap = BitmapFactory.decodeFile(imageUri.getPath(),options);
-                        Log.d(TAG, "width: " + smallBitmap.getWidth());
 
                         File outputImage = new File(imageUri.getPath());
-                        if(outputImage.exists()){
-                            outputImage.delete();
+                        if(outputImage.exists() && outputImage.length()>0){
+
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inJustDecodeBounds = true;
+                            BitmapFactory.decodeFile(imageUri.getPath(),options);
+                            int width = options.outWidth;
+                            int intSampleSize = 1;
+                            if (width > 600) {
+                                intSampleSize = width / 600;
+                            }
+                            options.inJustDecodeBounds = false;
+                            options.inSampleSize = intSampleSize;
+                            Bitmap smallBitmap = BitmapFactory.decodeFile(imageUri.getPath(),options);
+                            portrait.setImageBitmap(smallBitmap);
+
+                            FileOutputStream out = new FileOutputStream(outputImage);
+                            smallBitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+                            out.flush();out.close();
+
+                            changed = true;
+                            choosing = false;
+
+
                         }
-                        outputImage.createNewFile();
 
-                        FileOutputStream out = new FileOutputStream(outputImage);
-                        smallBitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
-                        out.flush();out.close();
-
-                        changed = true;
-                        choosing = false;
-
-                        if (!choosing) portrait.setImageURI(imageUri);
 
                     } catch (IOException e){
                         e.printStackTrace();
