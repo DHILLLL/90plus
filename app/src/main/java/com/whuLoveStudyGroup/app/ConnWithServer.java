@@ -571,8 +571,6 @@ public class ConnWithServer {
             }
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, Resp.class);
-            if (resp.data != null && !resp.data.equals(""))
-                resp.data = PROTOCOL + SERVERADDR + ":" + PORT + resp.data;
         } catch (JsonSyntaxException e) {
             resp.code = UNKNOWN_ERROR;
             resp.msg = "UNKNOWN_ERROR";
