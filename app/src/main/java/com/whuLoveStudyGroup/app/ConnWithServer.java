@@ -254,7 +254,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int editUser(String academy, int grade, String phoneNumber, String password, String profession, String qqNum,
+    protected int editUser(String academy, int grade, String phoneNumber, String profession, String qqNum,
                            int sex, String signature, String username, File userImage) {
         resp = new Resp();
         final String REQUESTADDR = "90plus/api/v1/edit/user/";
@@ -293,27 +293,6 @@ public class ConnWithServer {
             }
             requestBodyPostBuilder.addFormDataPart("mobile_phone_number", phoneNumber);
             toBeMd5 += phoneNumber;
-        }
-
-        toBeMd5 += "&password=";
-        if (password != null) {
-            if (password.length() < 8) {
-                resp.code = PARAM_ERROR_PASSWORD_LENGTH;
-                resp.msg = "PARAM_ERROR_PASSWORD_LENGTH";
-                return resp.code;
-            } else if (password.length() > 25) {
-                resp.code = PARAM_ERROR_PASSWORD_LENGTH2;
-                resp.msg = "PARAM_ERROR_PASSWORD_LENGTH2";
-                return resp.code;
-            } else {
-                if (password.matches("^\\d+$") || password.matches("^[a-zA-Z]+$")) {
-                    resp.code = PARAM_ERROR_PASSWORD_STRENGTH;
-                    resp.msg = "PARAM_ERROR_PASSWORD_STRENGTH";
-                    return resp.code;
-                }
-            }
-            requestBodyPostBuilder.addFormDataPart("password", password);
-            toBeMd5 += password;
         }
 
         toBeMd5 += "&profession=";
@@ -415,7 +394,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int forgetPassword(String code, String phoneNumber, String password) {
+    protected int changePassword(String code, String phoneNumber, String password) {
         resp = new Resp();
         if (code.length() < 6) {
             resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
@@ -443,7 +422,7 @@ public class ConnWithServer {
             }
         }
 
-        final String REQUESTADDR = "90plus/api/v1/edit/user/forget/password/";
+        final String REQUESTADDR = "90plus/api/v1/edit/user/password/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String md5ToBe = md5("code=" + code + "&mobile_phone_number=" + phoneNumber + "&new_password=" + password + "&secret_key=sulp09");
         String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR;
@@ -652,7 +631,6 @@ public class ConnWithServer {
                 resp.msg = "UNKNOWN_ERROR";
                 return resp.code;
             }
-            resp.data = new User();
             Gson gson = new Gson();
             resp = gson.fromJson(respStr, new TypeToken<Resp<User>>(){}.getType());
 
