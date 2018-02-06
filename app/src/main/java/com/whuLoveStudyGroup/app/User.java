@@ -16,6 +16,7 @@ class User {
     private String qqNumber = null;
     private String signature = null;
     private String imageUrl = null;
+    private int isPhoneNumberPublic = 0;
 
 
     public String getUsername() {
@@ -88,5 +89,13 @@ class User {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int isPhoneNumberPublic() {
+        return isPhoneNumberPublic;
+    }
+
+    public void setPhoneNumberPublic(int phoneNumberPublic) {
+        isPhoneNumberPublic = phoneNumberPublic;
     }
 }

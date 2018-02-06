@@ -229,16 +229,17 @@ public class ConnWithServer {
      *
      * 除了phoneNumber以外的所有参数都可以不填。写成一个方法的原因是统一方法，不需要写多个方法。
      *
-     * @param academy       学院
-     * @param grade         年级
-     * @param phoneNumber   Mobile phone number
-     * @param profession    专业
-     * @param qqNum         QQ number
-     * @param sex           Sex (男则为1，女则为0，否则为-1)
-     * @param signature     个性签名
-     * @param username      Username
-     * @param userImage     用户头像
-     * @return              Response status
+     * @param academy               学院
+     * @param isPhoneNumberPublic   是否公开电话号码
+     * @param grade                 年级
+     * @param phoneNumber           Mobile phone number
+     * @param profession            专业
+     * @param qqNum                 QQ number
+     * @param sex                   Sex (男则为1，女则为0，否则为-1)
+     * @param signature             个性签名
+     * @param username              Username
+     * @param userImage             用户头像
+     * @return                      Response status
      * @throws PARAM_ERROR_ACADEMY_LENGTH               40407   User academy length too long
      * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Mobile phone number length error
      * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
@@ -250,8 +251,8 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int editUser(String academy, int grade, String phoneNumber, String profession, String qqNum,
-                           int sex, String signature, String username, File userImage) {
+    protected int editUser(String academy, int isPhoneNumberPublic, int grade, String phoneNumber,
+                           String profession, String qqNum, int sex, String signature, String username, File userImage) {
         resp = new Resp();
         final String REQUESTADDR = "90plus/api/v1/edit/user/";
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -272,6 +273,16 @@ public class ConnWithServer {
             }
             requestBodyPostBuilder.addFormDataPart("academy", academy);
             toBeMd5 += academy;
+        }
+
+        toBeMd5 += "&is_mobile_phone_number_public=";
+        if (isPhoneNumberPublic == 0) {
+            requestBodyPostBuilder.addFormDataPart("is_mobile_phone_number_public", String.valueOf(false));
+            toBeMd5 += "false";
+        }
+        else if (isPhoneNumberPublic == 1) {
+            requestBodyPostBuilder.addFormDataPart("is_mobile_phone_number_public", String.valueOf(true));
+            toBeMd5 += "true";
         }
 
         toBeMd5 += "&grade=";
