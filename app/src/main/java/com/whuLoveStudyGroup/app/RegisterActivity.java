@@ -93,37 +93,37 @@ public class RegisterActivity extends MyActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(phone.getText())){
-                    Toast.makeText(RegisterActivity.this, "请输入手机号。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     currentPhone = phone.getText().toString();
                 }
 
                 if (TextUtils.isEmpty(code.getText())){
-                    Toast.makeText(RegisterActivity.this, "请输入短信验证码。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入短信验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(!code.getText().toString().equals(rand)){
-                    Toast.makeText(RegisterActivity.this, "短信验证码错误。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "短信验证码错误", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     currentCode = code.getText().toString();
                 }
 
                 if (TextUtils.isEmpty(password.getText())){
-                    Toast.makeText(RegisterActivity.this, "请输入密码。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 }else if (TextUtils.isEmpty(passwordConfirm.getText())){
-                    Toast.makeText(RegisterActivity.this, "请确认密码。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请确认密码", Toast.LENGTH_SHORT).show();
                     return;
                 }else if(!password.getText().toString().equals(passwordConfirm.getText().toString())){
-                    Toast.makeText(RegisterActivity.this, "两次输入的密码不相同。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "两次输入的密码不相同", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     currentPassword = password.getText().toString();
                 }
 
                 if (TextUtils.isEmpty(nickname.getText())){
-                    Toast.makeText(RegisterActivity.this, "请输入昵称。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "请输入昵称", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
                     currentNickname = nickname.getText().toString();
@@ -144,29 +144,29 @@ public class RegisterActivity extends MyActivity {
                         break;
                     case 404021:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "请检查手机号是否有误。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
                         return;
                     case 404022:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "该手机号已被注册。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "该手机号已被注册", Toast.LENGTH_SHORT).show();
                         return;
                     case 404011:
                     case 404012:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "请检查验证码是否有误。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "请检查验证码是否有误", Toast.LENGTH_SHORT).show();
                         return;
                     case 404061:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "用户名长度不能超过15个字符。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "用户名长度不能超过15个字符", Toast.LENGTH_SHORT).show();
                         return;
                     case 404031:
                     case 404034:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "密码长度应在8-25位字符之间。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "密码长度应在8-25位字符之间", Toast.LENGTH_SHORT).show();
                         return;
                     case 404032:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "密码请不要使用纯字母或纯数字。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "密码请不要使用纯字母或纯数字", Toast.LENGTH_SHORT).show();
                         return;
                     case 400:
                     case 402:
@@ -176,7 +176,7 @@ public class RegisterActivity extends MyActivity {
                         return;
                     case 499:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(RegisterActivity.this, "服务器连接失败，请重试。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
                         return;
                     default:
                         Log.d(TAG, "sendRequest: " + error);
@@ -193,7 +193,7 @@ public class RegisterActivity extends MyActivity {
     //获取验证码
     private boolean sendRequest(){
         if (TextUtils.isEmpty(phone.getText())){
-            Toast.makeText(this, "请输入手机号码。", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请输入手机号码", Toast.LENGTH_SHORT).show();
             return false;
         }
         Random random = new Random();
@@ -207,12 +207,12 @@ public class RegisterActivity extends MyActivity {
             case 402:
             case 499:
                 Log.d(TAG, "sendRequest: " + error);
-                Toast.makeText(this, "服务器连接失败，请重试。", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
                 return false;
             case 404021:
             case 40101:
                 Log.d(TAG, "sendRequest: " + error);
-                Toast.makeText(this, "请检查手机号是否有误。", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
                 return false;
             case 404011:
             case 400:

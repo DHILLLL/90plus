@@ -28,6 +28,6 @@
         android:layout_above="@id/university"
         android:textColor="#FFF"
         android:textSize="16sp"
-        android:text="XXX同学"/>
+        android:text="同学，你好"/>
 
 </RelativeLayout>

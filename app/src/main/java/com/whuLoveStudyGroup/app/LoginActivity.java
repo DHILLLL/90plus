@@ -3,6 +3,7 @@ package com.whuLoveStudyGroup.app;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class LoginActivity extends MyActivity {
     Button commit;
     private static final String TAG = "dong.loginActivity";
     ConnWithServer connWithServer = new ConnWithServer();
+    LocalBroadcastManager localBroadcastManager;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,20 +48,48 @@ public class LoginActivity extends MyActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        localBroadcastManager = localBroadcastManager.getInstance(this);
+
         head = (CircleImageView)findViewById(R.id.login_head);
         phone = (AutoCompleteTextView)findViewById(R.id.login_phone);
         password = (EditText)findViewById(R.id.login_password);
         commit = (Button)findViewById(R.id.login_commit);
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (phone.getText().toString().equals("15071239543")){
+                    Log.d(TAG, "onFocusChange: ");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Thread.sleep(500);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    head.setImageResource(R.drawable.jay2);
+                                }
+                            });
+                        }
+                    }).run();
+                }
+
+            }
+        });
 
         commit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 
                 if (TextUtils.isEmpty(phone.getText())){
-                    Toast.makeText(LoginActivity.this, "请输入手机号。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }else if (TextUtils.isEmpty(password.getText())){
-                    Toast.makeText(LoginActivity.this, "请输入密码。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 
@@ -67,21 +97,24 @@ public class LoginActivity extends MyActivity {
 
                 switch (error) {
                     case 0:
+//                        connWithServer.getResponseData();
+                        Intent intent = new Intent("com.whuLoveStudyGroup.app.LOGIN");
+                        localBroadcastManager.sendBroadcast(intent);
                         finish();
                         break;
                     case 404021:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(LoginActivity.this, "请检查手机号是否有误。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
                         return;
                     case 404031:
                     case 404033:
                     case 404034:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(LoginActivity.this, "密码不正确。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "密码不正确", Toast.LENGTH_SHORT).show();
                         return;
                     case 404023:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(LoginActivity.this, "该手机号尚未注册。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "该手机号尚未注册", Toast.LENGTH_SHORT).show();
                         return;
                     case 400:
                     case 402:
@@ -91,7 +124,7 @@ public class LoginActivity extends MyActivity {
                         return;
                     case 499:
                         Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(LoginActivity.this, "服务器连接失败，请重试。", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
                         return;
                     default:
                         Log.d(TAG, "sendRequest: " + error);

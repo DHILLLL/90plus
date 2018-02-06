@@ -2,16 +2,19 @@ package com.whuLoveStudyGroup.app;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.StrictMode;
@@ -44,6 +47,9 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,6 +60,11 @@ import java.util.Map;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends MyActivity implements
         BottomNavigationBar.OnTabSelectedListener,ViewPager.OnPageChangeListener{
@@ -67,7 +78,8 @@ public class MainActivity extends MyActivity implements
     private int currentWeek;
     private scheduleFragment sf;
     LocalBroadcastManager localBroadcastManager;
-    CircleImageView bigHead;
+    CircleImageView bigHead,civ;
+    TextView university,username;
     GetInfoFromJWXT getInfoFromJWXT;
     int x = 0;
 
@@ -78,6 +90,9 @@ public class MainActivity extends MyActivity implements
     EditText u,p,c;
     CheckBox cb;
     View view1;
+
+    private IntentFilter intentFilter;
+    private MyBroadcastReceiver myBroadcastReceiver;
 
     private DownloadService.DownloadBinder downloadBinder;
     private ServiceConnection connection = new ServiceConnection() {
@@ -92,10 +107,45 @@ public class MainActivity extends MyActivity implements
         }
     };
 
+    //设置接收广播事件
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("com.whuLoveStudyGroup.app.LOGIN")){
+                bigHead.setImageResource(R.drawable.jay2);
+                civ.setImageResource(R.drawable.jay2);
+                username.setText("DHILLLL");
+                university.setText("武汉大学");
+
+                bigHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this,AccountActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }else if (intent.getAction().equals("com.whuLoveStudyGroup.app.LOGOUT")){
+                bigHead.setImageResource(R.drawable.head);
+                civ.setImageResource(R.drawable.head);
+                username.setText("同学，你好");
+                university.setText("请登录↗");
+
+                bigHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindService(connection);
+        localBroadcastManager.unregisterReceiver(myBroadcastReceiver);
     }
 
 
@@ -113,8 +163,14 @@ public class MainActivity extends MyActivity implements
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
 
+        //设置接收广播
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("com.whuLoveStudyGroup.app.LOGIN");
+        intentFilter.addAction("com.whuLoveStudyGroup.app.LOGOUT");
+        localBroadcastManager = localBroadcastManager.getInstance(this);
+        myBroadcastReceiver = new MyBroadcastReceiver();
+        localBroadcastManager.registerReceiver(myBroadcastReceiver,intentFilter);
 
-        localBroadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
 
         Intent intent2 = new Intent("com.whuLoveStudyGroup.app.UPDATE_WIDGET");
         sendBroadcast(intent2);
@@ -136,7 +192,7 @@ public class MainActivity extends MyActivity implements
         initViewPager();
         initNavigationView();
 
-        CircleImageView civ = (CircleImageView) findViewById(R.id.left);
+        civ = (CircleImageView) findViewById(R.id.left);
         civ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,24 +292,81 @@ public class MainActivity extends MyActivity implements
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
 
         View headView = nav.getHeaderView(0);
+        university = (TextView) headView.findViewById(R.id.university);
+        username = (TextView) headView.findViewById(R.id.username);
+
         bigHead = (CircleImageView) headView.findViewById(R.id.head_image);
+
+//        final File outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "download.jpg");
+//
+//        if(!outputImage.exists() || (outputImage.exists() && outputImage.length() == 0)){
+//            if (outputImage.exists()) {
+//                outputImage.delete();
+//            }
+//
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    String url = "https://b-ssl.duitang.com/uploads/item/201507/01/20150701095959_Fn2dz.jpeg";
+//                    OkHttpClient okHttpClient = new OkHttpClient();
+//                    Request request = new Request.Builder().url(url).build();
+//                    Call call = okHttpClient.newCall(request);
+//                    call.enqueue(new Callback() {
+//                        @Override
+//                        public void onFailure(Call call, IOException e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onResponse(Call call, Response response) throws IOException {
+//                            byte[] picByte = response.body().bytes();
+//                            final Bitmap bitmap = BitmapFactory.decodeByteArray(picByte,0,picByte.length);
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    bigHead.setImageBitmap(bitmap);
+//                                }
+//                            });
+//
+//                            try{
+//                                outputImage.createNewFile();
+//                                FileOutputStream out = new FileOutputStream(outputImage);
+//                                bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+//                                out.flush();out.close();
+//
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//                    });
+//                }
+//            }).run();
+//        }else{
+//            Bitmap bitmap = BitmapFactory.decodeFile(outputImage.getPath());
+//            bigHead.setImageBitmap(bitmap);
+//        }
+
+
+
         bigHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                final String[] options = {"登录前", "登录后"};
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent;
-                        if (which == 0)
-                            intent = new Intent(MainActivity.this,LoginActivity.class);
-                        else
-                            intent = new Intent(MainActivity.this,AccountActivity.class);
-                        startActivity(intent);
-                    }
-                }).show();
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                final String[] options = {"登录前", "登录后"};
+//                builder.setItems(options, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent;
+//                        if (which == 0)
+//                            intent = new Intent(MainActivity.this,LoginActivity.class);
+//                        else
+//                            intent = new Intent(MainActivity.this,AccountActivity.class);
+//                        startActivity(intent);
+//                    }
+//                }).show();
 
             }
         });
