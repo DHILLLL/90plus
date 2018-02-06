@@ -232,7 +232,6 @@ public class ConnWithServer {
      * @param academy       学院
      * @param grade         年级
      * @param phoneNumber   Mobile phone number
-     * @param password      Password
      * @param profession    专业
      * @param qqNum         QQ number
      * @param sex           Sex (男则为1，女则为0，否则为-1)
@@ -243,9 +242,6 @@ public class ConnWithServer {
      * @throws PARAM_ERROR_ACADEMY_LENGTH               40407   User academy length too long
      * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Mobile phone number length error
      * @throws PARAM_ERROR_USERNAME_LENGTH              404061  Username length too long
-     * @throws PARAM_ERROR_PASSWORD_LENGTH              404031  Password length too short
-     * @throws PARAM_ERROR_PASSWORD_STRENGTH            404032  Password weak
-     * @throws PARAM_ERROR_PASSWORD_LENGTH2             404034  Password length too long
      * @throws PARAM_ERROR_PROFESSION_LENGTH            40408   User profession length too long
      * @throws PARAM_ERROR_SIGNATURE_LENGTH             40409   User signature length too long
      * @throws PARAM_ERROR_QQ_NUMBER_ERROR              40405   QQ number error
