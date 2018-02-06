@@ -33,6 +33,10 @@ public class AccountActivity extends AppCompatActivity {
     LocalBroadcastManager localBroadcastManager;
     ImageView portrait;
     Uri imageUri;
+    TextView sex,grade,academy,profession,phone,qq,signature;
+    SharedPreferences sp1;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     private static final String TAG = "dong,AccountActivity";
 
     @Override
@@ -79,9 +83,17 @@ public class AccountActivity extends AppCompatActivity {
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.account_toolbar);
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.account_collapsing_toolbar);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.account_collapsing_toolbar);
         portrait = (ImageView) findViewById(R.id.account_portrait);
-        FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.account_edit);
+        sex = (TextView) findViewById(R.id.account_sex);
+        grade = (TextView) findViewById(R.id.account_grade);
+        academy = (TextView) findViewById(R.id.account_academy);
+        profession = (TextView) findViewById(R.id.account_profession);
+        phone = (TextView) findViewById(R.id.account_phone);
+        qq = (TextView) findViewById(R.id.account_qq);
+        signature = (TextView) findViewById(R.id.account_description);
+
+        final FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.account_edit);
         Button logout = (Button) findViewById(R.id.account_logout);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -89,10 +101,9 @@ public class AccountActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "portrait.jpg");
-        imageUri = Uri.fromFile(outf);
 
-        collapsingToolbarLayout.setTitle("DHILLLL");
+
+
 
         localBroadcastManager = localBroadcastManager.getInstance(this);
 
@@ -112,8 +123,9 @@ public class AccountActivity extends AppCompatActivity {
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent("com.whuLoveStudyGroup.app.LOGOUT");
-                        localBroadcastManager.sendBroadcast(intent);
+                        SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
+                        editor.putBoolean("login",false);
+                        editor.apply();
                         finish();
                     }
                 });
@@ -130,8 +142,31 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "portrait.jpg");
+        sp1 = getSharedPreferences("account",MODE_PRIVATE);
+
+        File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portrait.jpg");
         imageUri = Uri.fromFile(outf);
+
+        collapsingToolbarLayout.setTitle(sp1.getString("nickname",""));
+        switch (sp1.getInt("sex",-1)){
+            case -1:
+                sex.setText("保密");
+                break;
+            case 0:
+                sex.setText("女生");
+                break;
+            case 1:
+                sex.setText("男生");
+                break;
+            default:
+        }
+        grade.setText(sp1.getInt("grade",0) + "级");
+        academy.setText(sp1.getString("academy",""));
+        profession.setText(sp1.getString("profession",""));
+        phone.setText((sp1.getInt("public",0)==1)?sp1.getString("phone",""):"保密");
+        qq.setText(sp1.getString("qq",""));
+        signature.setText(sp1.getString("signature",""));
+
         Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
         portrait.setImageBitmap(bitmap);
 

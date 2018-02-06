@@ -25,13 +25,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,8 +47,12 @@ public class AccountEditActivity extends AppCompatActivity {
     private boolean hasPic = false;
     private String path = null;
     ImageView portrait;
-    private static final String TAG = "dong,AEA";
+    private static final String TAG = "dongheyou,AEA";
     boolean choosing,changed = false;
+    TextView nickname,sex,grade,academy,profession,qq,signature;
+    FloatingActionButton finish;
+    ConnWithServer connWithServer = new ConnWithServer();
+    RadioButton boy,girl,secret,phone,not;
 
     @Override
     protected void onDestroy() {
@@ -91,17 +100,62 @@ public class AccountEditActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.account_edit_toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.account_edit_collapsing_toolbar);
         portrait = (ImageView) findViewById(R.id.account_edit_portrait);
-        FloatingActionButton edit = (FloatingActionButton) findViewById(R.id.account_edit_finish);
+        nickname = (TextView) findViewById(R.id.account_edit_nickname);
+        grade = (TextView) findViewById(R.id.account_edit_grade);
+        academy = (TextView) findViewById(R.id.account_edit_academy);
+        profession = (TextView) findViewById(R.id.account_edit_profession);
+        boy = (RadioButton) findViewById(R.id.account_edit_boy);
+        girl = (RadioButton) findViewById(R.id.account_edit_girl);
+        secret = (RadioButton) findViewById(R.id.account_edit_secret);
+        phone = (RadioButton) findViewById(R.id.account_edit_phone);
+        not = (RadioButton) findViewById(R.id.account_edit_not);
+        qq = (TextView) findViewById(R.id.account_edit_qq);
+        signature = (TextView) findViewById(R.id.account_edit_description);
+        finish = (FloatingActionButton) findViewById(R.id.account_edit_finish);
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "portrait.jpg");
+        final SharedPreferences sp1 = getSharedPreferences("account",MODE_PRIVATE);
+
+        final File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portrait.jpg");
         imageUri = Uri.fromFile(outf);
 
         collapsingToolbarLayout.setTitle("点我修改头像");
+        switch (sp1.getInt("sex",-1)){
+            case -1:
+                secret.setChecked(true);
+                break;
+            case 0:
+                girl.setChecked(true);
+                break;
+            case 1:
+                boy.setChecked(true);
+                break;
+            default:
+        }
+
+        switch (sp1.getInt("public",0)){
+            case 0:
+                not.setChecked(true);
+                break;
+            case 1:
+                phone.setChecked(true);
+                break;
+            default:
+        }
+
+        nickname.setText(sp1.getString("nickname",""));
+        grade.setText(sp1.getInt("grade",0) + "");
+        academy.setText(sp1.getString("academy",""));
+        profession.setText(sp1.getString("profession",""));
+        phone.setText(sp1.getString("phone",""));
+        qq.setText(sp1.getString("qq",""));
+        signature.setText(sp1.getString("signature",""));
+
         portrait.setImageURI(imageUri);
 
         portrait.setOnClickListener(new View.OnClickListener() {
@@ -115,11 +169,54 @@ public class AccountEditActivity extends AppCompatActivity {
             }
         });
 
-        edit.setOnClickListener(new View.OnClickListener() {
+        finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //提交修改资料
-                finish();
+                int sex = -1;
+                if (boy.isChecked()){
+                    sex = 1;
+                }else if (girl.isChecked()){
+                    sex = 0;
+                }else if (secret.isChecked()){
+                    sex = -1;
+                }
+                int error = connWithServer.editUser(TextUtils.isEmpty(academy.getText())?null:academy.getText().toString(),
+                        phone.isChecked()?1:0,
+                        TextUtils.isEmpty(grade.getText())?null:Integer.parseInt(grade.getText().toString()),
+                        sp1.getString("phone",""),
+                        TextUtils.isEmpty(profession.getText())?null:profession.getText().toString(),
+                        TextUtils.isEmpty(qq.getText())?null:qq.getText().toString(),
+                        sex,
+                        TextUtils.isEmpty(signature.getText())?null:signature.getText().toString(),
+                        TextUtils.isEmpty(nickname.getText())?null:nickname.getText().toString(),
+                        //changed?outf:null
+                        outf
+                        );
+                Log.d(TAG, "error: " + error);
+                if (error == 0){
+                    Toast.makeText(AccountEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+
+                    User user = (User) connWithServer.getResponseData();
+                    SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
+                    editor.putBoolean("login",true);
+                    editor.putString("phone",user.getPhoneNumber());
+                    editor.putString("nickname", user.getUsername());
+                    editor.putInt("sex",user.getSex());
+                    editor.putInt("grade",user.getGrade());
+                    editor.putString("academy",user.getAcademy());
+                    editor.putString("profession",user.getProfession());
+                    editor.putString("qq",user.getQqNumber());
+                    editor.putString("signature",user.getSignature());
+                    editor.putString("url",user.getImageUrl());
+                    editor.putInt("public",user.getIsPhoneNumberPublic());
+                    editor.apply();
+
+                    finish();
+                }// TODO: 2018/2/7 其他Toast
+
+
+
+
             }
         });
     }
@@ -176,8 +273,6 @@ public class AccountEditActivity extends AppCompatActivity {
                             out.flush();out.close();
 
                             changed = true;
-                            choosing = false;
-
 
                         }
 
@@ -194,7 +289,6 @@ public class AccountEditActivity extends AppCompatActivity {
 
     void crop(Uri uri){
 
-        choosing = true;
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

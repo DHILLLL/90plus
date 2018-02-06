@@ -48,6 +48,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
+                android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
@@ -73,13 +74,7 @@
                             android:layout_width="2dp"
                             android:layout_height="match_parent"/>
 
-                        <ImageView
-                            android:id="@+id/movie_poster2"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/poster2"/>
+
 
                     </LinearLayout>
 
@@ -106,30 +101,118 @@
                     android:paddingBottom="10dp"
                     >
 
-                    <TextView
-                        android:id="@+id/movie_name1"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="天才枪手"
-                        android:textSize="25sp"
-                        android:textColor="#000000"/>
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/movie_name1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="天才枪手"
+                                android:layout_marginTop="10dp"
+                                android:textSize="25sp"
+                                android:textColor="#000000"/>
+
+                            <TextView
+                                android:id="@+id/movie_stars1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="主演：查侬·散顶腾古"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/movie_director1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="导演：纳塔吾·彭皮里亚 "
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/movie_area1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="地区：印度"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/movie_type1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="类型：喜剧/犯罪"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/movie_length1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="时间：2017.10.20"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/movie_time1"
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="时间：130min"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:layout_marginTop="3dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="剧情梗概："
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/movie_poster2"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/poster2"
+                                />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
 
                     <TextView
-                        android:id="@+id/movie_time1"
-                        android:layout_marginTop="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="时间：130min"
-                        android:textColor="#333333"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="1dp"
                         android:id="@+id/movie_info1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingMultiplier="1.1"
-                        android:text="剧情梗概：\n\t\t影片根据2014年轰动一时的亚洲考场作弊案改编，讲述了天才学霸利用高智商考场作弊牟取暴利的故事。出生平凡的天才少女Lynn（茱蒂蒙·琼查容苏因 饰）在进入贵族学校后，结识了富二代同学Grace（依莎亚·贺苏汪饰）与Pat（披纳若·苏潘平佑饰），从此开始了考场作弊生涯，与此同时，另一名记忆力极佳的天才学霸Bank（查侬·散顶腾古 饰）发现了Lynn不为人知的“交易”。经过多场险象环生的“作弊战争”后，Lynn接下最后一单在国际考场上为富家子弟作弊的天价委托。一场横跨两大洲的完美作弊方案横空出世，然而一切并不像他们想的那么简单……"
+                        android:text="\t\t影片根据2014年轰动一时的亚洲考场作弊案改编，讲述了天才学霸利用高智商考场作弊牟取暴利的故事。出生平凡的天才少女Lynn（茱蒂蒙·琼查容苏因 饰）在进入贵族学校后，结识了富二代同学Grace（依莎亚·贺苏汪饰）与Pat（披纳若·苏潘平佑饰），从此开始了考场作弊生涯，与此同时，另一名记忆力极佳的天才学霸Bank（查侬·散顶腾古 饰）发现了Lynn不为人知的“交易”。经过多场险象环生的“作弊战争”后，Lynn接下最后一单在国际考场上为富家子弟作弊的天价委托。一场横跨两大洲的完美作弊方案横空出世，然而一切并不像他们想的那么简单……"
                         android:textColor="#666666"
                         android:textSize="15sp" />
 
