@@ -235,7 +235,7 @@ public class ConnWithServer {
      * @param phoneNumber           Mobile phone number
      * @param profession            专业
      * @param qqNum                 QQ number
-     * @param sex                   Sex (男则为1，女则为0，否则为-1)
+     * @param sex                   Sex (男则为1，女则为0)
      * @param signature             个性签名
      * @param username              Username
      * @param userImage             用户头像
@@ -327,6 +327,9 @@ public class ConnWithServer {
         else if (sex == 1) {
             requestBodyPostBuilder.addFormDataPart("sex", String.valueOf(true));
             toBeMd5 += "true";
+        } else if (sex == -1) {
+            requestBodyPostBuilder.addFormDataPart("sex", "none");
+            toBeMd5 += "none";
         }
 
         toBeMd5 += "&signature=";
