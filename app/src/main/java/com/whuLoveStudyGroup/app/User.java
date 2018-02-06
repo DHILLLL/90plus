@@ -18,7 +18,6 @@ class User {
     private String imageUrl = null;
     private int isPhoneNumberPublic = 0;
 
-
     public String getUsername() {
         return username;
     }

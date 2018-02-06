@@ -121,60 +121,60 @@ public class ResetActivity extends MyActivity {
                 }
 
 
-//                int error = connWithServer.editUser(null,currentCode,-1,currentPhone,currentPassword,null,null,-1,null,)
-//
-//                switch (error){
-//                    case 0:
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(ResetActivity.this);
-//                        builder.setTitle("注册成功！");
-//                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                finish();
-//                            }
-//                        }).show();
-//                        break;
-//                    case 404021:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 404022:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "该手机号已被注册", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 404011:
-//                    case 404012:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "请检查验证码是否有误", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 404061:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "用户名长度不能超过15个字符", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 404031:
-//                    case 404034:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "密码长度应在8-25位字符之间", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 404032:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "密码请不要使用纯字母或纯数字", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 400:
-//                    case 402:
-//                    case 999:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "出现错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    case 499:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    default:
-//                        Log.d(TAG, "sendRequest: " + error);
-//                        Toast.makeText(ResetActivity.this, "出现技术性错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
-//                        return;
-//                }
+                int error = connWithServer.changePassword(currentCode,currentPhone,currentPassword);
+
+                switch (error){
+                    case 0:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ResetActivity.this);
+                        builder.setTitle("密码修改成功！");
+                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
+                        break;
+                    case 404021:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404011:
+                    case 404012:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "请检查验证码是否有误", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404061:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "用户名长度不能超过15个字符", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404031:
+                    case 404034:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "密码长度应在8-25位字符之间", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404032:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "密码请不要使用纯字母或纯数字", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404042:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "该手机号尚未注册", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 400:
+                    case 404:
+                    case 999:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "出现错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 499:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
+                        return;
+                    default:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(ResetActivity.this, "出现技术性错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                        return;
+                }
             }
         });
 

@@ -2,6 +2,7 @@ package com.whuLoveStudyGroup.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
@@ -48,6 +49,9 @@ public class LoginActivity extends MyActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+
+
+
         localBroadcastManager = localBroadcastManager.getInstance(this);
 
         head = (CircleImageView)findViewById(R.id.login_head);
@@ -59,7 +63,6 @@ public class LoginActivity extends MyActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (phone.getText().toString().equals("15071239543")){
-                    Log.d(TAG, "onFocusChange: ");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -97,9 +100,34 @@ public class LoginActivity extends MyActivity {
 
                 switch (error) {
                     case 0:
-//                        connWithServer.getResponseData();
-                        Intent intent = new Intent("com.whuLoveStudyGroup.app.LOGIN");
-                        localBroadcastManager.sendBroadcast(intent);
+                        /*
+                        private String username = null;
+                        private String phoneNumber = null;
+                        private int isSexEqualBoy = -1;
+                        private int grade = 0;
+                        private String academy = null;
+                        private String profession = null;
+                        private String qqNumber = null;
+                        private String signature = null;
+                        private String imageUrl = null;
+    */
+                        User user = (User) connWithServer.getResponseData();
+                        SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
+                        editor.putBoolean("login",true);
+                        editor.putString("phone",user.getPhoneNumber());
+                        editor.putString("nickname", user.getUsername());
+                        editor.putInt("sex",user.getSex());
+                        editor.putInt("grade",user.getGrade());
+                        editor.putString("academy",user.getAcademy());
+                        editor.putString("profession",user.getProfession());
+                        editor.putString("qq",user.getQqNumber());
+                        editor.putString("signature",user.getSignature());
+                        editor.putString("url",user.getImageUrl());
+                        editor.putInt("public",user.getIsPhoneNumberPublic());
+                        editor.apply();
+
+//                        Intent intent = new Intent("com.whuLoveStudyGroup.app.LOGIN");
+//                        localBroadcastManager.sendBroadcast(intent);
                         finish();
                         break;
                     case 404021:

@@ -83,6 +83,8 @@ public class MainActivity extends MyActivity implements
     GetInfoFromJWXT getInfoFromJWXT;
     int x = 0;
 
+    String currentPhone,currentNickname,currentUrl;
+
     Bitmap bmp;
     String s;
     List<String> list = new ArrayList();
@@ -349,27 +351,7 @@ public class MainActivity extends MyActivity implements
 
 
 
-        bigHead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                final String[] options = {"登录前", "登录后"};
-//                builder.setItems(options, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent;
-//                        if (which == 0)
-//                            intent = new Intent(MainActivity.this,LoginActivity.class);
-//                        else
-//                            intent = new Intent(MainActivity.this,AccountActivity.class);
-//                        startActivity(intent);
-//                    }
-//                }).show();
 
-            }
-        });
 
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -452,6 +434,103 @@ public class MainActivity extends MyActivity implements
         if(actionBar != null) actionBar.setDisplayShowTitleEnabled(false);
         middleTitle = (TextView) findViewById(R.id.middle_title);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sp = getSharedPreferences("account",MODE_PRIVATE);
+
+        if (sp.getBoolean("login",false)){
+
+            currentPhone = sp.getString("phone","");
+            currentNickname = sp.getString("nickname","");
+            currentUrl = sp.getString("url","");
+
+            //点击大头像事件
+            bigHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,AccountActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+            //显示头像
+
+            final File outputImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), currentPhone + "portrait.jpg");
+
+            if(!outputImage.exists() || (outputImage.exists() && outputImage.length() == 0)){
+                if (currentUrl != ""){
+                    if (outputImage.exists()) {
+                        outputImage.delete();
+                    }
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient okHttpClient = new OkHttpClient();
+                            Request request = new Request.Builder().url(currentUrl).build();
+                            Call call = okHttpClient.newCall(request);
+                            call.enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    byte[] picByte = response.body().bytes();
+                                    final Bitmap bitmap = BitmapFactory.decodeByteArray(picByte,0,picByte.length);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            bigHead.setImageBitmap(bitmap);
+                                            civ.setImageBitmap(bitmap);
+                                        }
+                                    });
+
+                                    try{
+                                        outputImage.createNewFile();
+                                        FileOutputStream out = new FileOutputStream(outputImage);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+                                        out.flush();out.close();
+                                        Log.d(TAG, "portrait downloaded");
+
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+                        }
+                    }).run();
+                }
+
+            }else{
+                Bitmap bitmap = BitmapFactory.decodeFile(outputImage.getPath());
+                bigHead.setImageBitmap(bitmap);
+                civ.setImageBitmap(bitmap);
+            }
+
+
+            username.setText(sp.getString("nickname",""));
+            university.setText("武汉大学");
+
+        }else {
+            bigHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            bigHead.setImageResource(R.drawable.head);
+            civ.setImageResource(R.drawable.head);
+            username.setText("同学，你好");
+            university.setText("请登录↗");
+        }
     }
 
     @Override
@@ -834,6 +913,7 @@ public class MainActivity extends MyActivity implements
                 .addItem(new BottomNavigationItem(R.drawable.iizuoye,"作业"))
                 .addItem(new BottomNavigationItem(R.drawable.ixiaoyuan,"校园"))
                 .initialise();
+
     }
 
     //翻页相关
