@@ -369,7 +369,7 @@ public class ConnWithServer {
                 return resp.code;
             }
             Gson gson = new Gson();
-            resp = gson.fromJson(respStr, Resp.class);
+            resp = gson.fromJson(respStr, new TypeToken<Resp<User>>(){}.getType());
         } catch (JsonSyntaxException e) {
             resp.code = UNKNOWN_ERROR;
             resp.msg = "UNKNOWN_ERROR";

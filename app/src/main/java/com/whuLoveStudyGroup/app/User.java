@@ -91,11 +91,11 @@ class User {
         this.imageUrl = imageUrl;
     }
 
-    public int isPhoneNumberPublic() {
+    public int getIsPhoneNumberPublic() {
         return isPhoneNumberPublic;
     }
 
-    public void setPhoneNumberPublic(int phoneNumberPublic) {
+    public void setIsPhoneNumberPublic(int phoneNumberPublic) {
         isPhoneNumberPublic = phoneNumberPublic;
     }
 }
