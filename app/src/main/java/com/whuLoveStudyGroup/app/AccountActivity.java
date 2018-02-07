@@ -36,6 +36,7 @@ public class AccountActivity extends AppCompatActivity {
     TextView sex,grade,academy,profession,phone,qq,signature;
     SharedPreferences sp1;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    File outf;
 
     private static final String TAG = "dong,AccountActivity";
 
@@ -123,6 +124,8 @@ public class AccountActivity extends AppCompatActivity {
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (outf.exists()) outf.delete();
+
                         SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
                         editor.putBoolean("login",false);
                         editor.apply();
@@ -144,7 +147,7 @@ public class AccountActivity extends AppCompatActivity {
         super.onResume();
         sp1 = getSharedPreferences("account",MODE_PRIVATE);
 
-        File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portrait.jpg");
+        outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portrait.jpg");
         imageUri = Uri.fromFile(outf);
 
         collapsingToolbarLayout.setTitle(sp1.getString("nickname",""));

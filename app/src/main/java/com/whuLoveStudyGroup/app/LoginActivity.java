@@ -3,6 +3,8 @@ package com.whuLoveStudyGroup.app;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
@@ -21,7 +23,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class LoginActivity extends MyActivity {
@@ -62,21 +72,40 @@ public class LoginActivity extends MyActivity {
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (phone.getText().toString().equals("15071239543")){
+                if (!TextUtils.isEmpty(phone.getText())){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            try{
-                                Thread.sleep(500);
-                            }catch (Exception e){
-                                e.printStackTrace();
+                            int error = connWithServer.getUserImageAddr(phone.getText().toString());
+                            if (error == 0) {
+                                String url = (String)connWithServer.getResponseData();
+                                OkHttpClient okHttpClient = new OkHttpClient();
+                                Request request = new Request.Builder().url(url).build();
+                                Call call = okHttpClient.newCall(request);
+                                call.enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        byte[] picByte = response.body().bytes();
+                                        final Bitmap bitmap = BitmapFactory.decodeByteArray(picByte,0,picByte.length);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                head.setImageBitmap(bitmap);
+                                            }
+                                        });
+
+                                    }
+                                });
+
+                            }else {
+                                Log.d(TAG, "get portrait: " + error);
                             }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    head.setImageResource(R.drawable.jay2);
-                                }
-                            });
+
                         }
                     }).run();
                 }

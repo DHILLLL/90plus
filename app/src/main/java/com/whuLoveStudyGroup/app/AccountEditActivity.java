@@ -189,34 +189,70 @@ public class AccountEditActivity extends AppCompatActivity {
                         sex,
                         TextUtils.isEmpty(signature.getText())?null:signature.getText().toString(),
                         TextUtils.isEmpty(nickname.getText())?null:nickname.getText().toString(),
-                        //changed?outf:null
-                        outf
+                        changed?outf:null
                         );
                 Log.d(TAG, "error: " + error);
-                if (error == 0){
-                    Toast.makeText(AccountEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
-                    User user = (User) connWithServer.getResponseData();
-                    SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
-                    editor.putBoolean("login",true);
-                    editor.putString("phone",user.getPhoneNumber());
-                    editor.putString("nickname", user.getUsername());
-                    editor.putInt("sex",user.getSex());
-                    editor.putInt("grade",user.getGrade());
-                    editor.putString("academy",user.getAcademy());
-                    editor.putString("profession",user.getProfession());
-                    editor.putString("qq",user.getQqNumber());
-                    editor.putString("signature",user.getSignature());
-                    editor.putString("url",user.getImageUrl());
-                    editor.putInt("public",user.getIsPhoneNumberPublic());
-                    editor.apply();
+                switch (error) {
+                    case 0:
+                        Toast.makeText(AccountEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
-                    finish();
-                }// TODO: 2018/2/7 其他Toast
+                        User user = (User) connWithServer.getResponseData();
+                        SharedPreferences.Editor editor = getSharedPreferences("account", MODE_PRIVATE).edit();
+                        editor.putBoolean("login", true);
+                        editor.putString("phone", user.getPhoneNumber());
+                        editor.putString("nickname", user.getUsername());
+                        editor.putInt("sex", user.getSex());
+                        editor.putInt("grade", user.getGrade());
+                        editor.putString("academy", user.getAcademy());
+                        editor.putString("profession", user.getProfession());
+                        editor.putString("qq", user.getQqNumber());
+                        editor.putString("signature", user.getSignature());
+                        editor.putString("url", user.getImageUrl());
+                        editor.putInt("public", user.getIsPhoneNumberPublic());
+                        editor.apply();
 
+                        finish();
+                        break;
+                    case 40407:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "学院名称过长", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404021:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 404061:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "昵称过长", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 40408:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "专业名称过长", Toast.LENGTH_SHORT).show();
+                    case 40409:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "个性签名过长", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 40405:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "QQ号格式不正确", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 400:
+                    case 402:
+                    case 999:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "出现错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                        return;
+                    case 499:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
+                        return;
+                    default:
+                        Log.d(TAG, "sendRequest: " + error);
+                        Toast.makeText(AccountEditActivity.this, "出现技术性错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                        return;
 
-
-
+                }
             }
         });
     }
