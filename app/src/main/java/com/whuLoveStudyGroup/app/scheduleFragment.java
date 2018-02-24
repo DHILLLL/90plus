@@ -1,5 +1,6 @@
 package com.whuLoveStudyGroup.app;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,13 +8,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,14 +28,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -45,6 +58,14 @@ public class scheduleFragment extends Fragment {
     int[][] shownCourses = new int[8][14];
     TextView month,mon,tue,wed,thu,fri,sat,sun;
     boolean showAll;
+
+    Bitmap bmp;
+    List<String> list = new ArrayList();
+    ImageView image;
+    EditText u,p,c;
+    CheckBox cb;
+    View view1;
+    GetInfoFromJWXT getInfoFromJWXT;
 
 
     private static final String TAG = "dongheyou";
@@ -115,36 +136,203 @@ public class scheduleFragment extends Fragment {
 
 
 
-        /*
-        //下拉更新课程配色
+
+        //下拉更新课程
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.schedule_refresh);
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setMessage("您确定要随机更换课程颜色分配吗？");
-                dialog.setCancelable(false);
-                dialog.setNegativeButton("算了", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        srl.setRefreshing(false);
-                    }
-                });
-                dialog.setPositiveButton("换吧", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        changeSet();
-                        srl.setRefreshing(false);
-                    }
-                });
-                dialog.show();
-
-            }
-        });*/
-
+        srl.setEnabled(false);
+//        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//               papapa();
+//            }
+//        });
 
         return view;
     }
+
+    private void papapa(){
+
+        getInfoFromJWXT = new GetInfoFromJWXT();
+        view1 = View.inflate(getContext(),R.layout.pa_dialog,null);
+        u = (EditText)view1.findViewById(R.id.pa_username);
+        p = (EditText)view1.findViewById(R.id.pa_password);
+        c = (EditText)view1.findViewById(R.id.pa_code);
+        cb = (CheckBox)view1.findViewById(R.id.pa_check);
+        image = (ImageView)view1.findViewById(R.id.pa_image);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    InputStream is = null;
+                    try {
+                        is = getInfoFromJWXT.getGenImg();
+                    }
+                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
+                        ex.printStackTrace();
+                        Looper.prepare();
+                        Toast.makeText(getContext(), "网络连接错误，请重试", Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
+                    bmp = BitmapFactory.decodeStream(is);
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            final AlertDialog dialog = builder.create();
+
+                            dialog.setTitle("登录教务系统");
+                            dialog.setView(view1,100,40,100,0);
+
+                            SharedPreferences sp = getActivity().getSharedPreferences("data",getActivity().MODE_PRIVATE);
+
+                            if(sp.getBoolean("remember",false)){
+                                u.setText(sp.getString("username",""));
+                                p.setText(sp.getString("password",""));
+                                cb.setChecked(true);
+                            }
+
+                            image.setImageBitmap(bmp);
+                            image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    InputStream is2 = null;
+                                    try {
+                                        is2 = getInfoFromJWXT.getGenImg();
+                                    }
+                                    catch (GetInfoFromJWXT.NetworkErrorException ex) {
+                                        ex.printStackTrace();
+                                        Toast.makeText(getContext(), "网络连接错误，请检查网络连接后重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                    bmp = BitmapFactory.decodeStream(is2);
+                                    image.setImageBitmap(bmp);
+                                }
+                            });
+                            dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (cb.isChecked()){
+                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("data",getActivity().MODE_PRIVATE).edit();
+                                        editor.putString("username",u.getText().toString());
+                                        editor.putString("password",p.getText().toString());
+                                        editor.putBoolean("remember",true);
+                                        editor.apply();
+                                    }else{
+                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("data",getActivity().MODE_PRIVATE).edit();
+                                        editor.putBoolean("remember",false);
+                                        editor.apply();
+                                    }
+
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                List<Map<String, String>> maps = null;
+                                                try {
+                                                    maps = getInfoFromJWXT.getCourseData(u.getText().toString(), getInfoFromJWXT.md5(p.getText().toString()), c.getText().toString(), getInfoFromJWXT.getCookie());
+                                                } catch (GetInfoFromJWXT.VerificationCodeException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(getContext(), "验证码错误，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                } catch (GetInfoFromJWXT.UsernamePasswordErrorException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(getContext(), "用户名/密码错误，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                } catch (GetInfoFromJWXT.TimeoutException e) {
+                                                    e.printStackTrace();
+                                                    Looper.prepare();
+                                                    Toast.makeText(getContext(), "会话超时，请重试", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
+                                                }
+                                                Map<String,Integer> names = new HashMap<>();
+                                                for (Map map : maps){
+                                                    String course = map.get("lessonName").toString();
+                                                    if(!names.containsKey(course)){
+                                                        names.put(course,1);
+                                                    }else {
+                                                        Integer temp = names.get(course) + 1;
+                                                        names.put(course,temp);
+                                                    }
+                                                }
+
+                                                List<Course> temp;
+
+                                                for (Map map : maps){
+                                                    temp = DataSupport.where("name = ?",map.get("lessonName").toString()).find(Course.class);
+                                                    if (temp.size() >= names.get(map.get("lessonName").toString())) continue;
+
+                                                    Course course = new Course();
+                                                    course.setName(map.get("lessonName").toString());
+                                                    course.setPlace(map.get("areaName").toString() + " " + map.get("classRoom").toString());
+                                                    course.setTeacher(map.get("teacherName").toString());
+                                                    course.setType(map.get("planType").toString());
+                                                    course.setCredit(map.get("credit").toString());
+                                                    course.setWeekFrom(Integer.valueOf(map.get("beginWeek").toString()));
+                                                    course.setWeekTo(Integer.parseInt(map.get("endWeek").toString()));
+                                                    course.setTimesPerWeek(names.get(map.get("lessonName").toString()));
+                                                    course.setWeekday(Integer.parseInt(map.get("day").toString()));
+                                                    course.setHourFrom(Integer.parseInt(map.get("beginTime").toString()));
+                                                    course.setHourTo(Integer.parseInt(map.get("endTime").toString()));
+                                                    course.setNote(map.get("note").toString());
+                                                    course.setLessoneID(map.get("lessonID").toString());
+
+                                                    if(map.get("weekInterVal=").toString().equals("1"))
+                                                        course.setEveryWeek(true);
+                                                    else
+                                                        course.setEveryWeek(false);
+
+                                                    course.setHomework(false);
+                                                    course.save();
+                                                }
+
+                                                SharedPreferences.Editor editor = getActivity().getSharedPreferences("data",getActivity().MODE_PRIVATE).edit();
+                                                editor.putInt("firstDay",getInfoFromJWXT.getTermStartDayIndex() - 7);
+                                                currentWeek = CourseWidget.setCurrentWeek();
+                                                editor.putInt("currentWeek",currentWeek);
+                                                editor.apply();
+
+                                                changeSet();
+
+                                                final Intent intent = new Intent(getContext(),MainActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                getActivity().overridePendingTransition(0,0);
+
+
+
+                                                Looper.prepare();
+                                                Toast.makeText(getContext(), "课程刷新完毕", Toast.LENGTH_SHORT).show();
+                                                Looper.loop();
+
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }).start();
+                                }
+                            });
+                            dialog.setButton(Dialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            dialog.show();
+
+                        }
+                    });
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 
     //显示日期
     private void setDate(){
@@ -325,7 +513,7 @@ public class scheduleFragment extends Fragment {
         cl2.setMargins(6,9,6,9);
         textview2.setLayoutParams(cl2);
         textview2.setGravity(Gravity.TOP|Gravity.CENTER);
-        textview2.setText(course.getName() + ( course.getPlace().equals("")? "":" @ " ) + course.getPlace());
+        textview2.setText(course.getName() + (course.getPlace().equals("")? "":" @ " ) + course.getPlace());
         textview2.setTextColor(thisWeek?0xFFFFFFFF:0xFFABABAB);
         textview2.setTextSize(12);
         cardview2.addView(textview2);
@@ -385,7 +573,7 @@ public class scheduleFragment extends Fragment {
         setDate();
         clear();
         //获取所有课程
-        List<Course> courses = DataSupport.findAll(Course.class);
+        List<Course> courses = DataSupport.order("hourFrom asc,hourTo desc").find(Course.class);
         //依次显示课程
         for(Course course: courses){
 

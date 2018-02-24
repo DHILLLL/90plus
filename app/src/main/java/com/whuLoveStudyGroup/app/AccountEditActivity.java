@@ -44,7 +44,7 @@ import java.io.IOException;
 public class AccountEditActivity extends AppCompatActivity {
 
     private Uri imageUri;
-    private boolean hasPic = false;
+    File outfS;
     private String path = null;
     ImageView portrait;
     private static final String TAG = "dongheyou,AEA";
@@ -123,6 +123,8 @@ public class AccountEditActivity extends AppCompatActivity {
 
         final File outf = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portrait.jpg");
         imageUri = Uri.fromFile(outf);
+
+        outfS = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), sp1.getString("phone","") + "portraitS.jpg");
 
         collapsingToolbarLayout.setTitle("点我修改头像");
         switch (sp1.getInt("sex",-1)){
@@ -301,12 +303,23 @@ public class AccountEditActivity extends AppCompatActivity {
                             }
                             options.inJustDecodeBounds = false;
                             options.inSampleSize = intSampleSize;
-                            Bitmap smallBitmap = BitmapFactory.decodeFile(imageUri.getPath(),options);
-                            portrait.setImageBitmap(smallBitmap);
+                            Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),options);
+                            width = bitmap.getWidth();
+                            portrait.setImageBitmap(bitmap);
 
                             FileOutputStream out = new FileOutputStream(outputImage);
-                            smallBitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
                             out.flush();out.close();
+
+                            if (width > 80) {
+                                intSampleSize = width / 80;
+                            }
+                            options.inSampleSize = intSampleSize;
+                            Bitmap smallBitmap = BitmapFactory.decodeFile(imageUri.getPath(),options);
+
+                            FileOutputStream out1 = new FileOutputStream(outfS);
+                            smallBitmap.compress(Bitmap.CompressFormat.JPEG,100,out1);
+                            out1.flush();out1.close();
 
                             changed = true;
 

@@ -81,7 +81,6 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                                 Intent intent;
                                 switch (which){
                                     case 0:
-                                        //openMap();
                                         intent = new Intent();
                                         intent.setAction("android.intent.action.VIEW");
                                         Uri url = Uri.parse("https://gitee.com/makebignews/90Plus/raw/master/campus_map.jpg");

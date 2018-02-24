@@ -1,11 +1,13 @@
 package com.whuLoveStudyGroup.app;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -65,6 +67,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.down.setText("反对(" + myComment.getDown() + ")");
         holder.words.setText(myComment.getWords());
 
+        holder.up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "+1", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //holder.up.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        holder.down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "-1", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //holder.down.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override

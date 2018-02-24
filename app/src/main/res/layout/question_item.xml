@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="7dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,15 +56,34 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/question_answer"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="5条回答"
-                android:textSize="15sp"
-                android:textColor="?android:attr/colorPrimary"/>
+            <LinearLayout
+                android:layout_width="160dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/answer_up"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="同求(8)"
+                    android:autoLink="all"
+                    android:textStyle=""
+                    android:textColor="#40BD55"/>
+
+                <TextView
+                    android:id="@+id/answer_down"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:lines="1"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="无用(2)"
+                    android:textColor="#f44336"/>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -76,6 +95,17 @@
             android:text="雷军老师的课我有幸听过一次，感觉好极了，内容生动有干活，英语讲得也特别好。"
             android:textSize="16sp"
             android:lineSpacingMultiplier="1.1"/>
+
+        <TextView
+            android:id="@+id/question_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
+            android:lines="1"
+            android:gravity="right"
+            android:text="10条回答"
+            android:textColor="?android:attr/colorPrimary"/>
 
     </LinearLayout>
 
