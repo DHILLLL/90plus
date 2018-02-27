@@ -79,28 +79,30 @@ public class LoginActivity extends MyActivity {
                             int error = connWithServer.getUserImageAddr(phone.getText().toString());
                             if (error == 0) {
                                 String url = (String)connWithServer.getResponseData();
-                                OkHttpClient okHttpClient = new OkHttpClient();
-                                Request request = new Request.Builder().url(url).build();
-                                Call call = okHttpClient.newCall(request);
-                                call.enqueue(new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
+                                if(url.length() > 1){
+                                    OkHttpClient okHttpClient = new OkHttpClient();
+                                    Request request = new Request.Builder().url(url).build();
+                                    Call call = okHttpClient.newCall(request);
+                                    call.enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-                                        byte[] picByte = response.body().bytes();
-                                        final Bitmap bitmap = BitmapFactory.decodeByteArray(picByte,0,picByte.length);
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                head.setImageBitmap(bitmap);
-                                            }
-                                        });
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            byte[] picByte = response.body().bytes();
+                                            final Bitmap bitmap = BitmapFactory.decodeByteArray(picByte,0,picByte.length);
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    head.setImageBitmap(bitmap);
+                                                }
+                                            });
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
 
                             }else {
                                 Log.d(TAG, "get portrait: " + error);
