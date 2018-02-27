@@ -286,8 +286,7 @@ public class AccountEditActivity extends AppCompatActivity {
                     Uri uri = data.getData();
                     crop(uri);
                 }
-            case 9:
-                if (resultCode == RESULT_OK){
+            case 9:if (resultCode == RESULT_OK){
                     try{
 
                         File outputImage = new File(imageUri.getPath());

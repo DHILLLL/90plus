@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Looper;
@@ -967,14 +968,16 @@ public class MainActivity extends MyActivity implements
 
     private void initiation(int version,int version_id){
         SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+        editor.putInt("version_id",version_id);
+        editor.apply();
         //检测是否是第一次安装程序
         if(sharedPreferences.getBoolean("FirstStart" + String.valueOf(version),true)) {
-            SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+            editor = getSharedPreferences("data", MODE_PRIVATE).edit();
             //标记从此不是第一次
             editor.putBoolean("FirstStart" + String.valueOf(version), false);
             editor.remove("FirstStart" + String.valueOf(version - 1));
-            //editor.putString("theme", "candy");
-            editor.putInt("version_id",version_id);
+
             editor.apply();
 
 
@@ -1058,7 +1061,7 @@ public class MainActivity extends MyActivity implements
             homework.setTime(x+1);
             homework.save();
 
-            SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+            editor = getSharedPreferences("data", MODE_PRIVATE).edit();
             editor.putBoolean("newUser", false);
             editor.apply();
 

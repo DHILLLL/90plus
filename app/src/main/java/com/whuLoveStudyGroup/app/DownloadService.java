@@ -1,16 +1,22 @@
 package com.whuLoveStudyGroup.app;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.File;
@@ -22,6 +28,7 @@ import java.io.File;
 public class DownloadService extends Service {
     private static final String TAG = "dong";
 
+    LocalBroadcastManager localBroadcastManager;
     private DownloadTask downloadTask;
     private String downloadUrl;
     private DownloadListener listener = new DownloadListener() {
@@ -35,7 +42,15 @@ public class DownloadService extends Service {
             downloadTask = null;
             stopForeground(true);
             getNotificationManager().notify(1,getNotification("下载成功，请点击安装。",-1,true));
-            Toast.makeText(DownloadService.this, "安装包下载成功", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(DownloadService.this, "安装包下载成功", Toast.LENGTH_SHORT).show();
+
+            String filename = downloadUrl.substring(downloadUrl.lastIndexOf("/"));
+            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+            File file = new File(directory + filename);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            startActivity(intent);
+
         }
 
         @Override
