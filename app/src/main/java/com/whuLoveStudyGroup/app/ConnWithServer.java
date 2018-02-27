@@ -239,6 +239,7 @@ public class ConnWithServer {
      * @param signature             个性签名
      * @param username              Username
      * @param userImage             用户头像
+     * @param userImageThumbnail    用户头像缩略图
      * @return                      Response status
      * @throws PARAM_ERROR_ACADEMY_LENGTH               40407   User academy length too long
      * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Mobile phone number length error
@@ -252,7 +253,8 @@ public class ConnWithServer {
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
     protected int editUser(String academy, int isPhoneNumberPublic, int grade, String phoneNumber,
-                           String profession, String qqNum, int sex, String signature, String username, File userImage) {
+                           String profession, String qqNum, int sex, String signature, String username,
+                           File userImage, File userImageThumbnail) {
         resp = new Resp();
         final String REQUESTADDR = "90plus/api/v1/edit/user/";
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -263,6 +265,9 @@ public class ConnWithServer {
 
         if (userImage != null)
             requestBodyPostBuilder.addFormDataPart("user_image", userImage.getName(), RequestBody.create(MediaType.parse("application/octet-stream"), userImage));
+
+        if (userImageThumbnail != null)
+            requestBodyPostBuilder.addFormDataPart("user_image_thumbnail", userImageThumbnail.getName(), RequestBody.create(MediaType.parse("application/octet-stream"), userImageThumbnail));
 
         String toBeMd5 = "academy=";
         if (academy != null) {
@@ -553,6 +558,56 @@ public class ConnWithServer {
         }
 
         final String REQUESTADDR = "90plus/api/v1/get/user/image/";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR + phoneNumber + "/" +
+                md5("mobile_phone_number=" + phoneNumber + "&secret_key=sulp09") + "/";
+
+        Request request = new Request.Builder().url(url).build();
+        Call call = okHttpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            String respStr = null;
+            if (response.body() != null) {
+                respStr = response.body().string();
+            } else {
+                resp.code = UNKNOWN_ERROR;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
+            Gson gson = new Gson();
+            resp = gson.fromJson(respStr, Resp.class);
+        } catch (JsonSyntaxException e) {
+            resp.code = UNKNOWN_ERROR;
+            resp.msg = "UNKNOWN_ERROR";
+        } catch (ConnectException e) {
+            resp.code = NETWORK_ERROR;
+            resp.msg = "NETWORK_ERROR";
+        } catch (IOException e) {
+            resp.code = UNKNOWN_ERROR;
+            resp.msg = "UNKNOWN_ERROR";
+        }
+        return resp.code;
+    }
+
+    /**
+     *
+     * @param phoneNumber   Mobile phone number
+     * @return              Response status
+     * @throws PARAM_ERROR_MOBILE_PHONE_LENGTH          404021  Mobile phone number length error
+     * @throws PARAM_ERROR_USER_NOT_EXIST               404042  User not exist
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
+     */
+    protected int getUserImageThumbnailAddr(String phoneNumber) {
+        resp = new Resp();
+        if (phoneNumber.length() != 11) {
+            resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
+            resp.msg = "PARAM_ERROR_MOBILE_PHONE_LENGTH";
+            return resp.code;
+        }
+
+        final String REQUESTADDR = "90plus/api/v1/get/user/image_thumbnail/";
         OkHttpClient okHttpClient = new OkHttpClient();
         String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR + phoneNumber + "/" +
                 md5("mobile_phone_number=" + phoneNumber + "&secret_key=sulp09") + "/";
