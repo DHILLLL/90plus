@@ -138,14 +138,14 @@ public class scheduleFragment extends Fragment {
 
 
         //下拉更新课程
-        final SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.schedule_refresh);
-        srl.setEnabled(false);
-//        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//               papapa();
-//            }
-//        });
+//        final SwipeRefreshLayout srl = (SwipeRefreshLayout) view.findViewById(R.id.schedule_refresh);
+//        srl.setEnabled(false);
+////        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+////            @Override
+////            public void onRefresh() {
+////               papapa();
+////            }
+////        });
 
         return view;
     }

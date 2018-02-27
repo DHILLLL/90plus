@@ -1,10 +1,10 @@
 
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/schedule_refresh"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">-->
+<!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/schedule_refresh"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
     <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,6 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="#ffffff">
 
             <android.support.percent.PercentRelativeLayout
@@ -829,12 +830,20 @@
 
             </android.support.percent.PercentRelativeLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:text=""
+                android:textColor="#ababab"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
 
-</android.support.v4.widget.SwipeRefreshLayout>
+<!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 
 
