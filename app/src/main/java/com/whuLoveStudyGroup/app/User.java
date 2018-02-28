@@ -7,6 +7,7 @@ package com.whuLoveStudyGroup.app;
  */
 
 class User {
+    private int userID = -999;
     private String username = null;
     private String phoneNumber = null;
     private int isSexEqualBoy = -1;
@@ -18,6 +19,14 @@ class User {
     private String imageUrl = null;
     private String imageThumbnailUrl = null;
     private int isPhoneNumberPublic = 0;
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public String getUsername() {
         return username;
