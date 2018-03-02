@@ -557,6 +557,8 @@ public class scheduleFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(getActivity(),courseActivity.class);
                             intent.putExtra("course",temp.get(which).getName());
+                            intent.putExtra("ID",temp.get(which).getLessoneID());
+
                             startActivity(intent);
                         }
                     }).show();

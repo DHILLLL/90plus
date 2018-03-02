@@ -1,24 +1,15 @@
 package com.whuLoveStudyGroup.app;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +17,6 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by 635901193 on 2017/7/20.
@@ -38,11 +24,10 @@ import okhttp3.Response;
 
 //见书
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+public class Comment2Adapter extends RecyclerView.Adapter<Comment2Adapter.ViewHolder> {
     private Context context;
     private List<MyComment> myCommentList;
     private static final String TAG = "dongheyou";
-    Date currentDate;
 
 
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
@@ -54,7 +39,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder{
         View mView;
-        TextView username,time,words,up,down,comment;
+        TextView username,time,words,up,down;
         CircleImageView image;
 
         public ViewHolder(View view){
@@ -64,19 +49,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 return;
             }
             mView = view;
-            username = (TextView) view.findViewById(R.id.comment_username);
-            words = (TextView) view.findViewById(R.id.comment_words);
-            up = (TextView) view.findViewById(R.id.comment_up);
-            time = (TextView) view.findViewById(R.id.comment_time);
-            down = (TextView) view.findViewById(R.id.comment_down);
-            comment = (TextView) view.findViewById(R.id.comment_comment);
-            image = (CircleImageView) view.findViewById(R.id.comment_image);
+            username = (TextView) view.findViewById(R.id.comment3_username);
+            words = (TextView) view.findViewById(R.id.comment3_words);
+            up = (TextView) view.findViewById(R.id.comment3_up);
+            time = (TextView) view.findViewById(R.id.comment3_time);
+            down = (TextView) view.findViewById(R.id.comment3_down);
+            image = (CircleImageView) view.findViewById(R.id.comment3_image);
         }
     }
 
 
 
-    public CommentAdapter(List<MyComment> myCommentList){
+    public Comment2Adapter(List<MyComment> myCommentList){
         this.myCommentList = myCommentList;
     }
 
@@ -112,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             return new ViewHolder(mFooterView);
         }
 
-        View view = LayoutInflater.from(context).inflate(R.layout.comment_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.comment2_item,parent,false);
         return new ViewHolder(view);
     }
 
@@ -122,7 +106,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             if(holder instanceof ViewHolder) {
                 final MyComment myComment = myCommentList.get(position);
 
-                final String current = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date());
+                String current = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date());
                 String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(myComment.getUnixTime()));
                 if(current.substring(0,10).equals(date.substring(0,10))) date = date.substring(11);
                 else if(current.substring(0,4).equals(date.substring(0,4))) date = date.substring(5);
@@ -133,7 +117,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 holder.up.setText("支持(" + myComment.getUpVoteCount() + ")");
                 holder.down.setText("反对(" + myComment.getDownVoteCount() + ")");
                 holder.words.setText(myComment.getComment());
-                holder.comment.setText(myComment.getTotalCommentsNum() + "条评论");
 
                 if (myComment.isUpVoted()){
                     TextPaint paint = holder.up.getPaint();
@@ -153,7 +136,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     holder.up.setEnabled(false);
                     holder.down.setEnabled(false);
 
-                }else{
+                }else {
                     holder.up.setTextSize(14);
                     holder.down.setTextSize(14);
                     holder.up.getPaint().setFakeBoldText(false);
@@ -163,19 +146,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     holder.up.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                        holder.up.setText("支持(" + (myComment.getUpVoteCount()+1) + ")");
-                        TextPaint paint = holder.up.getPaint();
-                        paint.setFakeBoldText(true);
-                        holder.up.setTextSize(16);
-                        holder.up.setEnabled(false);
-                        holder.down.setEnabled(false);
+                            holder.up.setText("支持(" + (myComment.getUpVoteCount() + 1) + ")");
+                            TextPaint paint = holder.up.getPaint();
+                            paint.setFakeBoldText(true);
+                            holder.up.setTextSize(16);
+                            holder.up.setEnabled(false);
+                            holder.down.setEnabled(false);
                         }
                     });
 
                     holder.down.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            holder.up.setText("反对(" + (myComment.getDownVoteCount()+1) + ")");
+                            holder.up.setText("反对(" + (myComment.getDownVoteCount() + 1) + ")");
                             TextPaint paint = holder.down.getPaint();
                             holder.down.setTextSize(16);
                             paint.setFakeBoldText(true);
@@ -185,19 +168,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     });
                 }
 
-                holder.comment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context,Comment2Activity.class);
-                        intent.putExtra("ID",myComment.getCommentID());
-                        context.startActivity(intent);
-                    }
-                });
-
-                Random random = new Random();
                 Glide.with(context).load(myComment.getStarterUserImageThumbnailUrl()).into(holder.image);
-                //Picasso.with(context).load(myComment.getStarterUserImageThumbnailUrl()).into(holder.image);
-
 
             }
             return;

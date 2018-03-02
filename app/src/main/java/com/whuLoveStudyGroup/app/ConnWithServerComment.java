@@ -411,7 +411,7 @@ public class ConnWithServerComment {
                     "{commentID:19, starterUserID:3, starterUsername:'TestTest18', starterUserImageThumbnailUrl:'http://39.108.108.43:9090/media/user_image/user_3_avatar.jpg', unixTime:1519810987, upVoteCount:2, downVoteCount:15, totalCommentsNum:4, upVoted:true, downVoted:false, comment:'Hello World18'}, " +
                     "{commentID:20, starterUserID:3, starterUsername:'TestTest19', starterUserImageThumbnailUrl:'http://39.108.108.43:9090/media/user_image/user_3_avatar.jpg', unixTime:1519811000, upVoteCount:2, downVoteCount:17, totalCommentsNum:2, upVoted:false, downVoted:false, comment:'Hello World19'}]}";
             Gson gson = new Gson();
-            resp = gson.fromJson(respStr, new TypeToken<Resp<MyComment[]>>(){}.getType());
+            resp = gson.fromJson(respStr, new TypeToken<Resp<List<MyComment>>>(){}.getType());
         } catch (JsonSyntaxException e) {
             resp.code = UNKNOWN_ERROR;
             resp.msg = "UNKNOWN_ERROR";
@@ -483,7 +483,7 @@ public class ConnWithServerComment {
                     "{commentID:19, starterUserID:3, starterUsername:'TestTest18', starterUserImageThumbnailUrl:'http://39.108.108.43:9090/media/user_image/user_3_avatar.jpg', unixTime:1519810987, upVoteCount:2, downVoteCount:15, totalCommentsNum:4, upVoted:true, downVoted:false, comment:'Hello World18'}, " +
                     "{commentID:20, starterUserID:3, starterUsername:'TestTest19', starterUserImageThumbnailUrl:'http://39.108.108.43:9090/media/user_image/user_3_avatar.jpg', unixTime:1519811000, upVoteCount:2, downVoteCount:17, totalCommentsNum:2, upVoted:false, downVoted:false, comment:'Hello World19'}]}";
             Gson gson = new Gson();
-            resp = gson.fromJson(respStr, new TypeToken<Resp<MyComment[]>>(){}.getType());
+            resp = gson.fromJson(respStr, new TypeToken<Resp<List<MyComment>>>(){}.getType());
         } catch (JsonSyntaxException e) {
             resp.code = UNKNOWN_ERROR;
             resp.msg = "UNKNOWN_ERROR";
