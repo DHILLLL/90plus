@@ -7,6 +7,7 @@ package com.whuLoveStudyGroup.app;
 class MyComment {
     private int commentID = -999;
     private int starterUserID = -999;
+    private String starterUsername = null;
     private String starterUserImageThumbnailUrl = null;
     private int unixTime = -999;
     private int upVoteCount = 0;
@@ -30,6 +31,14 @@ class MyComment {
 
     public void setStarterUserID(int starterUserID) {
         this.starterUserID = starterUserID;
+    }
+
+    public String getStarterUsername() {
+        return starterUsername;
+    }
+
+    public void setStarterUsername(String starterUsername) {
+        this.starterUsername = starterUsername;
     }
 
     public String getStarterUserImageThumbnailUrl() {
