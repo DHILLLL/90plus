@@ -16,7 +16,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_view33">
+                android:id="@+id/rv_hot">
             </android.support.v7.widget.RecyclerView>
 
             <TextView
@@ -28,7 +28,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_view3">
+                android:id="@+id/rv_new">
 
             </android.support.v7.widget.RecyclerView>
 

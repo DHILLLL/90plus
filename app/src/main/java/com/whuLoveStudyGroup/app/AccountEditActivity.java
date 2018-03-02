@@ -198,7 +198,7 @@ public class AccountEditActivity extends AppCompatActivity {
                                 sex,
                                 TextUtils.isEmpty(signature.getText())?null:signature.getText().toString(),
                                 TextUtils.isEmpty(nickname.getText())?null:nickname.getText().toString(),
-                                changed?outf:null
+                                changed?outf:null,changed?outfS:null
                         );
 
                         switch (error) {
