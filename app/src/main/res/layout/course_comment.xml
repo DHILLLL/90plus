@@ -3,46 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/comment_all">
+        android:id="@+id/sr_hot">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_hot">
+        </android.support.v7.widget.RecyclerView>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler_view33">
-            </android.support.v7.widget.RecyclerView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="以上为热门评论"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler_view3">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <TextView
-                android:id="@+id/comment_more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginBottom="5dp"
-                android:text="加载更多评论"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/comment_ban"

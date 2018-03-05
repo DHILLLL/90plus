@@ -174,87 +174,102 @@ public class AccountEditActivity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int sex = -1;
-                if (boy.isChecked()){
-                    sex = 1;
-                }else if (girl.isChecked()){
-                    sex = 0;
-                }else if (secret.isChecked()){
-                    sex = -1;
-                }
-                int error = connWithServer.editUser(TextUtils.isEmpty(academy.getText())?null:academy.getText().toString(),
-                        phone.isChecked()?1:0,
-                        TextUtils.isEmpty(grade.getText())?null:Integer.parseInt(grade.getText().toString()),
-                        sp1.getString("phone",""),
-                        TextUtils.isEmpty(profession.getText())?null:profession.getText().toString(),
-                        TextUtils.isEmpty(qq.getText())?null:qq.getText().toString(),
-                        sex,
-                        TextUtils.isEmpty(signature.getText())?null:signature.getText().toString(),
-                        TextUtils.isEmpty(nickname.getText())?null:nickname.getText().toString(),
-                        changed?outf:null
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AccountEditActivity.this);
+                builder.setTitle("确认修改吗？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int sex = -1;
+                        if (boy.isChecked()){
+                            sex = 1;
+                        }else if (girl.isChecked()){
+                            sex = 0;
+                        }else if (secret.isChecked()){
+                            sex = -1;
+                        }
+
+                        int error = connWithServer.editUser(TextUtils.isEmpty(academy.getText())?null:academy.getText().toString(),
+                                phone.isChecked()?1:0,
+                                TextUtils.isEmpty(grade.getText())?null:Integer.parseInt(grade.getText().toString()),
+                                sp1.getString("phone",""),
+                                TextUtils.isEmpty(profession.getText())?null:profession.getText().toString(),
+                                TextUtils.isEmpty(qq.getText())?null:qq.getText().toString(),
+                                sex,
+                                TextUtils.isEmpty(signature.getText())?null:signature.getText().toString(),
+                                TextUtils.isEmpty(nickname.getText())?null:nickname.getText().toString(),
+                                changed?outf:null,changed?outfS:null
                         );
-                Log.d(TAG, "error: " + error);
 
-                switch (error) {
-                    case 0:
-                        Toast.makeText(AccountEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        switch (error) {
+                            case 0:
+                                Toast.makeText(AccountEditActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
-                        User user = (User) connWithServer.getResponseData();
-                        SharedPreferences.Editor editor = getSharedPreferences("account", MODE_PRIVATE).edit();
-                        editor.putBoolean("login", true);
-                        editor.putString("phone", user.getPhoneNumber());
-                        editor.putString("nickname", user.getUsername());
-                        editor.putInt("sex", user.getSex());
-                        editor.putInt("grade", user.getGrade());
-                        editor.putString("academy", user.getAcademy());
-                        editor.putString("profession", user.getProfession());
-                        editor.putString("qq", user.getQqNumber());
-                        editor.putString("signature", user.getSignature());
-                        editor.putString("url", user.getImageUrl());
-                        editor.putInt("public", user.getIsPhoneNumberPublic());
-                        editor.apply();
+                                User user = (User) connWithServer.getResponseData();
+                                SharedPreferences.Editor editor = getSharedPreferences("account", MODE_PRIVATE).edit();
+                                editor.putBoolean("login", true);
+                                editor.putString("phone", user.getPhoneNumber());
+                                editor.putString("nickname", user.getUsername());
+                                editor.putInt("sex", user.getSex());
+                                editor.putInt("grade", user.getGrade());
+                                editor.putString("academy", user.getAcademy());
+                                editor.putString("profession", user.getProfession());
+                                editor.putString("qq", user.getQqNumber());
+                                editor.putString("signature", user.getSignature());
+                                editor.putString("url", user.getImageUrl());
+                                editor.putInt("public", user.getIsPhoneNumberPublic());
+                                editor.apply();
 
-                        finish();
-                        break;
-                    case 40407:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "学院名称过长", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 404021:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 404061:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "昵称过长", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 40408:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "专业名称过长", Toast.LENGTH_SHORT).show();
-                    case 40409:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "个性签名过长", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 40405:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "QQ号格式不正确", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 400:
-                    case 402:
-                    case 999:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "出现错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
-                        return;
-                    case 499:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
-                        return;
-                    default:
-                        Log.d(TAG, "sendRequest: " + error);
-                        Toast.makeText(AccountEditActivity.this, "出现技术性错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
-                        return;
+                                finish();
+                                break;
+                            case 40407:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "学院名称过长", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 404021:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "请检查手机号是否有误", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 404061:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "昵称过长", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 40408:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "专业名称过长", Toast.LENGTH_SHORT).show();
+                            case 40409:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "个性签名过长", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 40405:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "QQ号格式不正确", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 400:
+                            case 402:
+                            case 999:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "出现错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                                return;
+                            case 499:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "服务器连接失败，请重试", Toast.LENGTH_SHORT).show();
+                                return;
+                            default:
+                                Log.d(TAG, "sendRequest: " + error);
+                                Toast.makeText(AccountEditActivity.this, "出现技术性错误" + error + ",请联系我们，谢谢！", Toast.LENGTH_SHORT).show();
+                                return;
 
-                }
+                        }
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+
             }
         });
     }

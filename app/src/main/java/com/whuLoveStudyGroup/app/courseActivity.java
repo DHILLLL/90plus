@@ -194,7 +194,7 @@ public class courseActivity extends MyActivity {
         fragmentArrayList.add(new informationFragment());
         fragmentArrayList.add(new courseHomeworkFragment());
         fragmentArrayList.add(new commentFragment());
-        fragmentArrayList.add(new questionsFragment());
+        fragmentArrayList.add(new commentFragment());
         fragmentManager = getSupportFragmentManager();
     }
 

@@ -54,12 +54,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Question question = questionList.get(position);
-        Glide.with(context).load(question.getImage()).into(holder.image);
-        holder.username.setText(question.getUsername());
-        holder.time.setText(question.getTime());
-        holder.answer.setText(question.getAnswer() + "条回答");
-        holder.words.setText(question.getWords());
+//        Question question = questionList.get(position);
+//        Glide.with(context).load(question.getImage()).into(holder.image);
+//        holder.username.setText(question.getUsername());
+//        holder.time.setText(question.getTime());
+//        holder.answer.setText(question.getAnswer() + "条回答");
+//        holder.words.setText(question.getWords());
 
     }
 
