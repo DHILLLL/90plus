@@ -79,7 +79,7 @@ public class LoginActivity extends MyActivity {
                             int error = connWithServer.getUserImageAddr(phone.getText().toString());
                             if (error == 0) {
                                 String url = (String)connWithServer.getResponseData();
-                                if(url.length() > 1){
+                                if(!TextUtils.isEmpty(url)){
                                     OkHttpClient okHttpClient = new OkHttpClient();
                                     Request request = new Request.Builder().url(url).build();
                                     Call call = okHttpClient.newCall(request);
