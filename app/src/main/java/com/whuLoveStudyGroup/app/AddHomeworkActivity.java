@@ -340,15 +340,6 @@ public class AddHomeworkActivity extends MyActivity {
                         handleImageBeforeKitKat(data);
                     }
                 }
-            case 9:
-                if (data != null){
-                    Bundle extras = data.getExtras();
-                    if (extras != null){
-                        Bitmap bitmap = extras.getParcelable("data");
-                        image.setImageBitmap(bitmap);
-                    }
-                }
-                break;
             default:
                 break;
         }
@@ -357,23 +348,22 @@ public class AddHomeworkActivity extends MyActivity {
     private void handleImageOnKitKat(Intent data){
         String imagePath = null;
         Uri uri = data.getData();
-        crop(uri);
-//        if (DocumentsContract.isDocumentUri(this,uri)){
-//            String docId = DocumentsContract.getDocumentId(uri);
-//            if("com.android.providers.media.documents".equals(uri.getAuthority())){
-//                String id = docId.split(":")[1];
-//                String selection = MediaStore.Images.Media._ID + "=" + id;
-//                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
-//            }else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())){
-//                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-//                imagePath = getImagePath(contentUri,null);
-//            }
-//        }else if("content".equalsIgnoreCase(uri.getScheme())){
-//            imagePath = getImagePath(uri,null);
-//        }else if ("file".equalsIgnoreCase(uri.getScheme())){
-//            imagePath = uri.getPath();
-//        }
-//        displayImage(imagePath);
+        if (DocumentsContract.isDocumentUri(this,uri)){
+            String docId = DocumentsContract.getDocumentId(uri);
+            if("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri,null);
+            }
+        }else if("content".equalsIgnoreCase(uri.getScheme())){
+            imagePath = getImagePath(uri,null);
+        }else if ("file".equalsIgnoreCase(uri.getScheme())){
+            imagePath = uri.getPath();
+        }
+        displayImage(imagePath);
     }
 
     private void handleImageBeforeKitKat(Intent data){
@@ -489,17 +479,6 @@ public class AddHomeworkActivity extends MyActivity {
         }
     }
 
-    void crop(Uri uri){
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        intent.setDataAndType(uri,"image/*");
-        intent.putExtra("crop",true);
-        intent.putExtra("aspectX",1);
-        intent.putExtra("aspectY",1);
-        startActivityForResult(intent,9);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
