@@ -101,7 +101,7 @@ public class CourseWidget extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.widget_no,View.GONE);
 
             for (int j = 0;j<courses.size()&&j<3;j++){
-                remoteViews.setOnClickPendingIntent(areas[j],getPendingIntent(context,areas[j],"app" + courses.get(j).getName()));
+                remoteViews.setOnClickPendingIntent(areas[j],getPendingIntent(context,areas[j],"app" + courses.get(j).getName() + "=" + courses.get(j).getLessoneID()));
                 remoteViews.setTextViewText(Courses[j],courses.get(j).getName());
                 remoteViews.setTextViewText(places[j],"@" + courses.get(j).getPlace());
                 remoteViews.setTextViewText(times[j],courses.get(j).getHourFrom() + "-" + courses.get(j).getHourTo());
@@ -182,7 +182,11 @@ public class CourseWidget extends AppWidgetProvider {
             Intent startAcIntent = new Intent();
             startAcIntent.setComponent(new ComponentName("com.whuLoveStudyGroup.app","com.whuLoveStudyGroup.app.courseActivity"));//第一个是包名，第二个是类所在位置的全称
             startAcIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startAcIntent.putExtra("course",intent.getAction().substring(3));
+            String data = intent.getAction();
+            int pos = data.indexOf("=");
+            startAcIntent.putExtra("course",data.substring(3,pos));
+            startAcIntent.putExtra("ID",data.substring(pos+1));
+            //Log.d(TAG, "widget: " + data.substring(3,pos) + " " + data.substring(pos+1));
             context.startActivity(startAcIntent);
         }
 
