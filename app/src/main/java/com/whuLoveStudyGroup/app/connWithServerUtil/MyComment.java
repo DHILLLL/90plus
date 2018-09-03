@@ -1,10 +1,21 @@
-package com.whuLoveStudyGroup.app;
+/*
+ * Copyright (c) 2018 - 2018 benjaminzhang.
+ * All rights reserved.
+ *
+ * Project Name:     90plus
+ * File Name:        MyComment.java
+ * Author:           benjaminzhang
+ * Last Modified:    2018/09/03 18:02
+ * Version:          0.0.1
+ */
+
+package com.whuLoveStudyGroup.app.connWithServerUtil;
 
 /**
  * Created by 635901193 on 2017/7/24.
  */
 
-class MyComment {
+public class MyComment {
     private int commentID = -999;
     private int starterUserID = -999;
     private String starterUsername = null;

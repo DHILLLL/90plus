@@ -2,23 +2,16 @@ package com.whuLoveStudyGroup.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
+import com.whuLoveStudyGroup.app.connWithServerUtil.MyComment;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +19,6 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by 635901193 on 2017/7/20.

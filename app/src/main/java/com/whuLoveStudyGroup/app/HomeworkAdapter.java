@@ -1,6 +1,5 @@
 package com.whuLoveStudyGroup.app;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;

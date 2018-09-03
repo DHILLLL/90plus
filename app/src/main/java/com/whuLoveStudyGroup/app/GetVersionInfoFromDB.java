@@ -3,6 +3,9 @@ package com.whuLoveStudyGroup.app;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -10,9 +13,10 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.*;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**

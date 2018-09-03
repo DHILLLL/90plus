@@ -1,6 +1,5 @@
 package com.whuLoveStudyGroup.app;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,24 +8,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
+import com.whuLoveStudyGroup.app.connWithServerUtil.ConnWithServerComment;
+import com.whuLoveStudyGroup.app.connWithServerUtil.MyComment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

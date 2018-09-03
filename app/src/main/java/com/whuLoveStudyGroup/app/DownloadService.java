@@ -1,22 +1,17 @@
 package com.whuLoveStudyGroup.app;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.File;

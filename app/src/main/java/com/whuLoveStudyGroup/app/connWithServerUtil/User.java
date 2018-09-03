@@ -1,12 +1,17 @@
-package com.whuLoveStudyGroup.app;
-
-/**
- * Created by benjaminzhang on 04/02/2018.
- * Copyright © 2018 benjaminzhang.
+/*
+ * Copyright (c) 2018 - 2018 benjaminzhang.
  * All rights reserved.
+ *
+ * Project Name:     90plus
+ * File Name:        User.java
+ * Author:           benjaminzhang
+ * Last Modified:    2018/09/03 18:02
+ * Version:          0.0.1
  */
 
-class User {
+package com.whuLoveStudyGroup.app.connWithServerUtil;
+
+public class User {
     private int userID = -999;
     private String username = null;
     private String phoneNumber = null;

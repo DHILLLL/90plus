@@ -1,7 +1,6 @@
 package com.whuLoveStudyGroup.app;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;

@@ -1,70 +1,67 @@
-package com.whuLoveStudyGroup.app;
+/*
+ * Copyright (c) 2018 - 2018 benjaminzhang.
+ * All rights reserved.
+ *
+ * Project Name:     90plus
+ * File Name:        ConnWithServer.java
+ * Author:           benjaminzhang
+ * Last Modified:    2018/09/03 18:05
+ * Version:          0.0.1
+ */
+
+package com.whuLoveStudyGroup.app.connWithServerUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import okhttp3.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.security.MessageDigest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Created by benjaminzhang on 29/01/2018.
- * Modified by benjaminzhang on 04/02/2018
- * Copyright © 2018 benjaminzhang.
- * All rights reserved.
- * Version 1.2.3.1802041720
- */
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.MESSAGE_BUSINESS_LIMIT_CONTROL;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.MESSAGE_MOBILE_NUMBER_ILLEGAL;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.MESSAGE_PARAM_LENGTH_LIMIT;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.NETWORK_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_ACADEMY_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_IMEI_ILLEGAL;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_IMEI_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_MOBILE_PHONE_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_MOBILE_PHONE_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_PASSWORD_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_PASSWORD_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_PASSWORD_LENGTH2;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_PASSWORD_STRENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_PROFESSION_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_QQ_NUMBER_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_SIGNATURE_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_USERNAME_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_USER_NOT_EXIST;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_VERIFICATION_CODE_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PARAM_ERROR_VERIFICATION_CODE_LENGTH;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PORT;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.PROTOCOL;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.SERVERADDR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.SERVER_INTERNAL_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.SIGNATURE_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.TIMEOUT_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.UNKNOWN_ERROR;
+import static com.whuLoveStudyGroup.app.connWithServerUtil.MD5Util.md5;
 
 public class ConnWithServer {
-    private final int SUCCESS = 0;
-
-    private final int SERVER_INTERNAL_ERROR = 500;
-    private final int DATABASE_QUERY_ERROR = 501;
-    private final int DATABASE_INSERT_ERROR = 502;
-    private final int DATABASE_UPDATE_ERROR = 503;
-
-
-    private final int SIGNATURE_ERROR = 400;
-
-    private final int MESSAGE_MOBILE_NUMBER_ILLEGAL = 40101;
-    private final int MESSAGE_PARAM_LENGTH_LIMIT = 40102;
-    private final int MESSAGE_BUSINESS_LIMIT_CONTROL = 40103;
-
-    private final int TIMEOUT_ERROR = 402;
-
-    private final int PARAM_ERROR = 404;
-    private final int PARAM_ERROR_VERIFICATION_CODE_LENGTH = 404011;
-    private final int PARAM_ERROR_VERIFICATION_CODE_ERROR = 404012;
-    private final int PARAM_ERROR_MOBILE_PHONE_LENGTH = 404021;
-    private final int PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST = 404022;
-    private final int PARAM_ERROR_MOBILE_PHONE_ERROR = 404023;
-    private final int PARAM_ERROR_PASSWORD_LENGTH = 404031;
-    private final int PARAM_ERROR_PASSWORD_STRENGTH = 404032;
-    private final int PARAM_ERROR_PASSWORD_ERROR = 404033;
-    private final int PARAM_ERROR_PASSWORD_LENGTH2 = 404034;
-    private final int PARAM_ERROR_USER_ID_ERROR = 404041;
-    private final int PARAM_ERROR_USER_NOT_EXIST = 404042;
-    private final int PARAM_ERROR_QQ_NUMBER_ERROR = 40405;
-    private final int PARAM_ERROR_USERNAME_LENGTH = 404061;
-    private final int PARAM_ERROR_USERNAME_ERROR = 404062;
-    private final int PARAM_ERROR_ACADEMY_LENGTH = 40407;
-    private final int PARAM_ERROR_PROFESSION_LENGTH = 40408;
-    private final int PARAM_ERROR_SIGNATURE_LENGTH = 40409;
-
-    private final int NETWORK_ERROR = 499;    //Client, server has not used
-
-
-    private final int UNKNOWN_ERROR = 999;
-
-
-    private final String PROTOCOL = "http://";
-    private final String SERVERADDR = "39.108.108.43";
-//    private final String SERVERADDR = "127.0.0.1";
-    private final String PORT = "9090";
     private Resp resp = null;
 
 
@@ -83,7 +80,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                        499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                        999     Unknown
      */
-    protected int getVerificationCode(String code, String phoneNumber) {
+    public int getVerificationCode(String code, String phoneNumber) {
         resp = new Resp();
         if (code.length() < 6) {
             resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
@@ -151,7 +148,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int addUser(String code, String phoneNumber, String username, String password) {
+    public int addUser(String code, String phoneNumber, String username, String password) {
         resp = new Resp();
         if (code.length() < 6) {
             resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
@@ -252,7 +249,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int editUser(String academy, int isPhoneNumberPublic, int grade, String phoneNumber,
+    public int editUser(String academy, int isPhoneNumberPublic, int grade, String phoneNumber,
                            String profession, String qqNum, int sex, String signature, String username,
                            File userImage, File userImageThumbnail) {
         resp = new Resp();
@@ -409,7 +406,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int changePassword(String code, String phoneNumber, String password) {
+    public int changePassword(String code, String phoneNumber, String password) {
         resp = new Resp();
         if (code.length() < 6) {
             resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
@@ -491,7 +488,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int changePhoneNumber(String code, String oldPhoneNumber, String newPhoneNumber) {
+    public int changePhoneNumber(String code, String oldPhoneNumber, String newPhoneNumber) {
         resp = new Resp();
         if (code.length() < 6) {
             resp.code = PARAM_ERROR_VERIFICATION_CODE_LENGTH;
@@ -549,7 +546,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int getUserImageAddr(String phoneNumber) {
+    public int getUserImageAddr(String phoneNumber) {
         resp = new Resp();
         if (phoneNumber.length() != 11) {
             resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
@@ -599,7 +596,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int getUserImageThumbnailAddr(String phoneNumber) {
+    public int getUserImageThumbnailAddr(String phoneNumber) {
         resp = new Resp();
         if (phoneNumber.length() != 11) {
             resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
@@ -654,7 +651,7 @@ public class ConnWithServer {
      * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
      * @throws UNKNOWN_ERROR                            999     Unknown
      */
-    protected int loginUser(String phoneNumber, String password) {
+    public int loginUser(String phoneNumber, String password) {
         resp = new Resp();
         if (phoneNumber.length() != 11) {
             resp.code = PARAM_ERROR_MOBILE_PHONE_LENGTH;
@@ -713,9 +710,75 @@ public class ConnWithServer {
 
     /**
      *
+     * @param IMEI   IMEI (length = 15)
+     * @return       Response status
+     * @throws PARAM_ERROR_IMEI_LENGTH                  404101  IMEI length error
+     * @throws PARAM_ERROR_IMEI_ILLEGAL                 404102  IMEI error
+     * @throws SERVER_INTERNAL_ERROR                    500     Server Internal Error
+     * @throws SIGNATURE_ERROR                          400     Signature error
+     * @throws NETWORK_ERROR                            499     Network disconnected or bad connection or timeout
+     * @throws UNKNOWN_ERROR                            999     Unknown
+     */
+    public int recordInstallation(String IMEI) {
+        resp = new Resp();
+        if (IMEI.length() == 15) {
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Matcher isNum = pattern.matcher(IMEI);
+            if(!isNum.matches()){
+                resp.code = PARAM_ERROR_IMEI_ILLEGAL;
+                resp.msg = "PARAM_ERROR_IMEI_ILLEGAL";
+                return resp.code;
+            }
+        } else {
+            resp.code = PARAM_ERROR_IMEI_LENGTH;
+            resp.msg = "PARAM_ERROR_IMEI_LENGTH";
+            return resp.code;
+        }
+
+        final String REQUESTADDR = "90plus/api/v1/add/userInstall/";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String md5ToBe = md5("imei=" + IMEI + "&secret_key=sulp09");
+        String url = PROTOCOL + SERVERADDR + ":" + PORT + "/" + REQUESTADDR;
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("imei", IMEI)
+                .add("md5", md5ToBe).build();
+
+        Request request = new Request.Builder().url(url).post(requestBody).build();
+        Call call = okHttpClient.newCall(request);
+
+        try {
+            Response response = call.execute();
+            String respStr = null;
+            if (response.body() != null) {
+                respStr = response.body().string();
+            } else {
+                resp.code = UNKNOWN_ERROR;
+                resp.msg = "UNKNOWN_ERROR";
+                return resp.code;
+            }
+            Gson gson = new Gson();
+            resp = gson.fromJson(respStr, new TypeToken<Resp<String>>(){}.getType());
+
+
+        } catch (JsonSyntaxException e) {
+            resp.code = UNKNOWN_ERROR;
+            resp.msg = "UNKNOWN_ERROR";
+        } catch (ConnectException e) {
+            resp.code = NETWORK_ERROR;
+            resp.msg = "NETWORK_ERROR";
+        } catch (IOException e) {
+            resp.code = UNKNOWN_ERROR;
+            resp.msg = "UNKNOWN_ERROR";
+        }
+        return resp.code;
+    }
+
+    /**
+     *
      * @return Response data
      */
-    protected Object getResponseData() {
+    public Object getResponseData() {
         return resp.data;
     }
 
@@ -723,37 +786,8 @@ public class ConnWithServer {
      *
      * @return Response message
      */
-    protected String getResponseMsg() {
+    public String getResponseMsg() {
         return resp.msg;
-    }
-
-    /**
-     * @param s String which needs to be encrypted
-     * @return  encrypted string
-     */
-    private String md5(String s) {
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-        try {
-            byte[] btInput = s.getBytes();
-            // 获得MD5摘要算法的 MessageDigest 对象
-            MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            // 使用指定的字节更新摘要
-            mdInst.update(btInput);
-            // 获得密文
-            byte[] md = mdInst.digest();
-            // 把密文转换成十六进制的字符串形式
-            int j = md.length;
-            char str[] = new char[j * 2];
-            int k = 0;
-            for (byte byte0 : md) {
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-                str[k++] = hexDigits[byte0 & 0xf];
-            }
-            return new String(str);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     // Parse response json
@@ -761,5 +795,12 @@ public class ConnWithServer {
         private String msg = null;
         private int code = 0;
         private T data = null;
+    }
+
+    public static void main(String[] args) {
+        ConnWithServer x = new ConnWithServer();
+        System.out.println(x.recordInstallation("123456789012345"));
+        System.out.println(x.getResponseMsg());
+        System.out.println(x.getResponseData());
     }
 }

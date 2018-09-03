@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.whuLoveStudyGroup.app.connWithServerUtil.ConnWithServer;
+
 import java.util.Random;
 
 

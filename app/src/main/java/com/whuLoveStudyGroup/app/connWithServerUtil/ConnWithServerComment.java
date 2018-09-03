@@ -1,70 +1,25 @@
-package com.whuLoveStudyGroup.app;
+/*
+ * Copyright (c) 2018 - 2018 benjaminzhang.
+ * All rights reserved.
+ *
+ * Project Name:     90plus
+ * File Name:        ConnWithServerComment.java
+ * Author:           benjaminzhang
+ * Last Modified:    2018/09/03 18:02
+ * Version:          0.0.1
+ */
+
+package com.whuLoveStudyGroup.app.connWithServerUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import okhttp3.*;
-
-import java.io.IOException;
-import java.net.ConnectException;
-import java.security.MessageDigest;
 import java.util.List;
 
-/**
- * Created by benjaminzhang on 28/02/2018.
- * Modified by benjaminzhang on 02/03/2018
- * Copyright © 2018 benjaminzhang.
- * All rights reserved.
- * Version 1.0.1.1803021605
- */
+import static com.whuLoveStudyGroup.app.connWithServerUtil.Constant.UNKNOWN_ERROR;
 
 public class ConnWithServerComment {
-    private final int SUCCESS = 0;
-
-    private final int SERVER_INTERNAL_ERROR = 500;
-    private final int DATABASE_QUERY_ERROR = 501;
-    private final int DATABASE_INSERT_ERROR = 502;
-    private final int DATABASE_UPDATE_ERROR = 503;
-
-
-    private final int SIGNATURE_ERROR = 400;
-
-    private final int MESSAGE_MOBILE_NUMBER_ILLEGAL = 40101;
-    private final int MESSAGE_PARAM_LENGTH_LIMIT = 40102;
-    private final int MESSAGE_BUSINESS_LIMIT_CONTROL = 40103;
-
-    private final int TIMEOUT_ERROR = 402;
-
-    private final int PARAM_ERROR = 404;
-    private final int PARAM_ERROR_VERIFICATION_CODE_LENGTH = 404011;
-    private final int PARAM_ERROR_VERIFICATION_CODE_ERROR = 404012;
-    private final int PARAM_ERROR_MOBILE_PHONE_LENGTH = 404021;
-    private final int PARAM_ERROR_MOBILE_PHONE_ALREADY_EXIST = 404022;
-    private final int PARAM_ERROR_MOBILE_PHONE_ERROR = 404023;
-    private final int PARAM_ERROR_PASSWORD_LENGTH = 404031;
-    private final int PARAM_ERROR_PASSWORD_STRENGTH = 404032;
-    private final int PARAM_ERROR_PASSWORD_ERROR = 404033;
-    private final int PARAM_ERROR_PASSWORD_LENGTH2 = 404034;
-    private final int PARAM_ERROR_USER_ID_ERROR = 404041;
-    private final int PARAM_ERROR_USER_NOT_EXIST = 404042;
-    private final int PARAM_ERROR_QQ_NUMBER_ERROR = 40405;
-    private final int PARAM_ERROR_USERNAME_LENGTH = 404061;
-    private final int PARAM_ERROR_USERNAME_ERROR = 404062;
-    private final int PARAM_ERROR_ACADEMY_LENGTH = 40407;
-    private final int PARAM_ERROR_PROFESSION_LENGTH = 40408;
-    private final int PARAM_ERROR_SIGNATURE_LENGTH = 40409;
-
-    private final int NETWORK_ERROR = 499;    //Client, server has not used
-
-
-    private final int UNKNOWN_ERROR = 999;
-
-
-    private final String PROTOCOL = "http://";
-    private final String SERVERADDR = "39.108.108.43";
-    //    private final String SERVERADDR = "127.0.0.1";
-    private final String PORT = "9090";
     private Resp resp = null;
 
 
@@ -72,7 +27,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int postComment(int userID, String courseID, String comment) {
+    public int postComment(int userID, String courseID, String comment) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -121,7 +76,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int postComment2Comment(int userID, int commentID, String comment) {
+    public int postComment2Comment(int userID, int commentID, String comment) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -170,7 +125,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int queryCommentsByCommentID(int commentID) {
+    public int queryCommentsByCommentID(int commentID) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -220,7 +175,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int queryHottestCommentsByCourseID(String courseID) {
+    public int queryHottestCommentsByCourseID(String courseID) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -289,7 +244,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int queryHottestCommentsByCommentID(int commentID) {
+    public int queryHottestCommentsByCommentID(int commentID) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -358,7 +313,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int queryNewestCommentsByCourseID(String courseID, int offset) {
+    public int queryNewestCommentsByCourseID(String courseID, int offset) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -430,7 +385,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected int queryNewestCommentsByCommentID(int commentID, int offset) {
+    public int queryNewestCommentsByCommentID(int commentID, int offset) {
         resp = new Resp();
 
 //        final String REQUESTADDR = "90plus/api/v1/add/user/";
@@ -503,7 +458,7 @@ public class ConnWithServerComment {
      *
      * @return Response data
      */
-    protected Object getResponseData() {
+    public Object getResponseData() {
         return resp.data;
     }
 
@@ -511,7 +466,7 @@ public class ConnWithServerComment {
      *
      * @return Response message
      */
-    protected String getResponseMsg() {
+    public String getResponseMsg() {
         return resp.msg;
     }
 
@@ -519,37 +474,8 @@ public class ConnWithServerComment {
      *
      * @return Response offset
      */
-    protected int getResponseOffset() {
+    public int getResponseOffset() {
         return resp.offset;
-    }
-
-    /**
-     * @param s String which needs to be encrypted
-     * @return  encrypted string
-     */
-    private String md5(String s) {
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-        try {
-            byte[] btInput = s.getBytes();
-            // 获得MD5摘要算法的 MessageDigest 对象
-            MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            // 使用指定的字节更新摘要
-            mdInst.update(btInput);
-            // 获得密文
-            byte[] md = mdInst.digest();
-            // 把密文转换成十六进制的字符串形式
-            int j = md.length;
-            char str[] = new char[j * 2];
-            int k = 0;
-            for (byte byte0 : md) {
-                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-                str[k++] = hexDigits[byte0 & 0xf];
-            }
-            return new String(str);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     // Parse response json

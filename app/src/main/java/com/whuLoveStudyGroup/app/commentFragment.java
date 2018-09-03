@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.whuLoveStudyGroup.app.connWithServerUtil.ConnWithServerComment;
+import com.whuLoveStudyGroup.app.connWithServerUtil.MyComment;
 
 import java.util.ArrayList;
 import java.util.List;
