@@ -71,10 +71,17 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                         intent = new Intent(context,ScoreActivity.class);
                         context.startActivity(intent);
                         break;
+                    case 2:
+                        intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url1 = Uri.parse("http://202.114.64.162");
+                        intent.setData(content_url1);
+                        context.startActivity(intent);
+                        break;
                     case 3:
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("请选择信息");
-                        final String[] options = {"地图","校车","校园卡","校历","空调卡","校园卡"};
+                        final String[] options = {"地图","校车","校园卡","校历","空调卡"};
                         builder.setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -104,13 +111,6 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHo
                                         break;
                                     case 4:
                                         intent = new Intent(context,AcActivity.class);
-                                        context.startActivity(intent);
-                                        break;
-                                    case 5:
-                                        intent = new Intent();
-                                        intent.setAction("android.intent.action.VIEW");
-                                        Uri content_url1 = Uri.parse("http://202.114.64.162");
-                                        intent.setData(content_url1);
                                         context.startActivity(intent);
                                         break;
                                 }
